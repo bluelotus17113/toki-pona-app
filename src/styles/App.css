@@ -1407,12 +1407,12 @@ button:disabled { cursor: not-allowed; }
 .ad-refill-icon.has-error { background: #ffd1d1; }
 
 /* Action row compact (práctica + diccionario + gramática) */
-.action-row.triple.compact {
-  grid-template-columns: 1fr 1fr 1fr;
+.action-row.quad.compact {
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   gap: 8px;
   margin-bottom: 22px;
 }
-.action-row.triple.compact .action-btn {
+.action-row.quad.compact .action-btn {
   flex-direction: column;
   align-items: center;
   text-align: center;
@@ -1421,31 +1421,31 @@ button:disabled { cursor: not-allowed; }
   border-radius: 16px;
   box-shadow: 3px 3px 0 var(--ink);
 }
-.action-row.triple.compact .action-btn:not(.locked):hover {
+.action-row.quad.compact .action-btn:not(.locked):hover {
   box-shadow: 5px 5px 0 var(--ink);
 }
-.action-row.triple.compact .action-icon {
+.action-row.quad.compact .action-icon {
   font-size: 1.5rem;
 }
-.action-row.triple.compact .action-title {
+.action-row.quad.compact .action-title {
   font-size: 0.85rem;
   font-weight: 800;
   line-height: 1.1;
 }
-.action-row.triple.compact .action-sub {
+.action-row.quad.compact .action-sub {
   font-size: 0.65rem;
   color: var(--ink-soft);
   font-weight: 600;
   line-height: 1.1;
 }
 
-/* En pantallas medianas mantener 3 columnas (sobreescribe regla anterior) */
+/* En pantallas medianas: 2x2 grid (mejor para 4 botones en mobile) */
 @media (max-width: 720px) {
-  .action-row.triple.compact { grid-template-columns: 1fr 1fr 1fr; }
+  .action-row.quad.compact { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 520px) {
-  .action-row.triple.compact { grid-template-columns: 1fr 1fr 1fr; }
-  .action-row.triple.compact .action-sub { display: none; }
+  .action-row.quad.compact { grid-template-columns: 1fr 1fr; }
+  .action-row.quad.compact .action-sub { display: none; }
   .home-header.compact .logo { font-size: 1.7rem; }
   .home-header.compact .subtitle { font-size: 0.78rem; }
   .status-strip {
@@ -1457,8 +1457,8 @@ button:disabled { cursor: not-allowed; }
 @media (max-width: 380px) {
   .status-strip { padding: 6px 8px; gap: 6px; }
   .status-strip .heart-timer { display: none; }
-  .action-row.triple.compact .action-title { font-size: 0.78rem; }
-  .action-row.triple.compact .action-icon { font-size: 1.3rem; }
+  .action-row.quad.compact .action-title { font-size: 0.78rem; }
+  .action-row.quad.compact .action-icon { font-size: 1.3rem; }
 }
 
 /* ============ responsive: zigzag de lessons + clamps ============ */
@@ -1618,4 +1618,246 @@ html, body, #root, .home {
   font-weight: 600;
   font-size: 0.78rem;
   opacity: 0.95;
+}
+
+/* ============ Minijuego: nimi tu (combina palabras) ============ */
+
+/* Botón del menú */
+.action-btn.nimitu {
+  background: #ffd6a5; /* peach: distinguir del resto, vibe "juego" */
+}
+.action-btn.nimitu:not(.locked):hover {
+  background: #ffc483;
+}
+.action-btn.nimitu .action-icon {
+  animation: puzzleSpin 5s ease-in-out infinite;
+}
+@keyframes puzzleSpin {
+  0%, 88%, 100% { transform: rotate(0deg); }
+  92% { transform: rotate(-12deg) scale(1.1); }
+  96% { transform: rotate(12deg) scale(1.1); }
+}
+
+/* Pantalla del juego */
+.nimitu {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 16px 16px 40px;
+  animation: fadeUp 0.5s ease backwards;
+}
+.nimitu-banner { background: #ffd6a5; }
+
+.nimitu-card {
+  background: var(--paper);
+  border: var(--border-w) solid var(--ink);
+  border-radius: 22px;
+  box-shadow: 5px 5px 0 var(--ink);
+  padding: 22px 18px 18px;
+  margin-top: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 18px;
+}
+
+.nimitu-concept {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.nimitu-emoji {
+  font-size: 3rem;
+  filter: drop-shadow(3px 3px 0 var(--ink));
+  animation: bobby 3s ease-in-out infinite;
+}
+@keyframes bobby {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+.nimitu-concept-text {
+  margin: 4px 0 2px;
+  font-size: 1.4rem;
+  color: var(--ink);
+}
+.nimitu-hint {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  font-style: italic;
+}
+
+.nimitu-slots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 6px 0 2px;
+}
+.nimitu-slot {
+  flex: 1;
+  max-width: 160px;
+  min-height: 56px;
+  background: var(--cream);
+  border: var(--border-w) dashed var(--ink-soft);
+  border-radius: 14px;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--ink);
+  padding: 10px 8px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, transform 0.1s;
+}
+.nimitu-slot.filled {
+  background: var(--yellow);
+  border-style: solid;
+  box-shadow: 3px 3px 0 var(--ink);
+}
+.nimitu-slot.filled:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 var(--ink);
+}
+.nimitu-slot.ok {
+  background: var(--good-soft);
+  border-color: var(--good);
+  animation: pulseGood 0.6s ease;
+}
+.nimitu-slot.bad {
+  background: var(--bad-soft);
+  border-color: var(--bad);
+  animation: shakeX 0.5s ease;
+}
+@keyframes pulseGood {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+  100% { transform: scale(1); }
+}
+@keyframes shakeX {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+.nimitu-plus {
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: var(--ink-soft);
+}
+
+.nimitu-words {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+}
+@media (max-width: 480px) {
+  .nimitu-words { grid-template-columns: repeat(4, 1fr); }
+}
+@media (max-width: 360px) {
+  .nimitu-words { grid-template-columns: repeat(3, 1fr); }
+}
+.nimitu-word {
+  background: var(--sky);
+  border: var(--border-w) solid var(--ink);
+  border-radius: 12px;
+  padding: 10px 6px;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--ink);
+  cursor: pointer;
+  box-shadow: 2px 2px 0 var(--ink);
+  transition: transform 0.1s, box-shadow 0.1s, background 0.15s;
+}
+.nimitu-word:not(:disabled):hover {
+  background: var(--yellow-hi);
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 var(--ink);
+}
+.nimitu-word:not(:disabled):active {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0 var(--ink);
+}
+.nimitu-word.used,
+.nimitu-word:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  background: var(--sky-deep);
+}
+
+.nimitu-check {
+  margin-top: 4px;
+  background: var(--ink);
+  color: var(--yellow);
+  border: var(--border-w) solid var(--ink);
+  border-radius: 14px;
+  padding: 12px 16px;
+  font-size: 1.05rem;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 4px 4px 0 var(--ink-soft);
+  transition: transform 0.1s, box-shadow 0.1s, opacity 0.15s;
+}
+.nimitu-check:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  background: var(--ink-faint);
+  color: var(--cream);
+  box-shadow: 2px 2px 0 var(--ink-soft);
+}
+.nimitu-check:not(:disabled):hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0 var(--ink-soft);
+}
+.nimitu-check:not(:disabled):active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 var(--ink-soft);
+}
+
+.nimitu-feedback {
+  border: var(--border-w) solid var(--ink);
+  border-radius: 14px;
+  padding: 10px 14px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-align: center;
+  animation: fadeIn 0.25s ease;
+}
+.nimitu-feedback.ok {
+  background: var(--good-soft);
+  color: #145a2a;
+  border-color: var(--good);
+}
+.nimitu-feedback.bad {
+  background: var(--bad-soft);
+  color: #8a1d34;
+  border-color: var(--bad);
+}
+.nimitu-feedback p {
+  margin: 4px 0 0;
+  font-weight: 600;
+  font-size: 0.88rem;
+}
+.nimitu-feedback em {
+  font-style: normal;
+  font-weight: 900;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.nimitu-score {
+  display: flex; align-items: center; gap: 4px;
+  font-weight: 800;
+  color: var(--ink);
+  font-size: 0.9rem;
+  padding: 4px 10px;
+  background: var(--yellow);
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+}
+
+.progress-bar.minigame .progress-fill {
+  background: #ffb060;
 }

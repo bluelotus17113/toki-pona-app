@@ -6,6 +6,7 @@ import Lesson from './components/Lesson.jsx'
 import Practice from './components/Practice.jsx'
 import Dictionary from './components/Dictionary.jsx'
 import Grammar from './components/Grammar.jsx'
+import NimiTu from './components/NimiTu.jsx'
 import LessonComplete from './components/LessonComplete.jsx'
 
 export default function App() {
@@ -17,6 +18,7 @@ export default function App() {
   const openPractice   = () => setScreen({ name: 'practice' })
   const openDictionary = () => setScreen({ name: 'dictionary' })
   const openGrammar    = () => setScreen({ name: 'grammar' })
+  const openNimiTu     = () => setScreen({ name: 'nimitu' })
 
   const finishLesson = (lessonId, score) => {
     progress.completeLesson(lessonId, score)
@@ -42,6 +44,7 @@ export default function App() {
           onPractice={openPractice}
           onDictionary={openDictionary}
           onGrammar={openGrammar}
+          onNimiTu={openNimiTu}
         />
       )}
       {screen.name === 'lesson' && (
@@ -66,6 +69,9 @@ export default function App() {
       )}
       {screen.name === 'grammar' && (
         <Grammar lang={lang} onExit={goHome} />
+      )}
+      {screen.name === 'nimitu' && (
+        <NimiTu progress={progress} lang={lang} onExit={goHome} />
       )}
       {screen.name === 'complete' && (
         <LessonComplete

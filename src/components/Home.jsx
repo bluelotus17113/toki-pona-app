@@ -10,7 +10,7 @@ import FeedbackButton from './FeedbackButton.jsx'
 import KofiButton from './KofiButton.jsx'
 import NoHeartsModal from './NoHeartsModal.jsx'
 
-export default function Home({ progress, lang, setLang, onOpen, onPractice, onDictionary, onGrammar }) {
+export default function Home({ progress, lang, setLang, onOpen, onPractice, onDictionary, onGrammar, onNimiTu }) {
   const { state, isUnlocked, reset, MAX_HEARTS } = progress
   const t = makeT(lang)
   const practiceAvailable = state.completed.length >= 1
@@ -35,6 +35,7 @@ export default function Home({ progress, lang, setLang, onOpen, onPractice, onDi
   }
   const handleDictionary = () => { playClick(); onDictionary() }
   const handleGrammar = () => { playClick(); onGrammar() }
+  const handleNimiTu = () => { playClick(); onNimiTu() }
 
   const lessonsBySection = SECTIONS.map(sec => ({
     section: sec,
@@ -78,7 +79,7 @@ export default function Home({ progress, lang, setLang, onOpen, onPractice, onDi
         )}
       </div>
 
-      <div className="action-row triple compact">
+      <div className="action-row quad compact">
         <button
           className={`action-btn practice ${practiceAvailable ? '' : 'locked'}`}
           disabled={!practiceAvailable}
@@ -106,6 +107,14 @@ export default function Home({ progress, lang, setLang, onOpen, onPractice, onDi
           <span className="action-text">
             <span className="action-title">{t('grammar')}</span>
             <span className="action-sub">{t('grammarSub')}</span>
+          </span>
+        </button>
+
+        <button className="action-btn nimitu" onClick={handleNimiTu}>
+          <span className="action-icon">🧩</span>
+          <span className="action-text">
+            <span className="action-title">{t('nimiTu')}</span>
+            <span className="action-sub">{t('nimiTuSub')}</span>
           </span>
         </button>
       </div>

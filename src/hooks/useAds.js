@@ -3,6 +3,13 @@
 // ⚠️ NUNCA hagas clic en tus propios anuncios — AdMob banea por fraude.
 // Para probar sin riesgo, registrá este dispositivo como test device en
 // https://admob.google.com/ → Configuración → Dispositivos de prueba.
+//
+// Configuración FAMILIAR ("para todo público"):
+//   tagForChildDirectedTreatment: true  → cumple COPPA, AdMob solo sirve ads aptos para
+//                                          menores, fuerza non-personalized ads (NPA).
+//   tagForUnderAgeOfConsent:      true  → cumple GDPR-K para usuarios europeos <16.
+// Tradeoff: el CPM/fill rate baja un poco, a cambio de poder publicar para audiencia
+// familiar (Google Play "Designed for Families" o equivalente) sin riesgo legal.
 
 import { Capacitor } from '@capacitor/core'
 
@@ -28,8 +35,10 @@ async function ensureInit() {
   try {
     await lib.AdMob.initialize({
       initializeForTesting: IS_TESTING,
-      tagForChildDirectedTreatment: false,
-      tagForUnderAgeOfConsent: false
+      // App apta para todo público (incluye menores) → ajustes COPPA / GDPR-K activos.
+      tagForChildDirectedTreatment: true,
+      tagForUnderAgeOfConsent: true,
+      maxAdContentRating: 'G'  // solo contenido apto para todo público
     })
     initialized = true
   } catch (e) {
@@ -77,7 +86,10 @@ export async function showRewardedAd() {
 
     AdMob.prepareRewardVideoAd({
       adId: REWARDED_AD_UNIT_ID,
-      isTesting: IS_TESTING
+      isTesting: IS_TESTING,
+      // npa: 1 → forzar non-personalized ads en cada request (defensa en profundidad
+      // además del tagForChildDirectedTreatment global).
+      npa: true
     })
       .then(() => AdMob.showRewardVideoAd())
       .catch(err => failWith(err))
