@@ -59,6 +59,19 @@ export function buildLessonExercises(lesson, lang = 'es') {
     })
   })
 
+  // sitelen-mc: ver el glifo y elegir el significado (1 por palabra)
+  lessonWords.forEach(w => {
+    const correct = VOCAB[w]
+    const distractors = sampleDistractors(w, 3)
+    const correctText = text(w, lang)
+    ex.push({
+      type: 'sitelen-mc',
+      glyph: correct.tp,
+      options: shuffle([correctText, ...distractors.map(d => text(d, lang))]),
+      answer: correctText
+    })
+  })
+
   if (lessonWords.length >= 3) {
     ex.push({
       type: 'match',
@@ -66,6 +79,11 @@ export function buildLessonExercises(lesson, lang = 'es') {
         tp: VOCAB[w].tp,
         es: text(w, lang) // campo 'es' se usa como "lado traducido" del match
       }))
+    })
+    // sitelen-pair: glifo ↔ palabra romanizada
+    ex.push({
+      type: 'sitelen-pair',
+      words: lessonWords.slice(0, 4)
     })
   }
 
@@ -94,11 +112,11 @@ export function buildPracticeExercises(completedIds, count, lang = 'es') {
     pool.push(...buildLessonExercises(lesson, lang))
   })
 
-  const byType = { mc: [], listen: [], match: [], build: [] }
+  const byType = { mc: [], listen: [], match: [], build: [], 'sitelen-mc': [], 'sitelen-pair': [] }
   pool.forEach(ex => byType[ex.type]?.push(ex))
 
   const result = []
-  ;['mc', 'listen', 'match', 'build'].forEach(t => {
+  ;['mc', 'listen', 'match', 'build', 'sitelen-mc', 'sitelen-pair'].forEach(t => {
     if (byType[t].length > 0) result.push(shuffle(byType[t])[0])
   })
 

@@ -7,6 +7,8 @@ import MultipleChoice from './exercises/MultipleChoice.jsx'
 import Matching from './exercises/Matching.jsx'
 import SentenceBuilder from './exercises/SentenceBuilder.jsx'
 import ListenChoose from './exercises/ListenChoose.jsx'
+import SitelenMc from './exercises/SitelenMc.jsx'
+import SitelenPair from './exercises/SitelenPair.jsx'
 import Hearts from './Hearts.jsx'
 
 export default function Practice({ progress, lang, onFinish, onExit }) {
@@ -96,6 +98,8 @@ export default function Practice({ progress, lang, onFinish, onExit }) {
         {current.type === 'listen' && <ListenChoose ex={current} lang={lang} onResult={handleResult} />}
         {current.type === 'match' && <Matching ex={current} lang={lang} onResult={handleResult} />}
         {current.type === 'build' && <SentenceBuilder ex={current} lang={lang} onResult={handleResult} />}
+        {current.type === 'sitelen-mc' && <SitelenMc ex={current} lang={lang} onResult={handleResult} />}
+        {current.type === 'sitelen-pair' && <SitelenPair ex={current} lang={lang} onResult={handleResult} />}
       </div>
 
       {outOfHearts && (

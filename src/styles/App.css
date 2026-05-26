@@ -1,3 +1,24 @@
+/* ============ Fuente sitelen pona (logográfica) ============
+   "Crafty PE" (linku.la) — usa ligaduras OpenType: cada palabra romanizada
+   (jan, pona, telo…) se reemplaza por su glifo correspondiente al renderizar.
+   Aplicar con className="sitelen" en cualquier texto toki pona.
+============================================================ */
+@font-face {
+  font-family: 'CraftyPE';
+  src: url('/fonts/craftype.otf') format('opentype');
+  font-display: swap;
+  font-style: normal;
+  font-weight: normal;
+}
+
+.sitelen {
+  font-family: 'CraftyPE', 'Inter', system-ui, sans-serif;
+  font-feature-settings: 'liga' on, 'clig' on, 'dlig' on, 'calt' on;
+  -webkit-font-feature-settings: 'liga' on, 'clig' on, 'dlig' on, 'calt' on;
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+
 /* ============ paleta toki pona ============
    azul cielo (fondo) + amarillo cálido (acento) + navy profundo (texto/bordes)
    estilo hand-drawn, minimalista, friendly — fiel al espíritu de toki pona.
@@ -1406,13 +1427,17 @@ button:disabled { cursor: not-allowed; }
 .ad-refill-icon.loading { opacity: 0.7; cursor: wait; }
 .ad-refill-icon.has-error { background: #ffd1d1; }
 
-/* Action row compact (práctica + diccionario + gramática) */
-.action-row.quad.compact {
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+/* Action row compact — variantes triple (3) y duo (2) */
+.action-row.triple.compact,
+.action-row.duo.compact {
   gap: 8px;
-  margin-bottom: 22px;
+  margin-bottom: 14px;
 }
-.action-row.quad.compact .action-btn {
+.action-row.triple.compact { grid-template-columns: 1fr 1fr 1fr; }
+.action-row.duo.compact    { grid-template-columns: 1fr 1fr; margin-bottom: 22px; }
+
+.action-row.triple.compact .action-btn,
+.action-row.duo.compact .action-btn {
   flex-direction: column;
   align-items: center;
   text-align: center;
@@ -1421,31 +1446,35 @@ button:disabled { cursor: not-allowed; }
   border-radius: 16px;
   box-shadow: 3px 3px 0 var(--ink);
 }
-.action-row.quad.compact .action-btn:not(.locked):hover {
+.action-row.triple.compact .action-btn:not(.locked):hover,
+.action-row.duo.compact .action-btn:not(.locked):hover {
   box-shadow: 5px 5px 0 var(--ink);
 }
-.action-row.quad.compact .action-icon {
+.action-row.triple.compact .action-icon,
+.action-row.duo.compact .action-icon {
   font-size: 1.5rem;
 }
-.action-row.quad.compact .action-title {
+.action-row.triple.compact .action-title,
+.action-row.duo.compact .action-title {
   font-size: 0.85rem;
   font-weight: 800;
   line-height: 1.1;
 }
-.action-row.quad.compact .action-sub {
+.action-row.triple.compact .action-sub,
+.action-row.duo.compact .action-sub {
   font-size: 0.65rem;
   color: var(--ink-soft);
   font-weight: 600;
   line-height: 1.1;
 }
 
-/* En pantallas medianas: 2x2 grid (mejor para 4 botones en mobile) */
 @media (max-width: 720px) {
-  .action-row.quad.compact { grid-template-columns: 1fr 1fr; }
+  .action-row.triple.compact { grid-template-columns: 1fr 1fr 1fr; }
 }
 @media (max-width: 520px) {
-  .action-row.quad.compact { grid-template-columns: 1fr 1fr; }
-  .action-row.quad.compact .action-sub { display: none; }
+  .action-row.triple.compact { grid-template-columns: 1fr 1fr 1fr; }
+  .action-row.triple.compact .action-sub,
+  .action-row.duo.compact .action-sub { display: none; }
   .home-header.compact .logo { font-size: 1.7rem; }
   .home-header.compact .subtitle { font-size: 0.78rem; }
   .status-strip {
@@ -1457,8 +1486,10 @@ button:disabled { cursor: not-allowed; }
 @media (max-width: 380px) {
   .status-strip { padding: 6px 8px; gap: 6px; }
   .status-strip .heart-timer { display: none; }
-  .action-row.quad.compact .action-title { font-size: 0.78rem; }
-  .action-row.quad.compact .action-icon { font-size: 1.3rem; }
+  .action-row.triple.compact .action-title,
+  .action-row.duo.compact .action-title { font-size: 0.78rem; }
+  .action-row.triple.compact .action-icon,
+  .action-row.duo.compact .action-icon { font-size: 1.3rem; }
 }
 
 /* ============ responsive: zigzag de lessons + clamps ============ */
@@ -1860,4 +1891,229 @@ html, body, #root, .home {
 
 .progress-bar.minigame .progress-fill {
   background: #ffb060;
+}
+
+/* ============ sitelen pona — playground & glifos ============ */
+
+.action-btn.sitelen { background: var(--good-soft); }
+.action-btn.sitelen:not(.locked):hover { background: #b1e9c2; }
+.action-btn.sitelen .action-icon {
+  font-family: 'CraftyPE', system-ui, sans-serif;
+  font-feature-settings: 'liga' on;
+  animation: spinSun 8s linear infinite;
+}
+@keyframes spinSun {
+  0%, 85%, 100% { transform: rotate(0deg); }
+  92% { transform: rotate(180deg); }
+}
+
+.sitelen-screen {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 16px 14px 40px;
+  animation: fadeUp 0.4s ease backwards;
+}
+.sitelen-header-title {
+  flex: 1;
+  text-align: center;
+}
+.sitelen-header-title h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: var(--ink);
+}
+.sitelen-header-sub {
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--ink-soft);
+  font-weight: 600;
+}
+
+.sitelen-output {
+  background: var(--paper);
+  border: var(--border-w) solid var(--ink);
+  border-radius: 18px;
+  box-shadow: 4px 4px 0 var(--ink);
+  padding: 14px 14px 10px;
+  margin-bottom: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.sitelen-output-glyphs {
+  min-height: 62px;
+  font-size: 3rem;
+  color: var(--ink);
+  text-align: left;
+  word-break: break-word;
+  line-height: 1.05;
+  padding: 4px 2px;
+  border-bottom: 2px dashed var(--ink-faint);
+}
+.sitelen-output-latin {
+  min-height: 22px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--ink-soft);
+  word-break: break-word;
+  padding: 4px 2px 0;
+}
+.sitelen-placeholder {
+  color: var(--ink-faint);
+  font-weight: 500;
+  font-style: italic;
+}
+.sitelen-output-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+}
+.sitelen-action {
+  background: var(--yellow);
+  border: 2px solid var(--ink);
+  border-radius: 12px;
+  padding: 8px 14px;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--ink);
+  cursor: pointer;
+  box-shadow: 2px 2px 0 var(--ink);
+  transition: transform 0.1s, box-shadow 0.1s, opacity 0.15s;
+}
+.sitelen-action.speak  { background: var(--good-soft); }
+.sitelen-action.back   { background: var(--cream); }
+.sitelen-action.clear  { background: var(--bad-soft); margin-left: auto; }
+.sitelen-action:not(:disabled):hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 var(--ink);
+}
+.sitelen-action:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.sitelen-common {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+  margin-bottom: 10px;
+}
+@media (max-width: 520px) {
+  .sitelen-common { grid-template-columns: repeat(4, 1fr); }
+}
+
+.sitelen-search {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  border-radius: 12px;
+  padding: 6px 10px;
+  margin-bottom: 10px;
+}
+.sitelen-search input {
+  flex: 1;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font: inherit;
+  font-size: 0.95rem;
+  color: var(--ink);
+}
+.sitelen-search .search-icon { opacity: 0.7; }
+.sitelen-search .search-clear {
+  border: 0;
+  background: transparent;
+  color: var(--ink-soft);
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.sitelen-keyboard {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+}
+@media (max-width: 520px) {
+  .sitelen-keyboard { grid-template-columns: repeat(4, 1fr); }
+}
+@media (max-width: 380px) {
+  .sitelen-keyboard { grid-template-columns: repeat(3, 1fr); }
+}
+
+.sitelen-key {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 8px 4px 6px;
+  background: var(--cream);
+  border: 2px solid var(--ink);
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 2px 2px 0 var(--ink);
+  transition: transform 0.08s, box-shadow 0.08s, background 0.12s;
+}
+.sitelen-key.common {
+  background: var(--yellow);
+}
+.sitelen-key:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 var(--ink);
+  background: var(--yellow-hi);
+}
+.sitelen-key:active {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0 var(--ink);
+}
+.sitelen-key-glyph {
+  font-size: 1.7rem;
+  color: var(--ink);
+  line-height: 1;
+}
+.sitelen-key-latin {
+  font-size: 0.65rem;
+  color: var(--ink-soft);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.sitelen-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 28px 8px;
+  color: var(--ink-soft);
+  font-weight: 700;
+}
+
+/* glifo del diccionario */
+.dict-glyph {
+  font-family: 'CraftyPE', system-ui, sans-serif;
+  font-feature-settings: 'liga' on, 'clig' on, 'dlig' on;
+  font-size: 1.9rem;
+  color: var(--ink);
+  margin-right: 8px;
+  vertical-align: middle;
+  line-height: 1;
+}
+
+/* glifo en ejercicios sitelen */
+.sitelen-prompt {
+  font-family: 'CraftyPE', system-ui, sans-serif;
+  font-feature-settings: 'liga' on, 'clig' on, 'dlig' on;
+  font-size: 5rem;
+  text-align: center;
+  color: var(--ink);
+  margin: 12px 0 20px;
+  line-height: 1;
+  text-shadow: 3px 3px 0 var(--yellow-deep);
+}
+.sitelen-pair-glyph {
+  font-family: 'CraftyPE', system-ui, sans-serif;
+  font-feature-settings: 'liga' on, 'clig' on, 'dlig' on;
+  font-size: 2.2rem;
+  line-height: 1;
 }

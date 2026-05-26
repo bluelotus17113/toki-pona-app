@@ -84,6 +84,7 @@ export default function Dictionary({ lang = 'es', onExit }) {
         {filtered.map(entry => (
           <div key={entry.tp} className="dict-entry">
             <div className="dict-row">
+              <span className="sitelen dict-glyph" aria-hidden="true">{entry.tp}</span>
               <span className="dict-tp">{entry.tp}</span>
               <button
                 className={`audio-btn ${playing === entry.tp ? 'is-playing' : ''}`}
