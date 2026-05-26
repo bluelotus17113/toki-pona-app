@@ -10,7 +10,7 @@ import FeedbackButton from './FeedbackButton.jsx'
 import KofiButton from './KofiButton.jsx'
 import NoHeartsModal from './NoHeartsModal.jsx'
 
-export default function Home({ progress, lang, setLang, onOpen, onPractice, onDictionary, onGrammar, onNimiTu, onSitelen, onLienzo, onAchievements }) {
+export default function Home({ progress, lang, setLang, onOpen, onPractice, onDictionary, onGrammar, onNimiTu, onSitelen, onLienzo, onAchievements, onCuentos }) {
   const { state, isUnlocked, reset, MAX_HEARTS } = progress
   const t = makeT(lang)
   const practiceAvailable = state.completed.length >= 1
@@ -39,6 +39,7 @@ export default function Home({ progress, lang, setLang, onOpen, onPractice, onDi
   const handleSitelen = () => { playClick(); onSitelen() }
   const handleLienzo = () => { playClick(); onLienzo() }
   const handleAchievements = () => { playClick(); onAchievements() }
+  const handleCuentos = () => { playClick(); onCuentos() }
 
   const lessonsBySection = SECTIONS.map(sec => ({
     section: sec,
@@ -71,6 +72,11 @@ export default function Home({ progress, lang, setLang, onOpen, onPractice, onDi
         <div className="status-stat" title={t('xp')}>
           <span className="status-icon">⭐</span>
           <span className="status-value">{state.xp}</span>
+        </div>
+        <div className="status-divider" aria-hidden="true" />
+        <div className="status-stat mani-stat" title={t('mani')}>
+          <span className="status-icon">🪙</span>
+          <span className="status-value">{state.mani}</span>
         </div>
         <div className="status-divider" aria-hidden="true" />
         <div className="status-stat" title={t('lessons')}>
@@ -139,6 +145,15 @@ export default function Home({ progress, lang, setLang, onOpen, onPractice, onDi
           </span>
         </button>
       </div>
+
+      <button className="cuentos-cta" onClick={handleCuentos}>
+        <span className="cuentos-cta-icon">📚</span>
+        <span className="cuentos-cta-text">
+          <span className="cuentos-cta-title">{t('cuentosTitle')}</span>
+          <span className="cuentos-cta-sub">{t('cuentosCtaSub')}</span>
+        </span>
+        <span className="cuentos-cta-balance">🪙 {state.mani}</span>
+      </button>
 
       <div className="course">
         {lessonsBySection.map(({ section, lessons }, secIdx) => {

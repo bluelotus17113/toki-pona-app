@@ -8,6 +8,8 @@ const REGEN_MS = 60 * 60 * 1000 // 1 hora
 const defaultState = {
   completed: [],        // ids de lecciones completadas
   xp: 0,                // experiencia total
+  mani: 0,              // moneda interna (toki pona: mani = dinero)
+  purchasedStories: [], // ids de cuentos comprados
   streak: 0,            // racha de días
   hearts: MAX_HEARTS,   // vidas actuales
   nextRegenAt: null,    // timestamp ms en que llega la próxima vida (null si está al máximo)
@@ -67,6 +69,40 @@ export function useProgress() {
     setState(s => ({ ...s, xp: s.xp + gainedXp }))
   }
 
+  const addMani = (gainedMani) => {
+    setState(s => ({ ...s, mani: s.mani + gainedMani }))
+  }
+
+  // Intenta gastar `cost` mani. Devuelve true si pudo, false si no había suficiente.
+  const spendMani = (cost) => {
+    let success = false
+    setState(s => {
+      if (s.mani < cost) return s
+      success = true
+      return { ...s, mani: s.mani - cost }
+    })
+    return success
+  }
+
+  // Compra un cuento: descuenta mani y agrega el id a purchasedStories.
+  // Devuelve true si la compra fue exitosa.
+  const purchaseStory = (storyId, price) => {
+    let success = false
+    setState(s => {
+      if (s.purchasedStories.includes(storyId)) { success = true; return s }
+      if (s.mani < price) return s
+      success = true
+      return {
+        ...s,
+        mani: s.mani - price,
+        purchasedStories: [...s.purchasedStories, storyId]
+      }
+    })
+    return success
+  }
+
+  const ownsStory = (storyId) => state.purchasedStories.includes(storyId)
+
   const loseHeart = () => {
     setState(s => {
       const now = Date.now()
@@ -105,6 +141,10 @@ export function useProgress() {
     MAX_HEARTS,
     completeLesson,
     addXp,
+    addMani,
+    spendMani,
+    purchaseStory,
+    ownsStory,
     loseHeart,
     addHeart,
     resetHearts,

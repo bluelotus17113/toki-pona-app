@@ -1,7 +1,7 @@
 import { LESSONS } from '../data/lessons.js'
 import { makeT } from '../data/i18n.js'
 
-export default function LessonComplete({ mode = 'lesson', lessonId, score, correctCount, total, lang = 'es', onHome }) {
+export default function LessonComplete({ mode = 'lesson', lessonId, score, correctCount, total, maniEarned = 0, lang = 'es', onHome }) {
   const t = makeT(lang)
   const isPractice = mode === 'practice'
   const lesson = !isPractice ? LESSONS.find(l => l.id === lessonId) : null
@@ -32,6 +32,13 @@ export default function LessonComplete({ mode = 'lesson', lessonId, score, corre
             <span className="pill-value">+{score}</span>
             <span className="pill-label">{t('xp')}</span>
           </div>
+          {maniEarned > 0 && (
+            <div className="score-pill mani">
+              <span className="pill-icon">🪙</span>
+              <span className="pill-value">+{maniEarned}</span>
+              <span className="pill-label">mani</span>
+            </div>
+          )}
           {!isPractice && (
             <div className="score-pill">
               <span className="pill-icon">📚</span>

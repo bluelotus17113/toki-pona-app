@@ -12,6 +12,8 @@ import SitelenPona from './components/SitelenPona.jsx'
 import LessonComplete from './components/LessonComplete.jsx'
 import Achievements from './components/Achievements.jsx'
 import AchievementToast from './components/AchievementToast.jsx'
+import Cuentos from './components/Cuentos.jsx'
+import StoryReader from './components/StoryReader.jsx'
 
 // Lienzo lazy-loaded: contiene Konva (~300KB) — solo se carga al entrar.
 const SitelenLienzo = lazy(() => import('./components/SitelenLienzo.jsx'))
@@ -29,20 +31,22 @@ export default function App() {
   const openSitelen    = () => setScreen({ name: 'sitelen' })
   const openLienzo     = () => setScreen({ name: 'lienzo' })
   const openAchievements = () => setScreen({ name: 'achievements' })
+  const openCuentos    = () => setScreen({ name: 'cuentos' })
+  const openStory      = (storyId) => setScreen({ name: 'story', storyId })
 
   // Chequear logros automáticos cada vez que cambia el estado de progress
   useEffect(() => {
     checkAutoAchievements(progress.state)
   }, [progress.state.completed.length, progress.state.xp])
 
-  const finishLesson = (lessonId, score) => {
+  const finishLesson = (lessonId, score, maniEarned = 0) => {
     progress.completeLesson(lessonId, score)
-    setScreen({ name: 'complete', mode: 'lesson', lessonId, score })
+    setScreen({ name: 'complete', mode: 'lesson', lessonId, score, maniEarned })
   }
 
-  const finishPractice = (score, correctCount, total) => {
+  const finishPractice = (score, correctCount, total, maniEarned = 0) => {
     progress.addXp(score)
-    setScreen({ name: 'complete', mode: 'practice', score, correctCount, total })
+    setScreen({ name: 'complete', mode: 'practice', score, correctCount, total, maniEarned })
   }
 
   const goHome = () => setScreen({ name: 'home' })
@@ -63,6 +67,7 @@ export default function App() {
           onSitelen={openSitelen}
           onLienzo={openLienzo}
           onAchievements={openAchievements}
+          onCuentos={openCuentos}
         />
       )}
       {screen.name === 'lesson' && (
@@ -102,6 +107,12 @@ export default function App() {
       {screen.name === 'achievements' && (
         <Achievements lang={lang} onExit={goHome} />
       )}
+      {screen.name === 'cuentos' && (
+        <Cuentos progress={progress} lang={lang} onExit={goHome} onRead={openStory} />
+      )}
+      {screen.name === 'story' && (
+        <StoryReader storyId={screen.storyId} lang={lang} onExit={openCuentos} />
+      )}
 
       <AchievementToast lang={lang} />
       {screen.name === 'complete' && (
@@ -111,6 +122,7 @@ export default function App() {
           score={screen.score}
           correctCount={screen.correctCount}
           total={screen.total}
+          maniEarned={screen.maniEarned}
           lang={lang}
           onHome={goHome}
         />

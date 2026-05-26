@@ -52,8 +52,12 @@ export default function Practice({ progress, lang, onFinish, onExit }) {
 
   if (done) {
     const score = Math.max(5, correct * 3 - mistakes)
+    // Mani por práctica según % de aciertos
+    const pct = correct / exercises.length
+    const maniReward = pct >= 0.9 ? 6 : pct >= 0.7 ? 5 : pct >= 0.5 ? 3 : 2
+    progress.addMani(maniReward)
     playLessonComplete()
-    setTimeout(() => onFinish(score, correct, exercises.length), 0)
+    setTimeout(() => onFinish(score, correct, exercises.length, maniReward), 0)
     return null
   }
 

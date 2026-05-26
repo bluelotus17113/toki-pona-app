@@ -32,6 +32,7 @@ export default function NimiTu({ progress, lang, onExit }) {
       total={TOTAL_ROUNDS}
       lang={lang}
       onExit={onExit}
+      progress={progress}
     />
   }
 
@@ -66,6 +67,7 @@ export default function NimiTu({ progress, lang, onExit }) {
       setFeedback('correct')
       setCorrectCount(c => c + 1)
       progress.addXp(XP_PER_CORRECT)
+      progress.addMani(1)  // +1 mani por cada acierto
       unlock('nimitu-first-correct')
     } else {
       playError()
@@ -184,15 +186,20 @@ function pickDef(word, lang) {
   return def.split(',')[0]
 }
 
-function NimiTuComplete({ correctCount, total, lang, onExit }) {
+function NimiTuComplete({ correctCount, total, lang, onExit, progress }) {
   const t = makeT(lang)
   const xp = correctCount * XP_PER_CORRECT
   const pct = Math.round((correctCount / total) * 100)
   const emoji = pct >= 90 ? '🏆' : pct >= 70 ? '🎉' : pct >= 40 ? '👍' : '💪'
+  const isPerfect = correctCount === total
+  const bonusMani = isPerfect ? 5 : 0
 
   useEffect(() => {
-    if (correctCount === total) unlock('nimitu-perfect')
-  }, [correctCount, total])
+    if (isPerfect) {
+      unlock('nimitu-perfect')
+      progress?.addMani(5)  // bonus por 10/10
+    }
+  }, [isPerfect])
 
   return (
     <div className="complete">

@@ -38,8 +38,11 @@ export default function Lesson({ lessonId, progress, lang, onFinish, onExit }) {
   if (done) {
     const score = Math.max(5, correct * 2 - mistakes)
     if (mistakes === 0) unlock('perfect-lesson')
+    // Recompensa en mani: 3 base + 3 bonus si fue perfecta
+    const maniReward = mistakes === 0 ? 6 : 3
+    progress.addMani(maniReward)
     playLessonComplete()
-    setTimeout(() => onFinish(lesson.id, score), 0)
+    setTimeout(() => onFinish(lesson.id, score, maniReward), 0)
     return null
   }
 
