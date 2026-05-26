@@ -1,4 +1,6 @@
 import { lazy, Suspense, useEffect, useState } from 'react'
+import { Capacitor } from '@capacitor/core'
+import { App as CapApp } from '@capacitor/app'
 import { useProgress } from './hooks/useProgress.js'
 import { useLang } from './data/i18n.js'
 import { checkAutoAchievements } from './hooks/useAchievements.js'
@@ -42,6 +44,41 @@ export default function App() {
   useEffect(() => {
     checkAutoAchievements(progress.state)
   }, [progress.state.completed.length, progress.state.xp])
+
+  // Manejo del botón Atrás del sistema (Android)
+  // Mapeo: dónde va "atrás" desde cada pantalla. null = exit app
+  useEffect(() => {
+    if (!Capacitor.isNativePlatform()) return
+    const BACK_NAV = {
+      home: null,             // ya en home → salir
+      lesson:        'home',
+      practice:      'home',
+      dictionary:    'home',
+      grammar:       'home',
+      nimitu:        'home',
+      sitelen:       'home',
+      lienzo:        'home',
+      achievements:  'home',
+      cuentos:       'home',
+      story:         'cuentos',   // los cuentos se abren desde la tienda
+      historia:      'home',
+      atlas:         'home',
+      complete:      'home'
+    }
+    let handle
+    CapApp.addListener('backButton', () => {
+      const target = BACK_NAV[screen.name]
+      if (target === null) {
+        // estamos en home — minimizar/salir
+        CapApp.exitApp()
+      } else if (target === 'cuentos') {
+        setScreen({ name: 'cuentos' })
+      } else {
+        setScreen({ name: 'home' })
+      }
+    }).then(h => { handle = h })
+    return () => { if (handle) handle.remove() }
+  }, [screen.name])
 
   const finishLesson = (lessonId, score, maniEarned = 0) => {
     progress.completeLesson(lessonId, score)
