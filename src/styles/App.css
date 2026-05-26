@@ -3227,6 +3227,396 @@ html, body, #root, .home {
   font-style: italic;
 }
 
+/* ============ Atlas de sitelen pona ============ */
+
+.atlas-screen {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 14px 14px 40px;
+  animation: fadeUp 0.4s ease backwards;
+}
+.atlas-title-block { flex: 1; text-align: center; }
+.atlas-title-block h2 { margin: 0; font-size: 1.2rem; color: var(--ink); }
+.atlas-title-block p {
+  margin: 2px 0 0;
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+  font-weight: 700;
+}
+
+.atlas-tabs {
+  display: flex;
+  gap: 8px;
+  margin: 14px 0 10px;
+}
+.atlas-tabs .tab {
+  flex: 1;
+  background: var(--cream);
+  border: 2px solid var(--ink);
+  border-radius: 12px;
+  padding: 8px 12px;
+  font-weight: 800;
+  color: var(--ink);
+  cursor: pointer;
+  font-size: 0.9rem;
+  box-shadow: 2px 2px 0 var(--ink);
+}
+.atlas-tabs .tab.active {
+  background: var(--yellow);
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 var(--ink);
+}
+
+.atlas-search {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  border-radius: 12px;
+  padding: 6px 10px;
+  margin-bottom: 16px;
+}
+.atlas-search input {
+  flex: 1;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font: inherit;
+  color: var(--ink);
+  font-size: 0.95rem;
+}
+.atlas-search .search-clear {
+  border: 0;
+  background: transparent;
+  color: var(--ink-soft);
+  cursor: pointer;
+}
+
+.atlas-section {
+  margin-bottom: 22px;
+}
+.atlas-section-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  padding: 8px 14px;
+  background: var(--cream);
+  border: 2px solid var(--ink);
+  border-radius: 12px;
+  box-shadow: 2px 2px 0 var(--ink);
+}
+.atlas-section-icon { font-size: 1.4rem; }
+.atlas-section-title { margin: 0; font-size: 0.95rem; font-weight: 900; color: var(--ink); flex: 1; }
+.atlas-section-count {
+  background: var(--yellow);
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  padding: 2px 10px;
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.atlas-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+@media (max-width: 480px) {
+  .atlas-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+.atlas-card {
+  background: var(--paper);
+  border: 3px solid var(--ink);
+  border-radius: 12px;
+  padding: 10px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  box-shadow: 3px 3px 0 var(--ink);
+  text-align: center;
+  transition: transform 0.12s, box-shadow 0.12s, background 0.15s;
+}
+.atlas-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0 var(--ink);
+  background: var(--yellow-hi);
+}
+.atlas-card:active {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0 var(--ink);
+}
+.atlas-card.simple { background: var(--cream); }
+.atlas-card.compound { background: var(--good-soft); }
+.atlas-card-glyph {
+  font-size: 2rem;
+  color: var(--ink);
+  line-height: 1;
+}
+.atlas-card-latin {
+  font-size: 0.78rem;
+  font-weight: 900;
+  color: var(--ink);
+  letter-spacing: 0.03em;
+}
+.atlas-card-meaning {
+  font-size: 0.7rem;
+  color: var(--ink-soft);
+  font-weight: 600;
+  line-height: 1.15;
+}
+.atlas-empty {
+  text-align: center;
+  padding: 30px;
+  color: var(--ink-soft);
+  font-weight: 700;
+}
+
+/* modal de detalle del atlas */
+.atlas-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(4px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  animation: fadeIn 0.18s ease;
+}
+.atlas-modal {
+  position: relative;
+  background: var(--paper);
+  border: 3px solid var(--ink);
+  border-radius: 18px;
+  box-shadow: 6px 6px 0 var(--ink);
+  padding: 24px 22px 22px;
+  max-width: 420px;
+  width: 100%;
+  text-align: center;
+  animation: popIn 0.25s ease;
+  max-height: calc(100vh - 36px);
+  overflow-y: auto;
+}
+@keyframes popIn {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+.atlas-modal-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 32px;
+  height: 32px;
+  background: var(--bad-soft);
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  font-size: 0.9rem;
+  cursor: pointer;
+  color: var(--ink);
+  font-weight: 900;
+}
+.atlas-modal-glyph {
+  font-size: 5rem;
+  color: var(--ink);
+  line-height: 1;
+  margin: 8px 0;
+  text-shadow: 3px 3px 0 var(--yellow-deep);
+}
+.atlas-modal-latin {
+  font-weight: 900;
+  font-size: 1.4rem;
+  color: var(--ink);
+  letter-spacing: 0.03em;
+}
+.atlas-modal-type {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 800;
+  background: var(--cream);
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  padding: 2px 12px;
+  margin: 8px 0 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.atlas-modal-meaning {
+  font-size: 1rem;
+  color: var(--ink);
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+.atlas-modal-example {
+  background: var(--cream);
+  border: 2px dashed var(--ink-faint);
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin: 12px 0;
+}
+.atlas-modal-example-label {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.atlas-modal-example-glyphs {
+  display: block;
+  font-size: 2rem;
+  color: var(--ink);
+  margin: 4px 0 2px;
+}
+.atlas-modal-example-text {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  font-style: italic;
+}
+
+.atlas-modal-breakdown {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin: 14px 0;
+  flex-wrap: wrap;
+}
+.breakdown-word {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.breakdown-word .sitelen {
+  font-size: 2.2rem;
+  color: var(--ink);
+}
+.breakdown-latin {
+  font-size: 0.82rem;
+  font-weight: 900;
+  color: var(--ink);
+}
+.breakdown-meaning {
+  font-size: 0.68rem;
+  color: var(--ink-soft);
+  font-weight: 600;
+}
+
+/* ============ Templates modal (ilo sitelen) ============ */
+
+.templates-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(4px);
+  z-index: 9999;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 0;
+  animation: fadeIn 0.2s ease;
+}
+.templates-modal {
+  background: var(--paper);
+  border-top: 4px solid var(--ink);
+  border-radius: 22px 22px 0 0;
+  box-shadow: 0 -4px 0 var(--ink);
+  padding: 16px 14px 22px;
+  width: 100%;
+  max-width: 720px;
+  max-height: 80vh;
+  overflow-y: auto;
+  animation: slideUp 0.3s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+.templates-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+.templates-header h3 {
+  margin: 0;
+  font-size: 1.15rem;
+  color: var(--ink);
+  font-weight: 900;
+}
+.templates-close {
+  background: var(--bad-soft);
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  font-weight: 900;
+}
+.templates-sub {
+  margin: 0 0 14px;
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  font-weight: 600;
+}
+.templates-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+@media (max-width: 520px) {
+  .templates-grid { grid-template-columns: repeat(2, 1fr); }
+}
+.template-card {
+  background: var(--cream);
+  border: 3px solid var(--ink);
+  border-radius: 14px;
+  padding: 10px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  box-shadow: 3px 3px 0 var(--ink);
+  text-align: center;
+  transition: transform 0.12s, box-shadow 0.12s, background 0.15s;
+}
+.template-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0 var(--ink);
+  background: var(--yellow-hi);
+}
+.template-card:active {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0 var(--ink);
+}
+.template-thumb {
+  font-size: 1.8rem;
+  filter: drop-shadow(2px 2px 0 var(--ink));
+}
+.template-preview {
+  font-size: 1.6rem;
+  color: var(--ink);
+  line-height: 1;
+  margin: 4px 0;
+}
+.template-title {
+  font-size: 0.85rem;
+  font-weight: 900;
+  color: var(--ink);
+}
+.template-desc {
+  font-size: 0.7rem;
+  color: var(--ink-soft);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
 .lienzo-toolbar {
   display: flex;
   align-items: center;

@@ -130,6 +130,11 @@ export const ACHIEVEMENTS = [
     id: 'history-read', icon: '📜', category: 'discovery',
     title: { es: 'historiador',                  en: 'historian' },
     desc:  { es: 'leíste la historia de toki pona', en: 'read the history of toki pona' }
+  },
+  {
+    id: 'atlas-opened', icon: '🔠', category: 'discovery',
+    title: { es: 'cartógrafo de glifos',         en: 'glyph cartographer' },
+    desc:  { es: 'exploraste el atlas de sitelen pona', en: 'explored the sitelen pona atlas' }
   }
 ]
 

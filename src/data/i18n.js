@@ -108,6 +108,20 @@ export const STRINGS = {
   historiaSub:        { es: 'el origen y la filosofía de toki pona', en: 'the origin and philosophy of toki pona' },
   historiaIntro:      { es: 'el lenguaje del bien — la historia detrás del idioma que estás aprendiendo', en: 'the language of good — the story behind the language you are learning' },
   historiaQuoteSub:   { es: 'el lema de la comunidad',            en: 'the community motto' },
+
+  // atlas
+  atlasTitle:         { es: 'atlas',                              en: 'atlas' },
+  atlasSimple:        { es: 'simples',                            en: 'simple' },
+  atlasCompounds:     { es: 'compuestos',                         en: 'compounds' },
+  compoundsLabel:     { es: 'compuestos',                         en: 'compounds' },
+  compoundLabel:      { es: 'compuesto',                          en: 'compound' },
+  searchResults:      { es: 'resultados',                         en: 'results' },
+
+  // templates ilo sitelen
+  templates:          { es: 'plantillas',                         en: 'templates' },
+  templatesTitle:     { es: 'plantillas',                         en: 'templates' },
+  templatesSub:       { es: 'tocá una para cargarla al lienzo (reemplaza lo que haya)', en: 'tap one to load it onto the canvas (replaces current)' },
+  confirmLoadTemplate:{ es: '¿reemplazar el lienzo actual con esta plantilla?', en: 'replace current canvas with this template?' },
   nimiTuTitle:      { es: 'combina palabras',                     en: 'combine words' },
   nimiTuComplete:   { es: '¡minijuego completado!',               en: 'minigame complete!' },
   nimiTuQuote:      { es: 'dos palabras crean una nueva',         en: 'two words create a new one' },

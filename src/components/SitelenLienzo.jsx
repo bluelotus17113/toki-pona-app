@@ -7,6 +7,7 @@ import { makeT } from '../data/i18n.js'
 import { playClick } from '../hooks/useSound.js'
 import { computeReading } from '../utils/sitelenLayout.js'
 import { unlock } from '../hooks/useAchievements.js'
+import { LIENZO_TEMPLATES, instantiateTemplate } from '../data/lienzoTemplates.js'
 
 const DEFAULT_SIZE = 80
 const DEFAULT_FILL = '#1b2099'
@@ -30,6 +31,7 @@ export default function SitelenLienzo({ lang = 'es', onExit }) {
   const [search, setSearch] = useState('')
   const [saveStatus, setSaveStatus] = useState(null)
   const [fontReady, setFontReady] = useState(false)
+  const [templatesOpen, setTemplatesOpen] = useState(false)
 
   // medir el contenedor del canvas para que sea responsive
   useEffect(() => {
@@ -161,6 +163,15 @@ export default function SitelenLienzo({ lang = 'es', onExit }) {
     setSelectedId(null)
   }
 
+  const loadTemplate = (template) => {
+    if (glyphs.length > 0 && !confirm(t('confirmLoadTemplate'))) return
+    playClick()
+    const newGlyphs = instantiateTemplate(template, stageSize.w, stageSize.h)
+    setGlyphs(newGlyphs)
+    setSelectedId(null)
+    setTemplatesOpen(false)
+  }
+
   const handleStageClick = (e) => {
     // click en el fondo → deseleccionar
     if (e.target === e.target.getStage()) setSelectedId(null)
@@ -216,6 +227,11 @@ export default function SitelenLienzo({ lang = 'es', onExit }) {
           <h2>🖼️ {t('iloSitelenTitle')}</h2>
         </div>
         <div className="lienzo-header-actions">
+          <button
+            className="lienzo-icon-btn"
+            onClick={() => { playClick(); setTemplatesOpen(true) }}
+            title={t('templates')}
+          >✨</button>
           <button className="lienzo-icon-btn" onClick={handleSave} title={t('save')}>💾</button>
           <button className="lienzo-icon-btn danger" onClick={clearAll} title={t('clear')}>🗑️</button>
         </div>
@@ -369,6 +385,34 @@ export default function SitelenLienzo({ lang = 'es', onExit }) {
                 <span className="sitelen-key-latin">{w}</span>
               </button>
             ))}
+          </div>
+        </div>
+      )}
+
+      {templatesOpen && (
+        <div className="templates-backdrop" onClick={() => setTemplatesOpen(false)}>
+          <div className="templates-modal" onClick={e => e.stopPropagation()}>
+            <header className="templates-header">
+              <h3>✨ {t('templatesTitle')}</h3>
+              <button className="templates-close" onClick={() => setTemplatesOpen(false)}>✕</button>
+            </header>
+            <p className="templates-sub">{t('templatesSub')}</p>
+            <div className="templates-grid">
+              {LIENZO_TEMPLATES.map(tpl => (
+                <button
+                  key={tpl.id}
+                  className="template-card"
+                  onClick={() => loadTemplate(tpl)}
+                >
+                  <span className="template-thumb">{tpl.emoji}</span>
+                  <span className="template-preview sitelen" aria-hidden="true">
+                    {tpl.glyphs.map(g => g.word).join(' ')}
+                  </span>
+                  <span className="template-title">{tpl.title[lang] ?? tpl.title.es}</span>
+                  <span className="template-desc">{tpl.desc[lang] ?? tpl.desc.es}</span>
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       )}

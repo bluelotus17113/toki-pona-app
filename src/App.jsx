@@ -15,6 +15,7 @@ import AchievementToast from './components/AchievementToast.jsx'
 import Cuentos from './components/Cuentos.jsx'
 import StoryReader from './components/StoryReader.jsx'
 import Historia from './components/Historia.jsx'
+import SitelenAtlas from './components/SitelenAtlas.jsx'
 
 // Lienzo lazy-loaded: contiene Konva (~300KB) — solo se carga al entrar.
 const SitelenLienzo = lazy(() => import('./components/SitelenLienzo.jsx'))
@@ -35,6 +36,7 @@ export default function App() {
   const openCuentos    = () => setScreen({ name: 'cuentos' })
   const openStory      = (storyId) => setScreen({ name: 'story', storyId })
   const openHistoria   = () => setScreen({ name: 'historia' })
+  const openAtlas      = () => setScreen({ name: 'atlas' })
 
   // Chequear logros automáticos cada vez que cambia el estado de progress
   useEffect(() => {
@@ -71,6 +73,7 @@ export default function App() {
           onAchievements={openAchievements}
           onCuentos={openCuentos}
           onHistoria={openHistoria}
+          onAtlas={openAtlas}
         />
       )}
       {screen.name === 'lesson' && (
@@ -118,6 +121,9 @@ export default function App() {
       )}
       {screen.name === 'historia' && (
         <Historia lang={lang} onExit={goHome} />
+      )}
+      {screen.name === 'atlas' && (
+        <SitelenAtlas lang={lang} onExit={goHome} />
       )}
 
       <AchievementToast lang={lang} />

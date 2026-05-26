@@ -12,7 +12,7 @@ import FeedbackButton from './FeedbackButton.jsx'
 import KofiButton from './KofiButton.jsx'
 import NoHeartsModal from './NoHeartsModal.jsx'
 
-export default function Home({ progress, lang, setLang, onOpen, onPractice, onDictionary, onGrammar, onNimiTu, onSitelen, onLienzo, onAchievements, onCuentos, onHistoria }) {
+export default function Home({ progress, lang, setLang, onOpen, onPractice, onDictionary, onGrammar, onNimiTu, onSitelen, onLienzo, onAchievements, onCuentos, onHistoria, onAtlas }) {
   const { state, isUnlocked, reset, MAX_HEARTS } = progress
   const t = makeT(lang)
   const practiceAvailable = state.completed.length >= 1
@@ -51,6 +51,7 @@ export default function Home({ progress, lang, setLang, onOpen, onPractice, onDi
   const handleAchievements = () => { playClick(); onAchievements() }
   const handleCuentos = () => { playClick(); onCuentos() }
   const handleHistoria = () => { playClick(); onHistoria() }
+  const handleAtlas = () => { playClick(); onAtlas() }
 
   const lessonsBySection = SECTIONS.map(sec => ({
     section: sec,
@@ -268,6 +269,9 @@ export default function Home({ progress, lang, setLang, onOpen, onPractice, onDi
           </button>
           <button className="achievements-btn" onClick={handleHistoria} title={t('historiaTitle')}>
             📜 {t('historiaTitle')}
+          </button>
+          <button className="achievements-btn" onClick={handleAtlas} title={t('atlasTitle')}>
+            🔠 {t('atlasTitle')}
           </button>
           <FeedbackButton lang={lang} />
           <KofiButton variant="compact" lang={lang} />
