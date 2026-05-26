@@ -10,7 +10,7 @@ import FeedbackButton from './FeedbackButton.jsx'
 import KofiButton from './KofiButton.jsx'
 import NoHeartsModal from './NoHeartsModal.jsx'
 
-export default function Home({ progress, lang, setLang, onOpen, onPractice, onDictionary, onGrammar, onNimiTu, onSitelen, onLienzo }) {
+export default function Home({ progress, lang, setLang, onOpen, onPractice, onDictionary, onGrammar, onNimiTu, onSitelen, onLienzo, onAchievements }) {
   const { state, isUnlocked, reset, MAX_HEARTS } = progress
   const t = makeT(lang)
   const practiceAvailable = state.completed.length >= 1
@@ -38,6 +38,7 @@ export default function Home({ progress, lang, setLang, onOpen, onPractice, onDi
   const handleNimiTu = () => { playClick(); onNimiTu() }
   const handleSitelen = () => { playClick(); onSitelen() }
   const handleLienzo = () => { playClick(); onLienzo() }
+  const handleAchievements = () => { playClick(); onAchievements() }
 
   const lessonsBySection = SECTIONS.map(sec => ({
     section: sec,
@@ -188,6 +189,9 @@ export default function Home({ progress, lang, setLang, onOpen, onPractice, onDi
 
       <footer className="home-footer">
         <div className="footer-actions">
+          <button className="achievements-btn" onClick={handleAchievements} title={t('achievementsTitle')}>
+            🏆 {t('achievementsTitle')}
+          </button>
           <FeedbackButton lang={lang} />
           <KofiButton variant="compact" lang={lang} />
           <button className="reset-btn" onClick={() => {

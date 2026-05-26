@@ -1,6 +1,7 @@
-import { lazy, Suspense, useState } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import { useProgress } from './hooks/useProgress.js'
 import { useLang } from './data/i18n.js'
+import { checkAutoAchievements } from './hooks/useAchievements.js'
 import Home from './components/Home.jsx'
 import Lesson from './components/Lesson.jsx'
 import Practice from './components/Practice.jsx'
@@ -9,6 +10,8 @@ import Grammar from './components/Grammar.jsx'
 import NimiTu from './components/NimiTu.jsx'
 import SitelenPona from './components/SitelenPona.jsx'
 import LessonComplete from './components/LessonComplete.jsx'
+import Achievements from './components/Achievements.jsx'
+import AchievementToast from './components/AchievementToast.jsx'
 
 // Lienzo lazy-loaded: contiene Konva (~300KB) — solo se carga al entrar.
 const SitelenLienzo = lazy(() => import('./components/SitelenLienzo.jsx'))
@@ -25,6 +28,12 @@ export default function App() {
   const openNimiTu     = () => setScreen({ name: 'nimitu' })
   const openSitelen    = () => setScreen({ name: 'sitelen' })
   const openLienzo     = () => setScreen({ name: 'lienzo' })
+  const openAchievements = () => setScreen({ name: 'achievements' })
+
+  // Chequear logros automáticos cada vez que cambia el estado de progress
+  useEffect(() => {
+    checkAutoAchievements(progress.state)
+  }, [progress.state.completed.length, progress.state.xp])
 
   const finishLesson = (lessonId, score) => {
     progress.completeLesson(lessonId, score)
@@ -53,6 +62,7 @@ export default function App() {
           onNimiTu={openNimiTu}
           onSitelen={openSitelen}
           onLienzo={openLienzo}
+          onAchievements={openAchievements}
         />
       )}
       {screen.name === 'lesson' && (
@@ -89,6 +99,11 @@ export default function App() {
           <SitelenLienzo lang={lang} onExit={goHome} />
         </Suspense>
       )}
+      {screen.name === 'achievements' && (
+        <Achievements lang={lang} onExit={goHome} />
+      )}
+
+      <AchievementToast lang={lang} />
       {screen.name === 'complete' && (
         <LessonComplete
           mode={screen.mode}

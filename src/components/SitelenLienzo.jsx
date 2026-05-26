@@ -6,6 +6,7 @@ import { VOCAB } from '../data/vocabulary.js'
 import { makeT } from '../data/i18n.js'
 import { playClick } from '../hooks/useSound.js'
 import { computeReading } from '../utils/sitelenLayout.js'
+import { unlock } from '../hooks/useAchievements.js'
 
 const DEFAULT_SIZE = 80
 const DEFAULT_FILL = '#1b2099'
@@ -77,6 +78,19 @@ export default function SitelenLienzo({ lang = 'es', onExit }) {
       h: g.fontSize * g.scaleY
     }))
     return computeReading(items)
+  }, [glyphs])
+
+  // Detectar primer cartouche (compuesto con hijos)
+  useEffect(() => {
+    if (reading.compounds.some(c => c.childIds.length > 0)) {
+      unlock('lienzo-first-compound')
+    }
+  }, [reading])
+
+  // Trackear colores únicos usados en esta sesión
+  useEffect(() => {
+    const unique = new Set(glyphs.map(g => g.fill))
+    if (unique.size >= 5) unlock('lienzo-colors-5')
   }, [glyphs])
 
   const palette = useMemo(() => {
@@ -177,6 +191,7 @@ export default function SitelenLienzo({ lang = 'es', onExit }) {
           directory: Directory.Documents
         })
         setSaveStatus({ kind: 'ok', msg: t('savedTo', { path: `Documents/${fileName}` }) })
+      unlock('lienzo-first-save')
       } catch (err) {
         setSaveStatus({ kind: 'error', msg: t('saveFailed') + ': ' + (err?.message ?? err) })
       }
@@ -188,6 +203,7 @@ export default function SitelenLienzo({ lang = 'es', onExit }) {
       a.click()
       a.remove()
       setSaveStatus({ kind: 'ok', msg: t('savedTo', { path: fileName }) })
+      unlock('lienzo-first-save')
     }
     setTimeout(() => setSaveStatus(null), 3500)
   }

@@ -3,6 +3,7 @@ import { VOCAB } from '../data/vocabulary.js'
 import { makeT } from '../data/i18n.js'
 import { primeAudio, speak } from '../hooks/useSpeech.js'
 import { playClick } from '../hooks/useSound.js'
+import { unlock } from '../hooks/useAchievements.js'
 
 // Palabras "siempre a mano" (más comunes para componer frases)
 const COMMON = ['mi','sina','ona','li','e','la','ni','pona','ike','ala','a','jan']
@@ -33,7 +34,18 @@ export default function SitelenPona({ lang = 'es', onExit }) {
   const addToken = (w) => {
     if (tokens.length >= 24) return
     playClick()
-    setTokens(prev => [...prev, w])
+    setTokens(prev => {
+      const next = [...prev, w]
+      unlock('sitelen-first-write')
+      // easter egg: "mi olin e sina" en ese orden
+      if (next.length >= 4) {
+        const last4 = next.slice(-4)
+        if (last4[0] === 'mi' && last4[1] === 'olin' && last4[2] === 'e' && last4[3] === 'sina') {
+          unlock('mi-olin')
+        }
+      }
+      return next
+    })
   }
 
   const removeLast = () => {

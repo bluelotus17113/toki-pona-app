@@ -4,6 +4,7 @@
 
 import { Capacitor } from '@capacitor/core'
 import { TextToSpeech } from '@capacitor-community/text-to-speech'
+import { unlock } from './useAchievements.js'
 
 const isNative = Capacitor.isNativePlatform()
 
@@ -118,6 +119,7 @@ async function webSpeak(text, opts = {}) {
 // ============ API pública ============
 
 export async function speak(text, opts = {}) {
+  unlock('first-tts')
   if (isNative) return nativeSpeak(text, opts)
   return webSpeak(text, opts)
 }

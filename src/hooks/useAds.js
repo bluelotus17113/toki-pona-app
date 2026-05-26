@@ -12,6 +12,7 @@
 // familiar (Google Play "Designed for Families" o equivalente) sin riesgo legal.
 
 import { Capacitor } from '@capacitor/core'
+import { unlock } from './useAchievements.js'
 
 const isNative = Capacitor.isNativePlatform()
 
@@ -54,6 +55,7 @@ export async function showRewardedAd() {
   if (!isNative) {
     // En web simulamos: pequeño delay y consideramos como vista.
     await new Promise(r => setTimeout(r, 1200))
+    unlock('first-ad')
     return { rewarded: true, simulated: true }
   }
 
@@ -79,7 +81,7 @@ export async function showRewardedAd() {
       reject(err instanceof Error ? err : new Error(err?.message ?? 'ad failed'))
     }
 
-    AdMob.addListener(RewardAdPluginEvents.Rewarded, () => { rewarded = true })
+    AdMob.addListener(RewardAdPluginEvents.Rewarded, () => { rewarded = true; unlock('first-ad') })
     AdMob.addListener(RewardAdPluginEvents.Dismissed, () => finish({ rewarded, dismissed: true }))
     AdMob.addListener(RewardAdPluginEvents.FailedToLoad, (err) => failWith(err))
     AdMob.addListener(RewardAdPluginEvents.FailedToShow, (err) => failWith(err))

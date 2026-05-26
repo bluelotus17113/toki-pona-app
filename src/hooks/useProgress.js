@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { unlock } from './useAchievements.js'
 
 const KEY = 'tokipona.progress.v1'
 const MAX_HEARTS = 5
@@ -70,6 +71,7 @@ export function useProgress() {
     setState(s => {
       const now = Date.now()
       const newHearts = Math.max(0, s.hearts - 1)
+      if (newHearts === 0) unlock('no-hearts-once')
       // si ya había un timer corriendo lo respetamos; si estaba lleno, arrancamos uno
       const nextRegenAt = s.nextRegenAt ?? (now + REGEN_MS)
       return { ...s, hearts: newHearts, nextRegenAt }

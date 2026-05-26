@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { GRAMMAR_TOPICS } from '../data/grammar.js'
 import { makeT } from '../data/i18n.js'
 import { speak } from '../hooks/useSpeech.js'
+import { unlock } from '../hooks/useAchievements.js'
 
 // Render mínimo de "markdown-lite": **negrita**, `código`, doble salto = nuevo párrafo.
 function renderText(text) {
@@ -22,6 +23,8 @@ export default function Grammar({ lang, onExit }) {
   const t = makeT(lang)
   const [openId, setOpenId] = useState('overview')
   const [playing, setPlaying] = useState(null)
+
+  useEffect(() => { unlock('grammar-read') }, [])
 
   const toggle = (id) => setOpenId(openId === id ? null : id)
 

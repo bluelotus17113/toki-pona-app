@@ -1,8 +1,9 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { VOCAB } from '../data/vocabulary.js'
 import { COMPOUNDS, pickRoundSet, pickWordsForRound, isCorrectAnswer } from '../data/compounds.js'
 import { makeT } from '../data/i18n.js'
 import { playClick, playSuccess, playError, playLessonComplete } from '../hooks/useSound.js'
+import { unlock } from '../hooks/useAchievements.js'
 
 const TOTAL_ROUNDS = 10
 const XP_PER_CORRECT = 5
@@ -65,6 +66,7 @@ export default function NimiTu({ progress, lang, onExit }) {
       setFeedback('correct')
       setCorrectCount(c => c + 1)
       progress.addXp(XP_PER_CORRECT)
+      unlock('nimitu-first-correct')
     } else {
       playError()
       setFeedback('wrong')
@@ -187,6 +189,10 @@ function NimiTuComplete({ correctCount, total, lang, onExit }) {
   const xp = correctCount * XP_PER_CORRECT
   const pct = Math.round((correctCount / total) * 100)
   const emoji = pct >= 90 ? '🏆' : pct >= 70 ? '🎉' : pct >= 40 ? '👍' : '💪'
+
+  useEffect(() => {
+    if (correctCount === total) unlock('nimitu-perfect')
+  }, [correctCount, total])
 
   return (
     <div className="complete">

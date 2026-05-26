@@ -2,6 +2,7 @@
 // helpers para traducir y persistencia en localStorage.
 
 import { useEffect, useState, useCallback } from 'react'
+import { unlock } from '../hooks/useAchievements.js'
 
 export const LANGS = [
   { code: 'es', label: 'Español', flag: '🇪🇸' },
@@ -22,7 +23,10 @@ export function getInitialLang() {
 export function useLang() {
   const [lang, setLangState] = useState(getInitialLang)
   const setLang = useCallback((next) => {
-    setLangState(next)
+    setLangState(prev => {
+      if (prev !== next) unlock('lang-changed')
+      return next
+    })
     try { localStorage.setItem(LANG_KEY, next) } catch {}
   }, [])
   return { lang, setLang }
@@ -67,6 +71,10 @@ export const STRINGS = {
   savedTo:          { es: 'guardado en {path}',                   en: 'saved to {path}' },
   saveFailed:       { es: 'no se pudo guardar',                   en: 'could not save' },
   confirmClearCanvas: { es: '¿borrar todo el lienzo?',            en: 'clear the entire canvas?' },
+  achievementsTitle:  { es: 'logros',                             en: 'achievements' },
+  achievementsUnlocked: { es: 'desbloqueados',                    en: 'unlocked' },
+  achievementsLocked: { es: 'bloqueados',                         en: 'locked' },
+  achievementsEmpty:  { es: 'no hay logros en este filtro',       en: 'no achievements in this filter' },
   nimiTuTitle:      { es: 'combina palabras',                     en: 'combine words' },
   nimiTuComplete:   { es: '¡minijuego completado!',               en: 'minigame complete!' },
   nimiTuQuote:      { es: 'dos palabras crean una nueva',         en: 'two words create a new one' },

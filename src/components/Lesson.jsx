@@ -4,6 +4,7 @@ import { buildLessonExercises } from '../data/exerciseBuilder.js'
 import { makeT } from '../data/i18n.js'
 import { primeAudio } from '../hooks/useSpeech.js'
 import { playSuccess, playError, playLessonComplete } from '../hooks/useSound.js'
+import { unlock } from '../hooks/useAchievements.js'
 import MultipleChoice from './exercises/MultipleChoice.jsx'
 import Matching from './exercises/Matching.jsx'
 import SentenceBuilder from './exercises/SentenceBuilder.jsx'
@@ -36,6 +37,7 @@ export default function Lesson({ lessonId, progress, lang, onFinish, onExit }) {
 
   if (done) {
     const score = Math.max(5, correct * 2 - mistakes)
+    if (mistakes === 0) unlock('perfect-lesson')
     playLessonComplete()
     setTimeout(() => onFinish(lesson.id, score), 0)
     return null

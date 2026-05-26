@@ -1,7 +1,8 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { VOCAB } from '../data/vocabulary.js'
 import { makeT, TYPE_LABELS } from '../data/i18n.js'
 import { primeAudio, speak } from '../hooks/useSpeech.js'
+import { unlock } from '../hooks/useAchievements.js'
 
 const TYPE_KEYS = ['noun', 'verb', 'modifier', 'pronoun', 'particle', 'preposition', 'number', 'interjection']
 
@@ -10,6 +11,8 @@ export default function Dictionary({ lang = 'es', onExit }) {
   const [search, setSearch] = useState('')
   const [filterType, setFilterType] = useState('all')
   const [playing, setPlaying] = useState(null)
+
+  useEffect(() => { unlock('dict-opened') }, [])
 
   const allEntries = useMemo(
     () => Object.values(VOCAB).sort((a, b) => a.tp.localeCompare(b.tp)),
