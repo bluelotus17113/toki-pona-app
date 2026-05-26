@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { lazy, Suspense, useState } from 'react'
 import { useProgress } from './hooks/useProgress.js'
 import { useLang } from './data/i18n.js'
 import Home from './components/Home.jsx'
@@ -9,6 +9,9 @@ import Grammar from './components/Grammar.jsx'
 import NimiTu from './components/NimiTu.jsx'
 import SitelenPona from './components/SitelenPona.jsx'
 import LessonComplete from './components/LessonComplete.jsx'
+
+// Lienzo lazy-loaded: contiene Konva (~300KB) — solo se carga al entrar.
+const SitelenLienzo = lazy(() => import('./components/SitelenLienzo.jsx'))
 
 export default function App() {
   const progress = useProgress()
@@ -21,6 +24,7 @@ export default function App() {
   const openGrammar    = () => setScreen({ name: 'grammar' })
   const openNimiTu     = () => setScreen({ name: 'nimitu' })
   const openSitelen    = () => setScreen({ name: 'sitelen' })
+  const openLienzo     = () => setScreen({ name: 'lienzo' })
 
   const finishLesson = (lessonId, score) => {
     progress.completeLesson(lessonId, score)
@@ -48,6 +52,7 @@ export default function App() {
           onGrammar={openGrammar}
           onNimiTu={openNimiTu}
           onSitelen={openSitelen}
+          onLienzo={openLienzo}
         />
       )}
       {screen.name === 'lesson' && (
@@ -78,6 +83,11 @@ export default function App() {
       )}
       {screen.name === 'sitelen' && (
         <SitelenPona lang={lang} onExit={goHome} />
+      )}
+      {screen.name === 'lienzo' && (
+        <Suspense fallback={<div className="lienzo-loading-screen">cargando lienzo...</div>}>
+          <SitelenLienzo lang={lang} onExit={goHome} />
+        </Suspense>
       )}
       {screen.name === 'complete' && (
         <LessonComplete

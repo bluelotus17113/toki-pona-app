@@ -10,7 +10,7 @@ import FeedbackButton from './FeedbackButton.jsx'
 import KofiButton from './KofiButton.jsx'
 import NoHeartsModal from './NoHeartsModal.jsx'
 
-export default function Home({ progress, lang, setLang, onOpen, onPractice, onDictionary, onGrammar, onNimiTu, onSitelen }) {
+export default function Home({ progress, lang, setLang, onOpen, onPractice, onDictionary, onGrammar, onNimiTu, onSitelen, onLienzo }) {
   const { state, isUnlocked, reset, MAX_HEARTS } = progress
   const t = makeT(lang)
   const practiceAvailable = state.completed.length >= 1
@@ -37,6 +37,7 @@ export default function Home({ progress, lang, setLang, onOpen, onPractice, onDi
   const handleGrammar = () => { playClick(); onGrammar() }
   const handleNimiTu = () => { playClick(); onNimiTu() }
   const handleSitelen = () => { playClick(); onSitelen() }
+  const handleLienzo = () => { playClick(); onLienzo() }
 
   const lessonsBySection = SECTIONS.map(sec => ({
     section: sec,
@@ -112,7 +113,7 @@ export default function Home({ progress, lang, setLang, onOpen, onPractice, onDi
         </button>
       </div>
 
-      <div className="action-row duo compact">
+      <div className="action-row triple compact">
         <button className="action-btn nimitu" onClick={handleNimiTu}>
           <span className="action-icon">🧩</span>
           <span className="action-text">
@@ -126,6 +127,14 @@ export default function Home({ progress, lang, setLang, onOpen, onPractice, onDi
           <span className="action-text">
             <span className="action-title">{t('sitelenPona')}</span>
             <span className="action-sub">{t('sitelenPonaSub2')}</span>
+          </span>
+        </button>
+
+        <button className="action-btn lienzo" onClick={handleLienzo}>
+          <span className="action-icon">🖼️</span>
+          <span className="action-text">
+            <span className="action-title">{t('iloSitelen')}</span>
+            <span className="action-sub">{t('iloSitelenSub')}</span>
           </span>
         </button>
       </div>
