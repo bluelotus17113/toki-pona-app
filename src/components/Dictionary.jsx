@@ -89,6 +89,9 @@ export default function Dictionary({ lang = 'es', onExit }) {
             <div className="dict-row">
               <span className="sitelen dict-glyph" aria-hidden="true">{entry.tp}</span>
               <span className="dict-tp">{entry.tp}</span>
+              {entry.ku && (
+                <span className="dict-ku-badge" title="palabra del libro ku (post-pu)">ku</span>
+              )}
               <button
                 className={`audio-btn ${playing === entry.tp ? 'is-playing' : ''}`}
                 onClick={() => handlePlay(entry.tp)}

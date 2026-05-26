@@ -2101,6 +2101,22 @@ html, body, #root, .home {
   line-height: 1;
 }
 
+/* badge "ku" — palabras post-pu */
+.dict-ku-badge {
+  display: inline-block;
+  background: #ffd6a5;
+  color: var(--ink);
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  padding: 1px 8px;
+  font-size: 0.65rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-left: 6px;
+  box-shadow: 1px 1px 0 var(--ink);
+}
+
 /* glifo en ejercicios sitelen */
 .sitelen-prompt {
   font-family: 'linja pona', system-ui, sans-serif;

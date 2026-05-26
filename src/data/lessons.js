@@ -18,7 +18,10 @@ export const SECTION_THEMES = {
   arte:    { accent: '#c7dce8', deco: ['🎨','🖌️','📝'] },   // arte
   tiempo:  { accent: '#fde74c', deco: ['⏰','🌙','☀️'] },   // tiempo
   conv:    { accent: '#ffd6e0', deco: ['💬','🗣️','💭'] },   // habla
-  filo:    { accent: '#c6efd0', deco: ['🍃','☯️','🌌'] }    // filosofía
+  filo:    { accent: '#c6efd0', deco: ['🍃','☯️','🌌'] },   // filosofía
+  // expansión ku (post-pu)
+  'ku-vida':  { accent: '#d4e7f5', deco: ['👁️','🍄','💊'] },  // vida / cuerpo
+  'ku-jerga': { accent: '#ffe5d6', deco: ['🦝','🆕','🤏'] }   // jerga / modernidad
 }
 
 export const SECTIONS = [
@@ -35,7 +38,10 @@ export const SECTIONS = [
   { id: 'arte',     icon: '🎨', title_es: 'Trabajo y arte',        title_en: 'Work and art',           desc_es: 'Crear, escribir, currar',                     desc_en: 'Create, write, work' },
   { id: 'tiempo',   icon: '⏰', title_es: 'Tiempo y emociones',    title_en: 'Time and emotions',      desc_es: 'Momentos, ayer, sentimientos',                desc_en: 'Moments, yesterday, feelings' },
   { id: 'conv',     icon: '💬', title_es: 'Conversación avanzada', title_en: 'Advanced conversation',  desc_es: 'Partículas pi, kepeken, tan',                 desc_en: 'Particles pi, kepeken, tan' },
-  { id: 'filo',     icon: '🍃', title_es: 'Filosofía toki pona',   title_en: 'toki pona philosophy',   desc_es: 'kon, nasin, pona — repaso final',             desc_en: 'kon, nasin, pona — final review' }
+  { id: 'filo',     icon: '🍃', title_es: 'Filosofía toki pona',   title_en: 'toki pona philosophy',   desc_es: 'kon, nasin, pona — repaso final',             desc_en: 'kon, nasin, pona — final review' },
+  // ============ Expansión ku (post-pu, palabras renderizables por linja pona 4.9) ============
+  { id: 'ku-vida',  icon: '👁️', title_es: 'Palabras ku — vida y cuerpo', title_en: 'ku words — life and body',  desc_es: 'oko, monsuta, misikeke y más',                desc_en: 'oko, monsuta, misikeke and more' },
+  { id: 'ku-jerga', icon: '🦝', title_es: 'Palabras ku — modernidad y jerga', title_en: 'ku words — modernity and slang', desc_es: 'tonsi, epiku, kijetesantakalu...',           desc_en: 'tonsi, epiku, kijetesantakalu...' }
 ]
 
 export const LESSONS = [
@@ -592,6 +598,82 @@ export const LESSONS = [
       { tp: 'mi sona e toki pona',      es: 'sé toki pona',                  en: 'I know toki pona' },
       { tp: 'toki pona li pona a!',     es: '¡toki pona es hermoso!',        en: 'toki pona is beautiful!' },
       { tp: 'kon pona tawa sina',       es: 'buena energía para ti',         en: 'good energy to you' }
+    ]
+  },
+
+  // ============ 15. KU — VIDA Y CUERPO ============
+  {
+    id: 45, section: 'ku-vida',
+    title_es: 'Ojo y cuerpo nuevo', title_en: 'Eye and new body',
+    desc_es: 'oko, monsuta, misikeke', desc_en: 'oko, monsuta, misikeke',
+    words: ['oko', 'monsuta', 'misikeke'],
+    phrases: [
+      { tp: 'oko mi li lukin e mun',     es: 'mis ojos miran la luna',        en: 'my eyes look at the moon' },
+      { tp: 'monsuta li lon tomo',       es: 'un monstruo está en la casa',   en: 'a monster is in the house' },
+      { tp: 'mi moku e misikeke',        es: 'tomo medicina',                 en: 'I take medicine' },
+      { tp: 'oko sina li loje',          es: 'tus ojos están rojos',          en: 'your eyes are red' }
+    ]
+  },
+  {
+    id: 46, section: 'ku-vida',
+    title_es: 'Espejo y división', title_en: 'Mirror and cutting',
+    desc_es: 'jasima, kipisi, apeja', desc_en: 'jasima, kipisi, apeja',
+    words: ['jasima', 'kipisi', 'apeja'],
+    phrases: [
+      { tp: 'mi lukin e jasima',         es: 'me miro al espejo',             en: 'I look at the mirror' },
+      { tp: 'mi kipisi e pan',           es: 'corto el pan',                  en: 'I cut the bread' },
+      { tp: 'mi pilin apeja',            es: 'siento vergüenza',              en: 'I feel shame' },
+      { tp: 'jasima li sama lukin',      es: 'el espejo es como mirar',       en: 'the mirror is like seeing' }
+    ]
+  },
+  {
+    id: 47, section: 'ku-vida',
+    title_es: 'Objetos y sabores', title_en: 'Objects and flavors',
+    desc_es: 'leko, soko, namako', desc_en: 'leko, soko, namako',
+    words: ['leko', 'soko', 'namako'],
+    phrases: [
+      { tp: 'tomo li jo e leko mute',    es: 'la casa tiene muchos bloques',  en: 'the house has many blocks' },
+      { tp: 'soko li lon ma kasi',       es: 'hay un hongo en el bosque',     en: 'a mushroom is in the forest' },
+      { tp: 'moku ni li jo e namako',    es: 'esta comida tiene especias',    en: 'this food has spices' },
+      { tp: 'mi pali e leko',            es: 'hago un bloque',                en: 'I make a block' }
+    ]
+  },
+
+  // ============ 16. KU — MODERNIDAD Y JERGA ============
+  {
+    id: 48, section: 'ku-jerga',
+    title_es: 'Identidad moderna', title_en: 'Modern identity',
+    desc_es: 'tonsi, meso, epiku', desc_en: 'tonsi, meso, epiku',
+    words: ['tonsi', 'meso', 'epiku'],
+    phrases: [
+      { tp: 'ona li jan tonsi',          es: 'es una persona no binarie',     en: 'they are a non-binary person' },
+      { tp: 'tomo ni li meso',           es: 'esta casa es mediana',          en: 'this house is medium-sized' },
+      { tp: 'tenpo ni li epiku',         es: '¡este momento es épico!',       en: 'this moment is epic!' },
+      { tp: 'mi en sina li jan tonsi',   es: 'tú y yo somos personas tonsi',  en: 'you and I are tonsi people' }
+    ]
+  },
+  {
+    id: 49, section: 'ku-jerga',
+    title_es: 'Acciones nuevas', title_en: 'New actions',
+    desc_es: 'pake, lanpan, ali', desc_en: 'pake, lanpan, ali',
+    words: ['pake', 'lanpan', 'ali'],
+    phrases: [
+      { tp: 'lupa li pake',              es: 'la puerta está cerrada',        en: 'the door is closed' },
+      { tp: 'mi lanpan e lipu',          es: 'tomo el libro',                 en: 'I grab the book' },
+      { tp: 'ali li pona',               es: 'todo está bien',                en: 'all is good' },
+      { tp: 'o pake e lupa',             es: 'cerrá la puerta',               en: 'close the door' }
+    ]
+  },
+  {
+    id: 50, section: 'ku-jerga',
+    title_es: 'Jerga y comunidad', title_en: 'Slang and community',
+    desc_es: 'kijetesantakalu, kokosila, ku', desc_en: 'kijetesantakalu, kokosila, ku',
+    words: ['kijetesantakalu', 'kokosila', 'ku'],
+    phrases: [
+      { tp: 'kijetesantakalu li musi',   es: 'el mapache es divertido',       en: 'the raccoon is funny' },
+      { tp: 'o kokosila ala',            es: 'no hables otro idioma',         en: "don't speak another language" },
+      { tp: 'ku li lipu pona',           es: 'el ku es un buen libro',        en: 'the ku is a good book' },
+      { tp: 'mi lukin e kijetesantakalu', es: 'veo un mapache',                en: 'I see a raccoon' }
     ]
   }
 ]

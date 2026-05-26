@@ -135,6 +135,12 @@ export const ACHIEVEMENTS = [
     id: 'atlas-opened', icon: '🔠', category: 'discovery',
     title: { es: 'cartógrafo de glifos',         en: 'glyph cartographer' },
     desc:  { es: 'exploraste el atlas de sitelen pona', en: 'explored the sitelen pona atlas' }
+  },
+  {
+    id: 'ku-master', icon: '🦝', category: 'study',
+    title: { es: 'maestro ku',                   en: 'ku master' },
+    desc:  { es: 'completaste las lecciones de palabras ku', en: 'completed the ku words lessons' },
+    auto: (s) => [45,46,47,48,49,50].every(id => s.completed.includes(id))
   }
 ]
 

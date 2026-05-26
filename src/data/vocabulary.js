@@ -123,7 +123,28 @@ export const VOCAB = {
   waso:    { tp: 'waso',    es: 'pájaro, ave',                      en: 'bird',                                  tipo: 'noun',         ejemplo: 'waso lili' },
   wawa:    { tp: 'wawa',    es: 'fuerte, poderoso',                 en: 'strong, powerful',                      tipo: 'modifier',     ejemplo: 'jan wawa' },
   weka:    { tp: 'weka',    es: 'lejos, ausente',                   en: 'far, absent',                           tipo: 'modifier',     ejemplo: 'tawa weka' },
-  wile:    { tp: 'wile',    es: 'querer, necesitar',                en: 'to want, to need',                      tipo: 'verb',         ejemplo: 'mi wile moku' }
+  wile:    { tp: 'wile',    es: 'querer, necesitar',                en: 'to want, to need',                      tipo: 'verb',         ejemplo: 'mi wile moku' },
+
+  // ============ Palabras "ku" (post-pu, renderizables por linja pona 4.9) ============
+  // ku:true marca palabras del libro "ku" no canónicas de pu pero ampliamente usadas.
+  oko:             { tp: 'oko',             es: 'ojo (ku)',                                en: 'eye (ku)',                                tipo: 'noun',     ejemplo: 'oko mi li lukin',          ku: true },
+  monsuta:         { tp: 'monsuta',         es: 'monstruo, miedo (ku)',                    en: 'monster, scary, fear (ku)',               tipo: 'noun',     ejemplo: 'monsuta li lon tomo',      ku: true },
+  misikeke:        { tp: 'misikeke',        es: 'medicina, curar (ku)',                    en: 'medicine, to heal (ku)',                  tipo: 'noun',     ejemplo: 'mi moku e misikeke',       ku: true },
+  jasima:          { tp: 'jasima',          es: 'espejo, reflejar (ku)',                   en: 'mirror, to reflect (ku)',                 tipo: 'noun',     ejemplo: 'mi lukin e jasima',        ku: true },
+  kipisi:          { tp: 'kipisi',          es: 'cortar, dividir (ku)',                    en: 'to cut, to divide (ku)',                  tipo: 'verb',     ejemplo: 'mi kipisi e pan',          ku: true },
+  apeja:           { tp: 'apeja',           es: 'vergüenza, culpa (ku)',                   en: 'shame, guilt (ku)',                       tipo: 'noun',     ejemplo: 'mi pilin apeja',           ku: true },
+  leko:            { tp: 'leko',            es: 'bloque, cuadrado (ku)',                   en: 'block, square, cube (ku)',                tipo: 'noun',     ejemplo: 'tomo li jo e leko mute',   ku: true },
+  soko:            { tp: 'soko',            es: 'hongo, seta (ku)',                        en: 'mushroom, fungus (ku)',                   tipo: 'noun',     ejemplo: 'soko li lon ma kasi',      ku: true },
+  namako:          { tp: 'namako',          es: 'extra, especia, adicional (ku)',          en: 'extra, spice, additional (ku)',           tipo: 'modifier', ejemplo: 'moku ni li jo e namako',   ku: true },
+  tonsi:           { tp: 'tonsi',           es: 'no binarie, queer (ku)',                  en: 'non-binary, queer (ku)',                  tipo: 'modifier', ejemplo: 'ona li jan tonsi',         ku: true },
+  meso:            { tp: 'meso',            es: 'medio, mediano, promedio (ku)',           en: 'medium, average, middle (ku)',            tipo: 'modifier', ejemplo: 'tomo ni li meso',          ku: true },
+  epiku:           { tp: 'epiku',           es: 'épico, asombroso (ku)',                   en: 'epic, awesome (ku)',                      tipo: 'modifier', ejemplo: 'tenpo ni li epiku',        ku: true },
+  pake:            { tp: 'pake',            es: 'cerrado, bloqueado, parar (ku)',          en: 'closed, blocked, to stop (ku)',           tipo: 'verb',     ejemplo: 'lupa li pake',             ku: true },
+  lanpan:          { tp: 'lanpan',          es: 'tomar, agarrar, robar (ku)',              en: 'to take, to grab (ku)',                   tipo: 'verb',     ejemplo: 'mi lanpan e lipu',         ku: true },
+  kijetesantakalu: { tp: 'kijetesantakalu', es: 'mapache, prociónido (ku — joke)',         en: 'raccoon, procyonid (ku — joke)',          tipo: 'noun',     ejemplo: 'kijetesantakalu li musi',  ku: true },
+  kokosila:        { tp: 'kokosila',        es: 'hablar otro idioma cuando deberías hablar TP (ku — joke)', en: 'speak non-TP when expected to (ku — joke)', tipo: 'verb', ejemplo: 'o kokosila ala', ku: true },
+  ku:              { tp: 'ku',              es: 'el libro ku, segundo libro oficial (ku)', en: 'the ku book, second official book (ku)',  tipo: 'noun',     ejemplo: 'ku li lipu pona',          ku: true },
+  ali:             { tp: 'ali',             es: 'todo (variante de ale) (ku)',             en: 'all (variant of ale) (ku)',               tipo: 'noun',     ejemplo: 'ali li pona',              ku: true }
 }
 
 export const WORDS = Object.keys(VOCAB)
