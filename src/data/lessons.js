@@ -1,6 +1,26 @@
 // Curso bilingüe (es/en). Cada lección y sección tiene title/desc en ambos idiomas.
 // Frases: { tp, es, en }
 
+// Temas visuales por sección: color de acento + emojis decorativos que evocan
+// el tema (montañas, restaurante, animales, etc.). Se usan en Home para tematizar
+// el "camino" de lecciones.
+export const SECTION_THEMES = {
+  intro:   { accent: '#c6efd0', deco: ['🌱','🌿','🌾'] },   // pradera tierna
+  familia: { accent: '#ffd6e0', deco: ['👨','👩','👶'] },   // gente
+  cafe:    { accent: '#ffd6a5', deco: ['☕','🥐','🍰'] },   // cafetería
+  viaje:   { accent: '#c7dce8', deco: ['🚗','🗺️','🛣️'] },  // ruta
+  cita:    { accent: '#ffb8cd', deco: ['💕','🌹','✨'] },   // romance
+  mercado: { accent: '#fde74c', deco: ['🛒','💰','🥖'] },   // mercado
+  casa:    { accent: '#ffd6a5', deco: ['🏠','🛏️','🪴'] },   // hogar
+  nat:     { accent: '#c6efd0', deco: ['🌳','🏔️','☀️'] },  // naturaleza
+  anim:    { accent: '#fde74c', deco: ['🦊','🐦','🐟'] },   // animales
+  cuerpo:  { accent: '#ffd6e0', deco: ['❤️','💪','👁️'] },   // cuerpo
+  arte:    { accent: '#c7dce8', deco: ['🎨','🖌️','📝'] },   // arte
+  tiempo:  { accent: '#fde74c', deco: ['⏰','🌙','☀️'] },   // tiempo
+  conv:    { accent: '#ffd6e0', deco: ['💬','🗣️','💭'] },   // habla
+  filo:    { accent: '#c6efd0', deco: ['🍃','☯️','🌌'] }    // filosofía
+}
+
 export const SECTIONS = [
   { id: 'intro',    icon: '🌱', title_es: 'Introducción',          title_en: 'Introduction',           desc_es: 'Tus primeras palabras en toki pona',          desc_en: 'Your first words in toki pona' },
   { id: 'familia',  icon: '👪', title_es: 'Personas y familia',    title_en: 'People and family',      desc_es: 'Hablar de la gente que te rodea',             desc_en: 'Talking about the people around you' },

@@ -75,6 +75,8 @@ export const STRINGS = {
   achievementsUnlocked: { es: 'desbloqueados',                    en: 'unlocked' },
   achievementsLocked: { es: 'bloqueados',                         en: 'locked' },
   achievementsEmpty:  { es: 'no hay logros en este filtro',       en: 'no achievements in this filter' },
+  checkpointReached:  { es: '¡parte completada!',                 en: 'part complete!' },
+  checkpointPending:  { es: 'meta de la parte',                   en: 'part goal' },
   nimiTuTitle:      { es: 'combina palabras',                     en: 'combine words' },
   nimiTuComplete:   { es: '¡minijuego completado!',               en: 'minigame complete!' },
   nimiTuQuote:      { es: 'dos palabras crean una nueva',         en: 'two words create a new one' },

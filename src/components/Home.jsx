@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
-import { LESSONS, SECTIONS } from '../data/lessons.js'
+import { Fragment, useEffect, useState } from 'react'
+import { LESSONS, SECTIONS, SECTION_THEMES } from '../data/lessons.js'
 import { VOCAB } from '../data/vocabulary.js'
 import { LANGS, makeT } from '../data/i18n.js'
 import { practiceExerciseCount } from '../data/exerciseBuilder.js'
@@ -146,15 +146,25 @@ export default function Home({ progress, lang, setLang, onOpen, onPractice, onDi
           const anyUnlocked = lessons.some(l => isUnlocked(l.id))
           const secTitle = section[`title_${lang}`] ?? section.title_es
           const secDesc  = section[`desc_${lang}`]  ?? section.desc_es
+          const theme = SECTION_THEMES[section.id] ?? { accent: 'var(--yellow)', deco: [] }
           return (
-            <section key={section.id} className={`course-section ${allDone ? 'all-done' : ''} ${!anyUnlocked ? 'locked' : ''}`}>
+            <section
+              key={section.id}
+              className={`course-section theme-${section.id} ${allDone ? 'all-done' : ''} ${!anyUnlocked ? 'locked' : ''}`}
+              style={{ '--section-accent': theme.accent }}
+            >
               <header className="section-head">
+                <span className="section-deco section-deco-left"  aria-hidden="true">{theme.deco[0]}</span>
+                <span className="section-deco section-deco-right" aria-hidden="true">{theme.deco[2] ?? theme.deco[0]}</span>
                 <span className="section-num">{t('partN', { n: secIdx + 1 })}</span>
                 <div className="section-title-row">
                   <span className="section-icon">{section.icon}</span>
                   <h2 className="section-title">{secTitle}</h2>
                 </div>
                 <p className="section-desc">{secDesc}</p>
+                {theme.deco[1] && (
+                  <span className="section-deco section-deco-bottom" aria-hidden="true">{theme.deco[1]}</span>
+                )}
               </header>
               <div className="section-path">
                 {lessons.map((lesson, idx) => {
@@ -163,24 +173,47 @@ export default function Home({ progress, lang, setLang, onOpen, onPractice, onDi
                   const posClass = `pos-${idx % 4}`
                   const lessonTitle = lesson[`title_${lang}`] ?? lesson.title_es
                   const lessonDesc  = lesson[`desc_${lang}`]  ?? lesson.desc_es
+                  const isLast = idx === lessons.length - 1
+                  // estado del trail hacia la siguiente: completo si ESTA está hecha, abierto si solo está desbloqueada, locked si no
+                  let trailState = 'locked'
+                  if (done) trailState = 'done'
+                  else if (unlocked) trailState = 'open'
                   return (
-                    <button
-                      key={lesson.id}
-                      className={`lesson-node ${posClass} ${done ? 'done' : ''} ${!unlocked ? 'locked' : ''}`}
-                      disabled={!unlocked}
-                      onClick={() => unlocked && tryOpenLesson(lesson.id)}
-                      title={lessonTitle}
-                    >
-                      <div className="node-circle">
-                        {done ? '✓' : unlocked ? lesson.id : '🔒'}
-                      </div>
-                      <div className="node-label">
-                        <div className="node-title">{lessonTitle}</div>
-                        <div className="node-desc">{lessonDesc}</div>
-                      </div>
-                    </button>
+                    <Fragment key={lesson.id}>
+                      <button
+                        className={`lesson-node ${posClass} ${done ? 'done' : ''} ${!unlocked ? 'locked' : ''}`}
+                        disabled={!unlocked}
+                        onClick={() => unlocked && tryOpenLesson(lesson.id)}
+                        title={lessonTitle}
+                      >
+                        <div className="node-circle">
+                          {done ? '✓' : unlocked ? lesson.id : '🔒'}
+                        </div>
+                        <div className="node-label">
+                          <div className="node-title">{lessonTitle}</div>
+                          <div className="node-desc">{lessonDesc}</div>
+                        </div>
+                      </button>
+                      {!isLast && (
+                        <div
+                          className={`path-trail from-${idx % 4} ${trailState}`}
+                          aria-hidden="true"
+                        >
+                          <span className="step" /><span className="step" /><span className="step" />
+                        </div>
+                      )}
+                    </Fragment>
                   )
                 })}
+                <div className={`section-checkpoint ${allDone ? 'reached' : 'pending'}`}>
+                  <div className="checkpoint-flag">{allDone ? '🏆' : '🏁'}</div>
+                  <div className="checkpoint-text">
+                    <div className="checkpoint-title">
+                      {allDone ? t('checkpointReached') : t('checkpointPending')}
+                    </div>
+                    <div className="checkpoint-sub">{section.icon} {secTitle}</div>
+                  </div>
+                </div>
               </div>
             </section>
           )
