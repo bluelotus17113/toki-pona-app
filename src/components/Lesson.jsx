@@ -5,6 +5,7 @@ import { makeT } from '../data/i18n.js'
 import { primeAudio } from '../hooks/useSpeech.js'
 import { playSuccess, playError, playLessonComplete } from '../hooks/useSound.js'
 import { unlock } from '../hooks/useAchievements.js'
+import { recordAnswer, recordAnswers } from '../hooks/useSrs.js'
 import MultipleChoice from './exercises/MultipleChoice.jsx'
 import Matching from './exercises/Matching.jsx'
 import SentenceBuilder from './exercises/SentenceBuilder.jsx'
@@ -50,6 +51,9 @@ export default function Lesson({ lessonId, progress, lang, onFinish, onExit }) {
   const total = exercises.length
 
   const handleResult = (isCorrect) => {
+    // Registrar en SRS la(s) palabra(s) trabajada(s) en este ejercicio
+    if (current?.targetWord)  recordAnswer(current.targetWord, isCorrect)
+    if (current?.targetWords) recordAnswers(current.targetWords, isCorrect)
     if (isCorrect) {
       setCorrect(c => c + 1)
       playSuccess()

@@ -125,6 +125,11 @@ export const ACHIEVEMENTS = [
     id: 'mi-olin', icon: '💌', category: 'easter',
     title: { es: 'mi olin e sina',               en: 'mi olin e sina' },
     desc:  { es: 'escribiste "te amo" en toki pona en el playground', en: 'typed "I love you" in toki pona at the playground' }
+  },
+  {
+    id: 'history-read', icon: '📜', category: 'discovery',
+    title: { es: 'historiador',                  en: 'historian' },
+    desc:  { es: 'leíste la historia de toki pona', en: 'read the history of toki pona' }
   }
 ]
 

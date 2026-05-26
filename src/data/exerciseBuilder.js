@@ -1,5 +1,6 @@
 import { LESSONS } from './lessons.js'
 import { VOCAB, WORDS } from './vocabulary.js'
+import { priorityScore } from '../hooks/useSrs.js'
 
 export function shuffle(arr) {
   const a = [...arr]
@@ -32,7 +33,8 @@ export function buildLessonExercises(lesson, lang = 'es') {
       prompt: { key: 'mcMeaning', args: { word: correct.tp } },
       audioWord: correct.tp,
       options: shuffle([correctText, ...distractors.map(d => text(d, lang))]),
-      answer: correctText
+      answer: correctText,
+      targetWord: correct.tp
     })
   })
 
@@ -44,7 +46,8 @@ export function buildLessonExercises(lesson, lang = 'es') {
       type: 'mc',
       prompt: { key: 'mcSayInTP', args: { word: meaning } },
       options: shuffle([correct.tp, ...distractors.map(d => VOCAB[d].tp)]),
-      answer: correct.tp
+      answer: correct.tp,
+      targetWord: correct.tp
     })
   })
 
@@ -55,7 +58,8 @@ export function buildLessonExercises(lesson, lang = 'es') {
       type: 'listen',
       audioWord: correct.tp,
       options: shuffle([correct.tp, ...distractors.map(d => VOCAB[d].tp)]),
-      answer: correct.tp
+      answer: correct.tp,
+      targetWord: correct.tp
     })
   })
 
@@ -68,22 +72,27 @@ export function buildLessonExercises(lesson, lang = 'es') {
       type: 'sitelen-mc',
       glyph: correct.tp,
       options: shuffle([correctText, ...distractors.map(d => text(d, lang))]),
-      answer: correctText
+      answer: correctText,
+      targetWord: correct.tp
     })
   })
 
   if (lessonWords.length >= 3) {
+    const matchWords = lessonWords.slice(0, 5)
     ex.push({
       type: 'match',
-      pairs: lessonWords.slice(0, 5).map(w => ({
+      pairs: matchWords.map(w => ({
         tp: VOCAB[w].tp,
         es: text(w, lang) // campo 'es' se usa como "lado traducido" del match
-      }))
+      })),
+      targetWords: matchWords
     })
     // sitelen-pair: glifo ↔ palabra romanizada
+    const pairWords = lessonWords.slice(0, 4)
     ex.push({
       type: 'sitelen-pair',
-      words: lessonWords.slice(0, 4)
+      words: pairWords,
+      targetWords: pairWords
     })
   }
 
@@ -95,11 +104,21 @@ export function buildLessonExercises(lesson, lang = 'es') {
       type: 'build',
       prompt: { key: 'translatePrompt', args: { text: phraseText } },
       tokens: shuffle([...correctTokens, ...extras]),
-      answer: correctTokens
+      answer: correctTokens,
+      targetWords: correctTokens.filter(t => VOCAB[t])
     })
   })
 
   return shuffle(ex)
+}
+
+// Cuánta "urgencia SRS" tiene un ejercicio (suma de scores de sus target words)
+function exerciseSrsScore(ex) {
+  if (ex.targetWord) return priorityScore(ex.targetWord)
+  if (ex.targetWords) {
+    return ex.targetWords.reduce((acc, w) => acc + priorityScore(w), 0) / ex.targetWords.length
+  }
+  return 0
 }
 
 export function buildPracticeExercises(completedIds, count, lang = 'es') {
@@ -116,13 +135,32 @@ export function buildPracticeExercises(completedIds, count, lang = 'es') {
   pool.forEach(ex => byType[ex.type]?.push(ex))
 
   const result = []
+  // Garantizar al menos 1 ejercicio de cada tipo presente — pero priorizando palabras "due"
   ;['mc', 'listen', 'match', 'build', 'sitelen-mc', 'sitelen-pair'].forEach(t => {
-    if (byType[t].length > 0) result.push(shuffle(byType[t])[0])
+    if (byType[t].length === 0) return
+    const sorted = [...byType[t]].sort((a, b) => exerciseSrsScore(b) - exerciseSrsScore(a))
+    // 60% del tiempo pickeamos el más urgente; 40% random para evitar monotonía
+    const pick = Math.random() < 0.6 ? sorted[0] : shuffle(byType[t])[0]
+    result.push(pick)
   })
 
-  const rest = shuffle(pool.filter(ex => !result.includes(ex)))
-  while (result.length < count && rest.length > 0) {
-    result.push(rest.shift())
+  // El resto del pool: ordenamos por SRS priority y picamos top
+  const remaining = pool.filter(ex => !result.includes(ex))
+  const sortedByPriority = [...remaining].sort((a, b) => exerciseSrsScore(b) - exerciseSrsScore(a))
+
+  // 70% urgentes + 30% random (que mezclen sin volverse predecibles)
+  const urgentCount = Math.floor((count - result.length) * 0.7)
+  const urgentPick = sortedByPriority.slice(0, urgentCount)
+  const randomPool = shuffle(remaining.filter(ex => !urgentPick.includes(ex)))
+
+  while (result.length < count && (urgentPick.length > 0 || randomPool.length > 0)) {
+    if (urgentPick.length > 0 && Math.random() < 0.7) {
+      result.push(urgentPick.shift())
+    } else if (randomPool.length > 0) {
+      result.push(randomPool.shift())
+    } else if (urgentPick.length > 0) {
+      result.push(urgentPick.shift())
+    }
   }
 
   return shuffle(result).slice(0, count)

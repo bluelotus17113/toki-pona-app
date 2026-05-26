@@ -98,6 +98,16 @@ export const STRINGS = {
   prev:               { es: 'anterior',                           en: 'previous' },
   next:               { es: 'siguiente',                          en: 'next' },
   finish:             { es: 'terminar',                           en: 'finish' },
+
+  // Word of the Day
+  wodLabel:           { es: 'palabra del día',                    en: 'word of the day' },
+  wodTitle:           { es: 'tocá para escuchar',                 en: 'tap to hear' },
+
+  // Historia
+  historiaTitle:      { es: 'historia',                           en: 'history' },
+  historiaSub:        { es: 'el origen y la filosofía de toki pona', en: 'the origin and philosophy of toki pona' },
+  historiaIntro:      { es: 'el lenguaje del bien — la historia detrás del idioma que estás aprendiendo', en: 'the language of good — the story behind the language you are learning' },
+  historiaQuoteSub:   { es: 'el lema de la comunidad',            en: 'the community motto' },
   nimiTuTitle:      { es: 'combina palabras',                     en: 'combine words' },
   nimiTuComplete:   { es: '¡minijuego completado!',               en: 'minigame complete!' },
   nimiTuQuote:      { es: 'dos palabras crean una nueva',         en: 'two words create a new one' },

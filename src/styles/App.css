@@ -3016,6 +3016,217 @@ html, body, #root, .home {
   font-weight: 700;
 }
 
+/* ============ Word of the Day (banner en header) ============ */
+
+.wod-card {
+  background: linear-gradient(135deg, #fde74c, #ffd6a5);
+  border: 3px solid var(--ink);
+  border-radius: 16px;
+  padding: 8px 14px;
+  box-shadow: 3px 3px 0 var(--ink);
+  cursor: pointer;
+  text-align: center;
+  flex-shrink: 0;
+  min-width: 140px;
+  transition: transform 0.12s, box-shadow 0.12s;
+}
+.wod-card:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 var(--ink);
+}
+.wod-card:active {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0 var(--ink);
+}
+.wod-label {
+  font-size: 0.6rem;
+  font-weight: 900;
+  color: var(--ink);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 0.75;
+}
+.wod-glyph-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin: 2px 0;
+}
+.wod-glyph {
+  font-size: 1.8rem;
+  line-height: 1;
+  color: var(--ink);
+}
+.wod-latin {
+  font-weight: 900;
+  font-size: 1.05rem;
+  color: var(--ink);
+}
+.wod-audio { font-size: 0.85rem; opacity: 0.75; }
+.wod-translation {
+  font-size: 0.72rem;
+  color: var(--ink-soft);
+  font-weight: 600;
+  line-height: 1.15;
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin: 0 auto;
+}
+
+@media (max-width: 520px) {
+  .home-header.compact {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .wod-card {
+    order: 99;
+    width: 100%;
+    min-width: 0;
+  }
+  .wod-translation { max-width: 100%; }
+}
+
+/* ============ Historia ============ */
+
+.historia-screen {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 14px 14px 40px;
+  animation: fadeUp 0.4s ease backwards;
+}
+.historia-title-block { flex: 1; text-align: center; }
+.historia-title-block h2 { margin: 0; font-size: 1.2rem; color: var(--ink); }
+.historia-title-block p {
+  margin: 2px 0 0;
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+  font-weight: 600;
+}
+
+.historia-banner {
+  background: var(--good-soft);
+  border: 3px solid var(--good);
+  border-radius: 14px;
+  padding: 12px 16px;
+  font-weight: 700;
+  color: #145a2a;
+  text-align: center;
+  font-size: 0.92rem;
+  box-shadow: 3px 3px 0 var(--good);
+  margin: 14px 0 18px;
+}
+
+.historia-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.historia-card {
+  background: var(--paper);
+  border: 3px solid var(--ink);
+  border-radius: 16px;
+  box-shadow: 4px 4px 0 var(--ink);
+  overflow: hidden;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.historia-card.open {
+  background: var(--cream);
+}
+.historia-card-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 14px;
+  background: transparent;
+  border: 0;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+  color: var(--ink);
+}
+.historia-card-icon {
+  font-size: 1.8rem;
+  filter: drop-shadow(2px 2px 0 var(--ink));
+}
+.historia-card-titles { flex: 1; min-width: 0; }
+.historia-card-year {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 900;
+  background: var(--yellow);
+  border: 2px solid var(--ink);
+  padding: 1px 8px;
+  border-radius: 999px;
+  letter-spacing: 0.05em;
+}
+.historia-card-title {
+  margin: 4px 0 0;
+  font-size: 1.05rem;
+  font-weight: 900;
+  color: var(--ink);
+  line-height: 1.2;
+}
+.historia-card-chev {
+  font-size: 1.2rem;
+  color: var(--ink-soft);
+  font-weight: 900;
+}
+.historia-card-body {
+  padding: 0 14px 16px 60px;
+  border-top: 2px dashed var(--ink-faint);
+  padding-top: 12px;
+  margin: 0 14px;
+  animation: fadeIn 0.25s ease;
+}
+.historia-card-body p {
+  margin: 0 0 10px;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 500;
+}
+.historia-card-body code {
+  background: var(--paper);
+  padding: 1px 6px;
+  border: 1px solid var(--ink-faint);
+  border-radius: 4px;
+  font-size: 0.88em;
+  color: var(--ink);
+}
+.historia-card-body strong { color: var(--ink); font-weight: 900; }
+.historia-card-body em { color: var(--ink-soft); font-style: italic; }
+@media (max-width: 480px) {
+  .historia-card-body { padding-left: 14px; }
+}
+
+.historia-footer-quote {
+  text-align: center;
+  margin-top: 24px;
+  padding: 16px;
+  font-size: 1.1rem;
+  color: var(--ink);
+  font-weight: 700;
+}
+.historia-footer-quote em {
+  font-family: 'linja pona', system-ui, sans-serif;
+  font-feature-settings: 'liga' on, 'clig' on;
+  font-style: normal;
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 4px;
+}
+.historia-footer-quote span {
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+  font-weight: 600;
+  font-style: italic;
+}
+
 .lienzo-toolbar {
   display: flex;
   align-items: center;

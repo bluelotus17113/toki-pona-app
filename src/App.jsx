@@ -14,6 +14,7 @@ import Achievements from './components/Achievements.jsx'
 import AchievementToast from './components/AchievementToast.jsx'
 import Cuentos from './components/Cuentos.jsx'
 import StoryReader from './components/StoryReader.jsx'
+import Historia from './components/Historia.jsx'
 
 // Lienzo lazy-loaded: contiene Konva (~300KB) — solo se carga al entrar.
 const SitelenLienzo = lazy(() => import('./components/SitelenLienzo.jsx'))
@@ -33,6 +34,7 @@ export default function App() {
   const openAchievements = () => setScreen({ name: 'achievements' })
   const openCuentos    = () => setScreen({ name: 'cuentos' })
   const openStory      = (storyId) => setScreen({ name: 'story', storyId })
+  const openHistoria   = () => setScreen({ name: 'historia' })
 
   // Chequear logros automáticos cada vez que cambia el estado de progress
   useEffect(() => {
@@ -68,6 +70,7 @@ export default function App() {
           onLienzo={openLienzo}
           onAchievements={openAchievements}
           onCuentos={openCuentos}
+          onHistoria={openHistoria}
         />
       )}
       {screen.name === 'lesson' && (
@@ -112,6 +115,9 @@ export default function App() {
       )}
       {screen.name === 'story' && (
         <StoryReader storyId={screen.storyId} lang={lang} onExit={openCuentos} />
+      )}
+      {screen.name === 'historia' && (
+        <Historia lang={lang} onExit={goHome} />
       )}
 
       <AchievementToast lang={lang} />

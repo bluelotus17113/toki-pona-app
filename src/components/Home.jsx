@@ -1,16 +1,18 @@
-import { Fragment, useEffect, useState } from 'react'
+import { Fragment, useEffect, useMemo, useState } from 'react'
 import { LESSONS, SECTIONS, SECTION_THEMES } from '../data/lessons.js'
 import { VOCAB } from '../data/vocabulary.js'
 import { LANGS, makeT } from '../data/i18n.js'
 import { practiceExerciseCount } from '../data/exerciseBuilder.js'
 import { playClick, useSoundToggle } from '../hooks/useSound.js'
+import { speak } from '../hooks/useSpeech.js'
+import { getWordOfTheDay } from '../utils/wordOfTheDay.js'
 import Hearts from './Hearts.jsx'
 import AdRefillButton from './AdRefillButton.jsx'
 import FeedbackButton from './FeedbackButton.jsx'
 import KofiButton from './KofiButton.jsx'
 import NoHeartsModal from './NoHeartsModal.jsx'
 
-export default function Home({ progress, lang, setLang, onOpen, onPractice, onDictionary, onGrammar, onNimiTu, onSitelen, onLienzo, onAchievements, onCuentos }) {
+export default function Home({ progress, lang, setLang, onOpen, onPractice, onDictionary, onGrammar, onNimiTu, onSitelen, onLienzo, onAchievements, onCuentos, onHistoria }) {
   const { state, isUnlocked, reset, MAX_HEARTS } = progress
   const t = makeT(lang)
   const practiceAvailable = state.completed.length >= 1
@@ -18,6 +20,14 @@ export default function Home({ progress, lang, setLang, onOpen, onPractice, onDi
 
   const [noHeartsOpen, setNoHeartsOpen] = useState(false)
   const [soundOn, toggleSound] = useSoundToggle()
+  const wod = useMemo(() => getWordOfTheDay(), [])
+  const [wodPlaying, setWodPlaying] = useState(false)
+  const handleWodSpeak = () => {
+    if (wodPlaying) return
+    playClick()
+    setWodPlaying(true)
+    speak(wod.word, { onEnd: () => setWodPlaying(false) })
+  }
   // cerrar el modal automáticamente si el usuario recupera una vida
   useEffect(() => {
     if (state.hearts > 0 && noHeartsOpen) setNoHeartsOpen(false)
@@ -40,6 +50,7 @@ export default function Home({ progress, lang, setLang, onOpen, onPractice, onDi
   const handleLienzo = () => { playClick(); onLienzo() }
   const handleAchievements = () => { playClick(); onAchievements() }
   const handleCuentos = () => { playClick(); onCuentos() }
+  const handleHistoria = () => { playClick(); onHistoria() }
 
   const lessonsBySection = SECTIONS.map(sec => ({
     section: sec,
@@ -53,6 +64,21 @@ export default function Home({ progress, lang, setLang, onOpen, onPractice, onDi
           <h1 className="logo">toki pona <span className="leaf">a!</span></h1>
           <p className="subtitle">{t('appSubtitle')}</p>
         </div>
+        <button
+          className="wod-card"
+          onClick={handleWodSpeak}
+          title={t('wodTitle')}
+        >
+          <div className="wod-label">🌅 {t('wodLabel')}</div>
+          <div className="wod-glyph-row">
+            <span className="sitelen wod-glyph">{wod.word}</span>
+            <span className="wod-latin">{wod.word}</span>
+            <span className="wod-audio">{wodPlaying ? '🔉' : '🔊'}</span>
+          </div>
+          <div className="wod-translation">
+            {wod.entry[lang] ?? wod.entry.es}
+          </div>
+        </button>
         <div className="header-controls">
           <LangSwitcher lang={lang} setLang={setLang} />
           <button
@@ -239,6 +265,9 @@ export default function Home({ progress, lang, setLang, onOpen, onPractice, onDi
         <div className="footer-actions">
           <button className="achievements-btn" onClick={handleAchievements} title={t('achievementsTitle')}>
             🏆 {t('achievementsTitle')}
+          </button>
+          <button className="achievements-btn" onClick={handleHistoria} title={t('historiaTitle')}>
+            📜 {t('historiaTitle')}
           </button>
           <FeedbackButton lang={lang} />
           <KofiButton variant="compact" lang={lang} />
