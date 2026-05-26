@@ -1,0 +1,58 @@
+# dependencias
+node_modules/
+
+# build outputs
+dist/
+build/
+.vite/
+
+# logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# editores
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# env / secretos
+.env
+.env.local
+.env.*.local
+
+# Android (Gradle, builds, SDK path local)
+android/local.properties
+android/.gradle/
+android/build/
+android/app/build/
+android/app/release/
+android/captures/
+android/.idea/
+android/*.iml
+android/app/*.iml
+android/app/src/main/assets/public/
+android/app/src/main/assets/capacitor.config.json
+android/app/src/main/assets/capacitor.plugins.json
+
+# keystores / firmas (¡NUNCA subir!)
+*.keystore
+*.jks
+*.p12
+key.properties
+
+# iOS (por si lo agregás luego)
+ios/App/Pods/
+ios/App/build/
+ios/App/App.xcworkspace/xcuserdata/
+ios/App/App.xcodeproj/xcuserdata/
+DerivedData/
+
+# Capacitor
+.capacitor/

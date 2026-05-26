@@ -1,0 +1,16 @@
+{
+  "appId": "com.tokipona.app",
+  "appName": "toki pona a!",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https"
+  },
+  "android": {
+    "allowMixedContent": false
+  },
+  "plugins": {
+    "AdMob": {
+      "appId": "ca-app-pub-2143488314005063~3209058787"
+    }
+  }
+}
