@@ -1,18 +1,19 @@
 /* ============ Fuente sitelen pona (logográfica) ============
-   "Crafty PE" (linku.la) — usa ligaduras OpenType: cada palabra romanizada
-   (jan, pona, telo…) se reemplaza por su glifo correspondiente al renderizar.
+   "linja pona" v4.9 por jan Same (musilili.net) — SIL OFL.
+   Usa ligaduras OpenType: cada palabra romanizada (jan, pona, telo…)
+   se reemplaza por su glifo Unicode privado al renderizar.
    Aplicar con className="sitelen" en cualquier texto toki pona.
 ============================================================ */
 @font-face {
-  font-family: 'CraftyPE';
-  src: url('/fonts/craftype.otf') format('opentype');
+  font-family: 'linja pona';
+  src: url('/fonts/linja-pona.otf') format('opentype');
   font-display: swap;
   font-style: normal;
   font-weight: normal;
 }
 
 .sitelen {
-  font-family: 'CraftyPE', 'Inter', system-ui, sans-serif;
+  font-family: 'linja pona', 'Inter', system-ui, sans-serif;
   font-feature-settings: 'liga' on, 'clig' on, 'dlig' on, 'calt' on;
   -webkit-font-feature-settings: 'liga' on, 'clig' on, 'dlig' on, 'calt' on;
   line-height: 1.2;
@@ -1898,7 +1899,7 @@ html, body, #root, .home {
 .action-btn.sitelen { background: var(--good-soft); }
 .action-btn.sitelen:not(.locked):hover { background: #b1e9c2; }
 .action-btn.sitelen .action-icon {
-  font-family: 'CraftyPE', system-ui, sans-serif;
+  font-family: 'linja pona', system-ui, sans-serif;
   font-feature-settings: 'liga' on;
   animation: spinSun 8s linear infinite;
 }
@@ -2091,7 +2092,7 @@ html, body, #root, .home {
 
 /* glifo del diccionario */
 .dict-glyph {
-  font-family: 'CraftyPE', system-ui, sans-serif;
+  font-family: 'linja pona', system-ui, sans-serif;
   font-feature-settings: 'liga' on, 'clig' on, 'dlig' on;
   font-size: 1.9rem;
   color: var(--ink);
@@ -2102,7 +2103,7 @@ html, body, #root, .home {
 
 /* glifo en ejercicios sitelen */
 .sitelen-prompt {
-  font-family: 'CraftyPE', system-ui, sans-serif;
+  font-family: 'linja pona', system-ui, sans-serif;
   font-feature-settings: 'liga' on, 'clig' on, 'dlig' on;
   font-size: 5rem;
   text-align: center;
@@ -2112,7 +2113,7 @@ html, body, #root, .home {
   text-shadow: 3px 3px 0 var(--yellow-deep);
 }
 .sitelen-pair-glyph {
-  font-family: 'CraftyPE', system-ui, sans-serif;
+  font-family: 'linja pona', system-ui, sans-serif;
   font-feature-settings: 'liga' on, 'clig' on, 'dlig' on;
   font-size: 2.2rem;
   line-height: 1;
