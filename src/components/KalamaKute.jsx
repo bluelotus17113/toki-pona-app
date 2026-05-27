@@ -5,6 +5,10 @@ import { makeT } from '../data/i18n.js'
 import { primeAudio, speak } from '../hooks/useSpeech.js'
 import { playClick, playSuccess, playError, playLessonComplete } from '../hooks/useSound.js'
 import { unlock } from '../hooks/useAchievements.js'
+import { isPlayedToday, markPlayedToday } from '../utils/dailyPlay.js'
+import DailyLockedScreen from './DailyLockedScreen.jsx'
+
+const GAME_ID = 'kalamakute'
 
 // Minijuego "kalama kute" (audio-first):
 // El TTS dice una palabra; el usuario elige el glifo correcto entre 4.
@@ -56,6 +60,11 @@ function buildRound(pool) {
 
 export default function KalamaKute({ progress, lang = 'es', onExit }) {
   const t = makeT(lang)
+
+  if (isPlayedToday(GAME_ID)) {
+    return <DailyLockedScreen icon="🎧" title={t('kalamaKuteTitle')} lang={lang} onExit={onExit} />
+  }
+
   const [started, setStarted] = useState(false)
   const [rounds, setRounds] = useState([])
   const [idx, setIdx] = useState(0)
@@ -110,6 +119,7 @@ export default function KalamaKute({ progress, lang = 'es', onExit }) {
       unlock('kalama-kute-first-win')
       if (correctSoFar === ROUNDS) unlock('kalama-kute-perfect')
     }
+    markPlayedToday(GAME_ID)
     playLessonComplete()
   }
 
@@ -202,12 +212,10 @@ export default function KalamaKute({ progress, lang = 'es', onExit }) {
               <span className="kalamakute-perfect">{t('kalamaKutePerfect')}</span>
             )}
           </div>
+          <p className="kalamakute-tomorrow">{t('dailyLockedTomorrow')}</p>
           <div className="kalamakute-result-actions">
-            <button className="kalamakute-result-btn primary" onClick={start}>
-              {t('kalamaKuteAgain')}
-            </button>
-            <button className="kalamakute-result-btn" onClick={onExit}>
-              {t('kalamaKuteBack')}
+            <button className="kalamakute-result-btn primary" onClick={onExit}>
+              {t('dailyLockedBack')}
             </button>
           </div>
         </div>

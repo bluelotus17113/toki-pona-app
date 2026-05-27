@@ -4,6 +4,10 @@ import { VOCAB } from '../data/vocabulary.js'
 import { makeT } from '../data/i18n.js'
 import { playClick, playSuccess, playError, playLessonComplete } from '../hooks/useSound.js'
 import { unlock } from '../hooks/useAchievements.js'
+import { isPlayedToday, markPlayedToday } from '../utils/dailyPlay.js'
+import DailyLockedScreen from './DailyLockedScreen.jsx'
+
+const GAME_ID = 'kalaalasa'
 
 // Minijuego "kala alasa" (pesca arcade):
 // Peces con palabras TP nadan por la pantalla. Arriba aparece un significado
@@ -65,6 +69,11 @@ function makeFish(width, pool) {
 
 export default function KalaAlasa({ progress, lang = 'es', onExit }) {
   const t = makeT(lang)
+
+  if (isPlayedToday(GAME_ID)) {
+    return <DailyLockedScreen icon="🎣" title={t('kalaAlasaTitle')} lang={lang} onExit={onExit} />
+  }
+
   const [started, setStarted] = useState(false)
   const [done, setDone] = useState(false)
   const [fish, setFish] = useState([])
@@ -120,11 +129,15 @@ export default function KalaAlasa({ progress, lang = 'es', onExit }) {
   const finish = (finalScore, finalCombo) => {
     cleanup()
     setDone(true)
-    const reward = Math.max(2, Math.floor(finalScore / 5))
+    // Recompensa proporcional al score; 0 si no acertó nada o muy poco.
+    // Antes había un mínimo de 2 mani garantizado — quitado para que perder
+    // sin acertar no genere monedas.
+    const reward = Math.floor(finalScore / 5)
     setManiReward(reward)
-    progress.addMani(reward)
+    if (reward > 0) progress.addMani(reward)
     if (finalScore > 0) unlock('kala-alasa-first-win')
     if (finalCombo >= 10) unlock('kala-alasa-combo-10')
+    markPlayedToday(GAME_ID)
     playLessonComplete()
   }
 
@@ -259,12 +272,10 @@ export default function KalaAlasa({ progress, lang = 'es', onExit }) {
             <div>🔥 {t('kalaAlasaMaxCombo')}: <strong>{maxCombo}</strong></div>
           </div>
           <div className="kalaalasa-reward">🪙 +{maniReward} mani</div>
+          <p className="kalaalasa-tomorrow">{t('dailyLockedTomorrow')}</p>
           <div className="kalaalasa-result-actions">
-            <button className="kalaalasa-result-btn primary" onClick={start}>
-              {t('kalaAlasaAgain')}
-            </button>
-            <button className="kalaalasa-result-btn" onClick={onExit}>
-              {t('kalaAlasaBack')}
+            <button className="kalaalasa-result-btn primary" onClick={onExit}>
+              {t('dailyLockedBack')}
             </button>
           </div>
         </div>

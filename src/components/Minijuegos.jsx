@@ -1,5 +1,6 @@
 import { makeT } from '../data/i18n.js'
 import { playClick } from '../hooks/useSound.js'
+import { playedTodayMap } from '../utils/dailyPlay.js'
 
 // Hub de minijuegos: tarjetas grandes que abren cada minijuego.
 // Cada tarjeta lleva: icono, glifo decorativo, título, descripción corta,
@@ -12,6 +13,7 @@ export default function Minijuegos({
   onExit
 }) {
   const t = makeT(lang)
+  const playedToday = playedTodayMap()
 
   const GAMES = [
     {
@@ -113,28 +115,36 @@ export default function Minijuegos({
       </div>
 
       <div className="minijuegos-grid">
-        {GAMES.map(game => (
-          <button
-            key={game.id}
-            className="minijuego-card"
-            style={{ '--card-accent': game.accent }}
-            onClick={() => handleOpen(game)}
-          >
-            <div className="minijuego-card-top">
-              <span className="minijuego-card-icon">{game.icon}</span>
-              <span className="minijuego-card-glyph sitelen" aria-hidden="true">{game.glyph}</span>
-            </div>
-            <div className="minijuego-card-text">
-              <span className="minijuego-card-title">{game.title}</span>
-              <span className="minijuego-card-sub">{game.sub}</span>
-              <span className="minijuego-card-mechanic">{game.mechanic}</span>
-            </div>
-            <div className="minijuego-card-footer">
-              <span className="minijuego-card-reward">{game.reward}</span>
-              <span className="minijuego-card-arrow" aria-hidden="true">→</span>
-            </div>
-          </button>
-        ))}
+        {GAMES.map(game => {
+          const isPlayed = !!playedToday[game.id]
+          return (
+            <button
+              key={game.id}
+              className={`minijuego-card ${isPlayed ? 'is-played' : ''}`}
+              style={{ '--card-accent': game.accent }}
+              onClick={() => handleOpen(game)}
+            >
+              {isPlayed && (
+                <span className="minijuego-card-played-badge" title={t('dailyLockedTomorrow')}>
+                  ✓ {t('minijuegosPlayedBadge')}
+                </span>
+              )}
+              <div className="minijuego-card-top">
+                <span className="minijuego-card-icon">{game.icon}</span>
+                <span className="minijuego-card-glyph sitelen" aria-hidden="true">{game.glyph}</span>
+              </div>
+              <div className="minijuego-card-text">
+                <span className="minijuego-card-title">{game.title}</span>
+                <span className="minijuego-card-sub">{game.sub}</span>
+                <span className="minijuego-card-mechanic">{game.mechanic}</span>
+              </div>
+              <div className="minijuego-card-footer">
+                <span className="minijuego-card-reward">{game.reward}</span>
+                <span className="minijuego-card-arrow" aria-hidden="true">→</span>
+              </div>
+            </button>
+          )
+        })}
       </div>
 
       <div className="minijuegos-footnote">

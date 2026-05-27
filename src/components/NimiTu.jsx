@@ -4,12 +4,21 @@ import { COMPOUNDS, pickRoundSet, pickWordsForRound, isCorrectAnswer } from '../
 import { makeT } from '../data/i18n.js'
 import { playClick, playSuccess, playError, playLessonComplete } from '../hooks/useSound.js'
 import { unlock } from '../hooks/useAchievements.js'
+import { isPlayedToday, markPlayedToday } from '../utils/dailyPlay.js'
+import DailyLockedScreen from './DailyLockedScreen.jsx'
+
+const GAME_ID = 'nimitu'
 
 const TOTAL_ROUNDS = 10
 const XP_PER_CORRECT = 5
 
 export default function NimiTu({ progress, lang, onExit }) {
   const t = makeT(lang)
+
+  // Bloqueo diario: si ya se jugó hoy, mostrar pantalla bloqueada.
+  if (isPlayedToday(GAME_ID)) {
+    return <DailyLockedScreen icon="🧩" title={t('nimiTu')} lang={lang} onExit={onExit} />
+  }
 
   const rounds = useMemo(() => pickRoundSet(TOTAL_ROUNDS), [])
   const [roundIdx, setRoundIdx] = useState(0)
@@ -80,6 +89,7 @@ export default function NimiTu({ progress, lang, onExit }) {
     const next = roundIdx + 1
     if (next >= TOTAL_ROUNDS) {
       playLessonComplete()
+      markPlayedToday(GAME_ID)
       setFinished(true)
       return
     }

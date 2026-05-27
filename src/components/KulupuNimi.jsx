@@ -3,6 +3,10 @@ import { VOCAB } from '../data/vocabulary.js'
 import { makeT } from '../data/i18n.js'
 import { playClick, playSuccess, playError, playLessonComplete } from '../hooks/useSound.js'
 import { unlock } from '../hooks/useAchievements.js'
+import { isPlayedToday, markPlayedToday } from '../utils/dailyPlay.js'
+import DailyLockedScreen from './DailyLockedScreen.jsx'
+
+const GAME_ID = 'kulupunimi'
 
 // Minijuego "kulupu nimi" (categorías): clasificar palabras TP en categorías
 // temáticas. 5 rondas, cada una usa 2 categorías al azar con 5-6 palabras
@@ -85,6 +89,11 @@ function buildRound() {
 
 export default function KulupuNimi({ progress, lang = 'es', onExit }) {
   const t = makeT(lang)
+
+  if (isPlayedToday(GAME_ID)) {
+    return <DailyLockedScreen icon="📂" title={t('kulupuNimiTitle')} lang={lang} onExit={onExit} />
+  }
+
   const [started, setStarted] = useState(false)
   const [rounds, setRounds] = useState([])
   const [idx, setIdx] = useState(0)
@@ -153,6 +162,7 @@ export default function KulupuNimi({ progress, lang = 'es', onExit }) {
         progress.addMani(reward)
         unlock('kulupu-nimi-first-win')
         if (newTotalCorrect === newTotalWords) unlock('kulupu-nimi-perfect')
+        markPlayedToday(GAME_ID)
         playLessonComplete()
         setDone(true)
       } else {
@@ -219,12 +229,10 @@ export default function KulupuNimi({ progress, lang = 'es', onExit }) {
               <span className="kulupunimi-perfect">{t('kulupuNimiPerfect')}</span>
             )}
           </div>
+          <p className="kulupunimi-tomorrow">{t('dailyLockedTomorrow')}</p>
           <div className="kulupunimi-result-actions">
-            <button className="kulupunimi-result-btn primary" onClick={start}>
-              {t('kulupuNimiAgain')}
-            </button>
-            <button className="kulupunimi-result-btn" onClick={onExit}>
-              {t('kulupuNimiBack')}
+            <button className="kulupunimi-result-btn primary" onClick={onExit}>
+              {t('dailyLockedBack')}
             </button>
           </div>
         </div>

@@ -5097,3 +5097,133 @@ html, body, #root, .home {
   text-align: center; font-size: 0.92rem; font-weight: 700; color: var(--ink-soft);
 }
 .kalaalasa-stats strong { color: var(--ink); font-weight: 900; }
+
+/* ============ Daily locked screen + hub badge ============ */
+
+.daily-locked-screen {
+  max-width: 540px;
+  margin: 0 auto;
+  padding: 14px 14px 40px;
+  animation: fadeUp 0.4s ease backwards;
+}
+.daily-locked-header { display: flex; align-items: center; gap: 10px; }
+.daily-locked-title-block { flex: 1; text-align: center; }
+.daily-locked-title-block h2 { margin: 0; font-size: 1.2rem; color: var(--ink); }
+
+.daily-locked-card {
+  margin-top: 28px;
+  background: var(--paper);
+  border: 3px solid var(--ink);
+  border-radius: 20px;
+  box-shadow: 6px 6px 0 var(--ink);
+  padding: 28px 22px;
+  text-align: center;
+  animation: fadeUp 0.4s ease;
+}
+.daily-locked-icon {
+  font-size: 3.4rem;
+  filter: drop-shadow(3px 3px 0 var(--ink));
+  margin-bottom: 6px;
+}
+.daily-locked-title {
+  margin: 0 0 8px;
+  font-size: 1.35rem;
+  font-weight: 900;
+  color: var(--ink);
+}
+.daily-locked-sub {
+  margin: 0 0 16px;
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+  font-weight: 600;
+  line-height: 1.5;
+}
+.daily-locked-countdown {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+  margin: 16px 0;
+  padding: 14px 18px;
+  background: var(--yellow);
+  border: 3px solid var(--ink);
+  border-radius: 14px;
+  box-shadow: 3px 3px 0 var(--ink);
+}
+.daily-locked-countdown-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--ink-soft);
+  text-transform: lowercase;
+  letter-spacing: 0.04em;
+}
+.daily-locked-countdown-value {
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: var(--ink);
+  line-height: 1;
+}
+.daily-locked-tip {
+  margin: 14px 0 18px;
+  font-size: 0.84rem;
+  color: var(--ink-soft);
+  font-style: italic;
+  font-weight: 600;
+}
+.daily-locked-back {
+  display: inline-block;
+  width: 100%;
+  background: var(--good);
+  color: var(--paper);
+  border: 3px solid var(--ink);
+  border-radius: 14px;
+  padding: 14px 24px;
+  font-size: 1rem;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 4px 4px 0 var(--ink);
+  transition: transform 0.12s, box-shadow 0.12s;
+}
+.daily-locked-back:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 var(--ink);
+}
+
+/* Badge "jugado hoy" en las tarjetas del hub */
+.minijuego-card {
+  position: relative;
+}
+.minijuego-card.is-played {
+  opacity: 0.72;
+}
+.minijuego-card-played-badge {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  background: var(--good);
+  color: var(--paper);
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  padding: 3px 10px;
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.03em;
+  box-shadow: 2px 2px 0 var(--ink);
+  text-transform: lowercase;
+  white-space: nowrap;
+  z-index: 2;
+}
+
+/* "vuelve mañana" en pantallas de resultados */
+.kamasona-win-note,
+.lipupakala-tomorrow,
+.kalamakute-tomorrow,
+.kulupunimi-tomorrow,
+.kalaalasa-tomorrow {
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+  font-style: italic;
+  font-weight: 600;
+  text-align: center;
+  margin: 8px 0 4px;
+}

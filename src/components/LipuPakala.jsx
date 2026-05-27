@@ -3,7 +3,11 @@ import { LESSONS } from '../data/lessons.js'
 import { makeT } from '../data/i18n.js'
 import { playClick, playSuccess, playError, playLessonComplete } from '../hooks/useSound.js'
 import { unlock } from '../hooks/useAchievements.js'
+import { isPlayedToday, markPlayedToday } from '../utils/dailyPlay.js'
+import DailyLockedScreen from './DailyLockedScreen.jsx'
 import SentenceBuilder from './exercises/SentenceBuilder.jsx'
+
+const GAME_ID = 'lipupakala'
 
 // Minijuego "lipu pakala" (frase rota): se muestra una traducción y el usuario
 // debe ordenar las palabras en toki pona correctas. 5 frases por ronda.
@@ -75,6 +79,11 @@ function fmtTime(s) {
 
 export default function LipuPakala({ progress, lang = 'es', onExit }) {
   const t = makeT(lang)
+
+  if (isPlayedToday(GAME_ID)) {
+    return <DailyLockedScreen icon="🧩" title={t('lipuPakalaTitle')} lang={lang} onExit={onExit} />
+  }
+
   const [started, setStarted] = useState(false)
   const [phrases, setPhrases] = useState([])
   const [idx, setIdx] = useState(0)
@@ -134,6 +143,7 @@ export default function LipuPakala({ progress, lang = 'es', onExit }) {
       progress.addMani(reward)
       unlock('lipu-pakala-first-win')
       if (newCorrect === ROUND_SIZE) unlock('lipu-pakala-perfect')
+      markPlayedToday(GAME_ID)
       playLessonComplete()
     } else {
       setIdx(i => i + 1)
@@ -211,12 +221,10 @@ export default function LipuPakala({ progress, lang = 'es', onExit }) {
             )}
           </div>
 
+          <p className="lipupakala-tomorrow">{t('dailyLockedTomorrow')}</p>
           <div className="lipupakala-result-actions">
-            <button className="lipupakala-result-btn primary" onClick={start}>
-              {t('lipuPakalaAgain')}
-            </button>
-            <button className="lipupakala-result-btn" onClick={onExit}>
-              {t('lipuPakalaBack')}
+            <button className="lipupakala-result-btn primary" onClick={onExit}>
+              {t('dailyLockedBack')}
             </button>
           </div>
         </div>

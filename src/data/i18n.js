@@ -109,6 +109,15 @@ export const STRINGS = {
   minijuegosHomeSub:  { es: '7 juegos disponibles',               en: '7 games available' },
   minijuegosBanner:   { es: 'cada minijuego te da mani para comprar cuentos. mientras más jugás, más palabras quedan en tu memoria.', en: 'every minigame gives you mani to buy stories. the more you play, the more words stick.' },
   minijuegosFootnote: { es: 'pronto más minijuegos · sugerí los tuyos en feedback', en: 'more minigames coming · suggest yours in feedback' },
+  minijuegosPlayedBadge:{ es: 'jugado hoy',                       en: 'played today' },
+
+  // bloqueo diario
+  dailyLockedTitle:   { es: 'ya jugaste hoy',                     en: 'already played today' },
+  dailyLockedSub:     { es: 'cada minijuego se puede jugar una vez por día — así dura más tu progreso.', en: 'each minigame can be played once a day — keeps your progress meaningful.' },
+  dailyLockedNextIn:  { es: 'próxima ronda en',                   en: 'next round in' },
+  dailyLockedTip:     { es: 'mientras tanto: lecciones, cuentos, escritura, atlas...', en: 'meanwhile: lessons, stories, writing, atlas...' },
+  dailyLockedBack:    { es: 'volver al menú',                     en: 'back to menu' },
+  dailyLockedTomorrow:{ es: 'vuelve mañana para otra ronda',      en: 'come back tomorrow for another round' },
   nimiTuHubSub:       { es: 'combiná 2 palabras y formá una nueva', en: 'combine 2 words to form a new one' },
   nimiTuHubMechanic:  { es: '10 rondas · acierto rápido',         en: '10 rounds · quick recall' },
   kamaSonaHubSub:     { es: 'memoria — empareja glifo y significado', en: 'memory — match glyph and meaning' },

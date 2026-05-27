@@ -3,6 +3,7 @@ import { VOCAB } from '../data/vocabulary.js'
 import { makeT } from '../data/i18n.js'
 import { playClick, playSuccess, playError, playLessonComplete } from '../hooks/useSound.js'
 import { unlock } from '../hooks/useAchievements.js'
+import { markPlayedToday } from '../utils/dailyPlay.js'
 
 // Minijuego "nimi sin" (Wordle pona):
 // Palabra de 4 letras del alfabeto TP en 6 intentos.
@@ -132,6 +133,12 @@ export default function NimiSin({ progress, lang = 'es', onExit }) {
     })
   }, [guesses, status, maniReward, daily.dateKey])
 
+  // Si el usuario ya terminó la partida de hoy (cargada de localStorage),
+  // marcar en el helper genérico para que el hub muestre el badge.
+  useEffect(() => {
+    if (status !== 'playing') markPlayedToday('nimisin')
+  }, [status])
+
   const showToast = (msg) => {
     setToastMsg(msg)
     setTimeout(() => setToastMsg(null), 1400)
@@ -181,6 +188,7 @@ export default function NimiSin({ progress, lang = 'es', onExit }) {
       unlock('nimi-sin-first-win')
       if (newGuesses.length <= 2) unlock('nimi-sin-genius')
       setStatus('won')
+      markPlayedToday('nimisin')
       playLessonComplete()
       return
     }
@@ -189,6 +197,7 @@ export default function NimiSin({ progress, lang = 'es', onExit }) {
       // mani de consuelo
       progress.addMani(2)
       setManiReward(2)
+      markPlayedToday('nimisin')
       playError()
       return
     }

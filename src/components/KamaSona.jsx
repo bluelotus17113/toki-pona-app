@@ -4,6 +4,10 @@ import { VOCAB } from '../data/vocabulary.js'
 import { makeT } from '../data/i18n.js'
 import { playClick, playSuccess, playError, playLessonComplete } from '../hooks/useSound.js'
 import { unlock } from '../hooks/useAchievements.js'
+import { isPlayedToday, markPlayedToday } from '../utils/dailyPlay.js'
+import DailyLockedScreen from './DailyLockedScreen.jsx'
+
+const GAME_ID = 'kamasona'
 
 // Minijuego de memoria: emparejar glifo sitelen ↔ significado.
 // Las palabras vienen de las lecciones que el usuario completó (refuerza
@@ -61,6 +65,12 @@ function fmtTime(s) {
 
 export default function KamaSona({ progress, lang = 'es', onExit }) {
   const t = makeT(lang)
+
+  // Bloqueo diario
+  if (isPlayedToday(GAME_ID)) {
+    return <DailyLockedScreen icon="🃏" title={t('kamaSonaTitle')} lang={lang} onExit={onExit} />
+  }
+
   const [level, setLevel] = useState(null)
   const [cards, setCards] = useState([])
   const [flipped, setFlipped] = useState([])   // ids actualmente boca-arriba (max 2)
@@ -96,6 +106,7 @@ export default function KamaSona({ progress, lang = 'es', onExit }) {
       progress.addMani(reward)
       unlock('kama-sona-first-win')
       if (mistakes === 0) unlock('kama-sona-perfect')
+      markPlayedToday(GAME_ID)
       playLessonComplete()
     }
   }, [matched, level])
@@ -263,12 +274,10 @@ export default function KamaSona({ progress, lang = 'es', onExit }) {
             <div className="kamasona-win-reward">
               🪙 +{maniReward} mani {mistakes === 0 && <span className="kamasona-win-perfect">{t('kamaSonaPerfect')}</span>}
             </div>
+            <p className="kamasona-win-note">{t('dailyLockedTomorrow')}</p>
             <div className="kamasona-win-actions">
-              <button className="kamasona-win-btn primary" onClick={() => startLevel(level)}>
-                {t('kamaSonaAgain')}
-              </button>
-              <button className="kamasona-win-btn" onClick={resetToMenu}>
-                {t('kamaSonaChangeLevel')}
+              <button className="kamasona-win-btn primary" onClick={onExit}>
+                {t('dailyLockedBack')}
               </button>
             </div>
           </div>
