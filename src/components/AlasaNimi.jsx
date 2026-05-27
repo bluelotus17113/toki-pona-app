@@ -125,10 +125,6 @@ function cellKey([r, c]) { return `${r},${c}` }
 export default function AlasaNimi({ progress, lang = 'es', onExit }) {
   const t = makeT(lang)
 
-  if (isPlayedToday(GAME_ID)) {
-    return <DailyLockedScreen icon="🔍" title={t('alasaNimiTitle')} lang={lang} onExit={onExit} />
-  }
-
   const [{ grid, words }] = useState(() => [generateGrid()])
   const [firstPick, setFirstPick] = useState(null)   // [r, c] o null
   const [foundWords, setFoundWords] = useState({})   // word -> [cells]
@@ -211,6 +207,11 @@ export default function AlasaNimi({ progress, lang = 'es', onExit }) {
     }
     return m
   }, [foundWords])
+
+  // Bloqueo diario después de todos los hooks (Rules of Hooks).
+  if (isPlayedToday(GAME_ID)) {
+    return <DailyLockedScreen icon="🔍" title={t('alasaNimiTitle')} lang={lang} onExit={onExit} />
+  }
 
   // ============ Pantalla resultados ============
   if (done) {

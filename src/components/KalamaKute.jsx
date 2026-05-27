@@ -61,10 +61,6 @@ function buildRound(pool) {
 export default function KalamaKute({ progress, lang = 'es', onExit }) {
   const t = makeT(lang)
 
-  if (isPlayedToday(GAME_ID)) {
-    return <DailyLockedScreen icon="🎧" title={t('kalamaKuteTitle')} lang={lang} onExit={onExit} />
-  }
-
   const [started, setStarted] = useState(false)
   const [rounds, setRounds] = useState([])
   const [idx, setIdx] = useState(0)
@@ -88,6 +84,11 @@ export default function KalamaKute({ progress, lang = 'es', onExit }) {
       return () => clearTimeout(id)
     }
   }, [idx, current?.correct, locked])
+
+  // Bloqueo diario después de todos los hooks (Rules of Hooks).
+  if (isPlayedToday(GAME_ID)) {
+    return <DailyLockedScreen icon="🎧" title={t('kalamaKuteTitle')} lang={lang} onExit={onExit} />
+  }
 
   const start = () => {
     playClick()

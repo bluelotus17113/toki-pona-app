@@ -66,11 +66,6 @@ function fmtTime(s) {
 export default function KamaSona({ progress, lang = 'es', onExit }) {
   const t = makeT(lang)
 
-  // Bloqueo diario
-  if (isPlayedToday(GAME_ID)) {
-    return <DailyLockedScreen icon="🃏" title={t('kamaSonaTitle')} lang={lang} onExit={onExit} />
-  }
-
   const [level, setLevel] = useState(null)
   const [cards, setCards] = useState([])
   const [flipped, setFlipped] = useState([])   // ids actualmente boca-arriba (max 2)
@@ -115,6 +110,11 @@ export default function KamaSona({ progress, lang = 'es', onExit }) {
   useEffect(() => () => {
     if (flipBackTimer.current) clearTimeout(flipBackTimer.current)
   }, [])
+
+  // Bloqueo diario: evaluado después de los hooks (Rules of Hooks).
+  if (isPlayedToday(GAME_ID)) {
+    return <DailyLockedScreen icon="🃏" title={t('kamaSonaTitle')} lang={lang} onExit={onExit} />
+  }
 
   const startLevel = (lvl) => {
     playClick()

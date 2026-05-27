@@ -15,11 +15,6 @@ const XP_PER_CORRECT = 5
 export default function NimiTu({ progress, lang, onExit }) {
   const t = makeT(lang)
 
-  // Bloqueo diario: si ya se jugó hoy, mostrar pantalla bloqueada.
-  if (isPlayedToday(GAME_ID)) {
-    return <DailyLockedScreen icon="🧩" title={t('nimiTu')} lang={lang} onExit={onExit} />
-  }
-
   const rounds = useMemo(() => pickRoundSet(TOTAL_ROUNDS), [])
   const [roundIdx, setRoundIdx] = useState(0)
   const [slot1, setSlot1] = useState(null)
@@ -34,6 +29,11 @@ export default function NimiTu({ progress, lang, onExit }) {
     () => current ? pickWordsForRound(current, VOCAB, 10) : [],
     [current?.id]
   )
+
+  // Early returns DESPUÉS de todos los hooks (Rules of Hooks).
+  if (isPlayedToday(GAME_ID)) {
+    return <DailyLockedScreen icon="🧩" title={t('nimiTu')} lang={lang} onExit={onExit} />
+  }
 
   if (finished) {
     return <NimiTuComplete

@@ -90,10 +90,6 @@ function buildRound() {
 export default function KulupuNimi({ progress, lang = 'es', onExit }) {
   const t = makeT(lang)
 
-  if (isPlayedToday(GAME_ID)) {
-    return <DailyLockedScreen icon="📂" title={t('kulupuNimiTitle')} lang={lang} onExit={onExit} />
-  }
-
   const [started, setStarted] = useState(false)
   const [rounds, setRounds] = useState([])
   const [idx, setIdx] = useState(0)
@@ -106,6 +102,10 @@ export default function KulupuNimi({ progress, lang = 'es', onExit }) {
   const [maniReward, setManiReward] = useState(0)
 
   const current = started && !done ? rounds[idx] : null
+
+  if (isPlayedToday(GAME_ID)) {
+    return <DailyLockedScreen icon="📂" title={t('kulupuNimiTitle')} lang={lang} onExit={onExit} />
+  }
 
   const start = () => {
     playClick()

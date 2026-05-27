@@ -70,10 +70,6 @@ function makeFish(width, pool) {
 export default function KalaAlasa({ progress, lang = 'es', onExit }) {
   const t = makeT(lang)
 
-  if (isPlayedToday(GAME_ID)) {
-    return <DailyLockedScreen icon="🎣" title={t('kalaAlasaTitle')} lang={lang} onExit={onExit} />
-  }
-
   const [started, setStarted] = useState(false)
   const [done, setDone] = useState(false)
   const [fish, setFish] = useState([])
@@ -223,6 +219,11 @@ export default function KalaAlasa({ progress, lang = 'es', onExit }) {
     if (!entry) return target
     return entry[lang] ?? entry.es
   }, [target, lang])
+
+  // Bloqueo diario después de todos los hooks (Rules of Hooks).
+  if (isPlayedToday(GAME_ID)) {
+    return <DailyLockedScreen icon="🎣" title={t('kalaAlasaTitle')} lang={lang} onExit={onExit} />
+  }
 
   // ============ Intro ============
   if (!started) {

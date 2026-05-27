@@ -46,10 +46,6 @@ function pickPool(completedIds) {
 export default function SitelenSin({ progress, lang = 'es', onExit }) {
   const t = makeT(lang)
 
-  if (isPlayedToday(GAME_ID)) {
-    return <DailyLockedScreen icon="✍️" title={t('sitelenSinTitle')} lang={lang} onExit={onExit} />
-  }
-
   const [started, setStarted] = useState(false)
   const [words, setWords] = useState([])
   const [idx, setIdx] = useState(0)
@@ -182,6 +178,11 @@ export default function SitelenSin({ progress, lang = 'es', onExit }) {
     const entry = VOCAB[currentWord]
     return entry?.[lang] ?? entry?.es ?? currentWord
   }, [currentWord, lang])
+
+  // Bloqueo diario después de todos los hooks (Rules of Hooks).
+  if (isPlayedToday(GAME_ID)) {
+    return <DailyLockedScreen icon="✍️" title={t('sitelenSinTitle')} lang={lang} onExit={onExit} />
+  }
 
   // ============ Intro ============
   if (!started) {

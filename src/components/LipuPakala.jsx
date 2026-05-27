@@ -80,10 +80,6 @@ function fmtTime(s) {
 export default function LipuPakala({ progress, lang = 'es', onExit }) {
   const t = makeT(lang)
 
-  if (isPlayedToday(GAME_ID)) {
-    return <DailyLockedScreen icon="🧩" title={t('lipuPakalaTitle')} lang={lang} onExit={onExit} />
-  }
-
   const [started, setStarted] = useState(false)
   const [phrases, setPhrases] = useState([])
   const [idx, setIdx] = useState(0)
@@ -110,6 +106,11 @@ export default function LipuPakala({ progress, lang = 'es', onExit }) {
     if (!p) return null
     return buildExercise(p, lang)
   }, [started, done, phrases, idx, lang, exerciseKey])
+
+  // Bloqueo diario después de todos los hooks (Rules of Hooks).
+  if (isPlayedToday(GAME_ID)) {
+    return <DailyLockedScreen icon="🧩" title={t('lipuPakalaTitle')} lang={lang} onExit={onExit} />
+  }
 
   const start = () => {
     playClick()
