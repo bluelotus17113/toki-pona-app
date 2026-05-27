@@ -5,10 +5,37 @@ import { playClick } from '../hooks/useSound.js'
 // Cada tarjeta lleva: icono, glifo decorativo, título, descripción corta,
 // mecánica resumida y la recompensa máxima en mani.
 
-export default function Minijuegos({ lang = 'es', onNimiTu, onKamaSona, onLipuPakala, onExit }) {
+export default function Minijuegos({
+  lang = 'es',
+  onNimiTu, onKamaSona, onLipuPakala,
+  onKalamaKute, onKulupuNimi, onNimiSin, onKalaAlasa,
+  onExit
+}) {
   const t = makeT(lang)
 
   const GAMES = [
+    {
+      id: 'nimisin',
+      icon: '🔤',
+      glyph: 'sin',
+      title: 'nimi sin',
+      sub: t('nimiSinHubSub'),
+      mechanic: t('nimiSinHubMechanic'),
+      reward: '🪙 +20',
+      accent: '#fff3b0',
+      onOpen: onNimiSin
+    },
+    {
+      id: 'kalamakute',
+      icon: '🎧',
+      glyph: 'kute',
+      title: 'kalama kute',
+      sub: t('kalamaKuteHubSub'),
+      mechanic: t('kalamaKuteHubMechanic'),
+      reward: '🪙 +25',
+      accent: '#d4e7f5',
+      onOpen: onKalamaKute
+    },
     {
       id: 'nimitu',
       icon: '🧩',
@@ -41,6 +68,28 @@ export default function Minijuegos({ lang = 'es', onNimiTu, onKamaSona, onLipuPa
       reward: '🪙 +15',
       accent: '#c7d4ff',
       onOpen: onLipuPakala
+    },
+    {
+      id: 'kulupunimi',
+      icon: '📂',
+      glyph: 'kulupu',
+      title: 'kulupu nimi',
+      sub: t('kulupuNimiHubSub'),
+      mechanic: t('kulupuNimiHubMechanic'),
+      reward: '🪙 +14',
+      accent: '#ffe5d6',
+      onOpen: onKulupuNimi
+    },
+    {
+      id: 'kalaalasa',
+      icon: '🎣',
+      glyph: 'kala',
+      title: 'kala alasa',
+      sub: t('kalaAlasaHubSub'),
+      mechanic: t('kalaAlasaHubMechanic'),
+      reward: '🪙 score/5',
+      accent: '#c7e8d4',
+      onOpen: onKalaAlasa
     }
   ]
 

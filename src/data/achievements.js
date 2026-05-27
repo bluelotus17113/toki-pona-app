@@ -171,6 +171,46 @@ export const ACHIEVEMENTS = [
     id: 'lipu-pakala-perfect', icon: '✨', category: 'creativity',
     title: { es: 'pleno pakala',                 en: 'flawless pakala' },
     desc:  { es: '5/5 en una ronda de lipu pakala', en: '5/5 in a lipu pakala round' }
+  },
+  {
+    id: 'kalama-kute-first-win', icon: '🎧', category: 'creativity',
+    title: { es: 'oído fino',                    en: 'sharp ear' },
+    desc:  { es: 'completaste una ronda de kalama kute', en: 'finished a kalama kute round' }
+  },
+  {
+    id: 'kalama-kute-perfect', icon: '🔊', category: 'creativity',
+    title: { es: 'pleno auditivo',               en: 'flawless ear' },
+    desc:  { es: '10/10 en una ronda de kalama kute', en: '10/10 in a kalama kute round' }
+  },
+  {
+    id: 'kulupu-nimi-first-win', icon: '📂', category: 'creativity',
+    title: { es: 'clasificador',                 en: 'classifier' },
+    desc:  { es: 'completaste una ronda de kulupu nimi', en: 'finished a kulupu nimi round' }
+  },
+  {
+    id: 'kulupu-nimi-perfect', icon: '🎯', category: 'creativity',
+    title: { es: 'pleno clasificador',           en: 'flawless classifier' },
+    desc:  { es: 'kulupu nimi sin errores',      en: 'kulupu nimi without mistakes' }
+  },
+  {
+    id: 'nimi-sin-first-win', icon: '🔤', category: 'creativity',
+    title: { es: 'wordler',                      en: 'wordler' },
+    desc:  { es: 'ganaste una partida de nimi sin', en: 'won a nimi sin game' }
+  },
+  {
+    id: 'nimi-sin-genius', icon: '🧠', category: 'creativity',
+    title: { es: 'genio del sin',                en: 'sin genius' },
+    desc:  { es: 'nimi sin en 2 intentos o menos', en: 'nimi sin in 2 tries or fewer' }
+  },
+  {
+    id: 'kala-alasa-first-win', icon: '🎣', category: 'creativity',
+    title: { es: 'pescador',                     en: 'angler' },
+    desc:  { es: 'completaste una ronda de kala alasa', en: 'finished a kala alasa round' }
+  },
+  {
+    id: 'kala-alasa-combo-10', icon: '🔥', category: 'creativity',
+    title: { es: 'racha de fuego',               en: 'on fire' },
+    desc:  { es: 'combo de 10 en kala alasa',    en: '10-combo in kala alasa' }
   }
 ]
 

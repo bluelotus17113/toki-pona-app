@@ -4772,3 +4772,328 @@ html, body, #root, .home {
   background: var(--good);
   color: var(--paper);
 }
+
+/* ============ Shared minigame screen layout (used by 4 new games) ============ */
+/* Header / banner / rules / start button / result patterns are repeated, so
+   we keep per-minigame classes but the visual recipe is consistent. */
+
+/* ============ Kalama Kute (audio) ============ */
+.kalamakute-screen { max-width: 720px; margin: 0 auto; padding: 14px 14px 40px; animation: fadeUp 0.4s ease backwards; }
+.kalamakute-header { display: flex; align-items: center; gap: 10px; }
+.kalamakute-title-block { flex: 1; text-align: center; }
+.kalamakute-title-block h2 { margin: 0; font-size: 1.2rem; color: var(--ink); }
+.kalamakute-title-block p { margin: 2px 0 0; font-size: 0.78rem; color: var(--ink-soft); font-weight: 600; }
+.kalamakute-banner {
+  background: var(--cream); border: 3px solid var(--ink); border-radius: 14px;
+  padding: 12px 16px; font-weight: 600; font-size: 0.88rem; line-height: 1.5;
+  box-shadow: 4px 4px 0 var(--ink); margin: 14px 0 18px; color: var(--ink);
+}
+.kalamakute-rules { display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
+.kalamakute-rule {
+  display: flex; align-items: center; gap: 12px; padding: 10px 14px;
+  background: var(--paper); border: 2px solid var(--ink); border-radius: 12px;
+  font-size: 0.86rem; font-weight: 600;
+}
+.kalamakute-rule > span:first-child { font-size: 1.2rem; flex-shrink: 0; }
+.kalamakute-start, .kulupunimi-start, .kalaalasa-start {
+  display: block; width: 100%; background: var(--good); color: var(--paper);
+  border: 3px solid var(--ink); border-radius: 16px; padding: 16px 24px;
+  font-size: 1.05rem; font-weight: 900; box-shadow: 5px 5px 0 var(--ink);
+  cursor: pointer; transition: transform 0.12s, box-shadow 0.12s;
+}
+.kalamakute-start:active, .kulupunimi-start:active, .kalaalasa-start:active {
+  transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--ink);
+}
+.kalamakute-game-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+.kalamakute-progress-bar {
+  flex: 1; height: 10px; background: var(--paper); border: 2px solid var(--ink);
+  border-radius: 999px; overflow: hidden;
+}
+.kalamakute-progress-fill { height: 100%; background: var(--good); transition: width 0.35s ease; }
+.kalamakute-hearts { display: flex; gap: 4px; font-size: 1rem; }
+.kalamakute-game-body { display: flex; flex-direction: column; gap: 18px; }
+.kalamakute-round-info { text-align: center; font-weight: 800; font-size: 0.88rem; color: var(--ink-soft); }
+.kalamakute-listen-btn {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  background: var(--yellow); border: 3px solid var(--ink); border-radius: 18px;
+  padding: 22px; cursor: pointer; box-shadow: 5px 5px 0 var(--ink);
+  transition: transform 0.12s, box-shadow 0.12s; font: inherit; color: var(--ink);
+}
+.kalamakute-listen-btn:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--ink); }
+.kalamakute-listen-icon { font-size: 2.4rem; filter: drop-shadow(2px 2px 0 var(--ink)); }
+.kalamakute-listen-text { font-weight: 900; font-size: 0.9rem; }
+.kalamakute-listen-btn.locked { opacity: 0.5; cursor: not-allowed; }
+.kalamakute-options {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+}
+.kk-option {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  padding: 18px 10px; background: var(--paper); border: 3px solid var(--ink);
+  border-radius: 14px; box-shadow: 3px 3px 0 var(--ink); cursor: pointer; font: inherit;
+  color: var(--ink); transition: transform 0.12s, box-shadow 0.12s, background 0.2s;
+}
+.kk-option:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--ink); }
+.kk-option.is-correct { background: var(--good-soft); border-color: var(--good); }
+.kk-option.is-wrong { background: #ffcccc; border-color: #e74c3c; }
+.kk-option-glyph { font-size: 2.2rem; line-height: 1; }
+.kk-option-latin { font-size: 0.78rem; font-weight: 700; }
+.kalamakute-feedback {
+  text-align: center; font-weight: 900; padding: 10px;
+  border-radius: 10px; margin-top: 8px;
+}
+.kalamakute-feedback.right { background: var(--good-soft); color: #145a2a; border: 2px solid var(--good); }
+.kalamakute-feedback.wrong { background: #ffe2e2; color: #8a1a1a; border: 2px solid #e74c3c; }
+.kalamakute-result, .kulupunimi-result, .kalaalasa-result {
+  display: flex; flex-direction: column; gap: 16px; align-items: center; margin-top: 24px;
+}
+.kalamakute-score, .kulupunimi-score, .kalaalasa-score {
+  background: var(--paper); border: 3px solid var(--ink); border-radius: 18px;
+  box-shadow: 4px 4px 0 var(--ink); padding: 20px 28px; text-align: center; min-width: 200px;
+}
+.kalamakute-score-big, .kulupunimi-score-big, .kalaalasa-score-big {
+  font-size: 2.4rem; font-weight: 900; color: var(--ink); line-height: 1;
+}
+.kalamakute-score-sub, .kulupunimi-score-sub, .kalaalasa-score-sub {
+  margin-top: 6px; font-size: 0.82rem; color: var(--ink-soft); font-weight: 700;
+}
+.kalamakute-reward, .kulupunimi-reward, .kalaalasa-reward {
+  background: var(--yellow); border: 3px solid var(--ink); border-radius: 14px;
+  padding: 12px 18px; font-size: 1.05rem; font-weight: 900; text-align: center;
+  box-shadow: 4px 4px 0 var(--ink);
+}
+.kalamakute-perfect, .kulupunimi-perfect {
+  display: block; font-size: 0.75rem; font-weight: 700; color: #145a2a; margin-top: 4px;
+}
+.kalamakute-result-actions, .kulupunimi-result-actions, .kalaalasa-result-actions {
+  display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 280px;
+}
+.kalamakute-result-btn, .kulupunimi-result-btn, .kalaalasa-result-btn {
+  background: var(--paper); color: var(--ink); border: 3px solid var(--ink);
+  border-radius: 12px; padding: 12px 18px; font-size: 0.95rem; font-weight: 800;
+  cursor: pointer; box-shadow: 3px 3px 0 var(--ink); transition: transform 0.12s, box-shadow 0.12s;
+}
+.kalamakute-result-btn:active, .kulupunimi-result-btn:active, .kalaalasa-result-btn:active {
+  transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--ink);
+}
+.kalamakute-result-btn.primary, .kulupunimi-result-btn.primary, .kalaalasa-result-btn.primary {
+  background: var(--good); color: var(--paper);
+}
+
+/* ============ Kulupu Nimi (categorías) ============ */
+.kulupunimi-screen { max-width: 720px; margin: 0 auto; padding: 14px 14px 40px; animation: fadeUp 0.4s ease backwards; }
+.kulupunimi-header { display: flex; align-items: center; gap: 10px; }
+.kulupunimi-title-block { flex: 1; text-align: center; }
+.kulupunimi-title-block h2 { margin: 0; font-size: 1.2rem; color: var(--ink); }
+.kulupunimi-title-block p { margin: 2px 0 0; font-size: 0.78rem; color: var(--ink-soft); font-weight: 600; }
+.kulupunimi-banner {
+  background: var(--cream); border: 3px solid var(--ink); border-radius: 14px;
+  padding: 12px 16px; font-weight: 600; font-size: 0.88rem; line-height: 1.5;
+  box-shadow: 4px 4px 0 var(--ink); margin: 14px 0 18px;
+}
+.kulupunimi-rules { display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
+.kulupunimi-rule {
+  display: flex; align-items: center; gap: 12px; padding: 10px 14px;
+  background: var(--paper); border: 2px solid var(--ink); border-radius: 12px;
+  font-size: 0.86rem; font-weight: 600;
+}
+.kulupunimi-rule > span:first-child { font-size: 1.2rem; flex-shrink: 0; }
+.kulupunimi-game-header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.kulupunimi-progress-bar {
+  flex: 1; height: 10px; background: var(--paper); border: 2px solid var(--ink);
+  border-radius: 999px; overflow: hidden;
+}
+.kulupunimi-progress-fill { height: 100%; background: var(--good); transition: width 0.35s ease; }
+.kulupunimi-round-info { font-weight: 800; font-size: 0.82rem; padding: 4px 10px; background: var(--paper); border: 2px solid var(--ink); border-radius: 8px; }
+.kulupunimi-prompt {
+  text-align: center; font-weight: 700; font-size: 0.92rem; color: var(--ink);
+  margin-bottom: 14px;
+}
+.kulupunimi-pool {
+  display: flex; flex-direction: column; gap: 8px; min-height: 60px;
+  background: var(--cream); border: 2px dashed var(--ink-faint); border-radius: 14px;
+  padding: 10px; margin-bottom: 14px;
+}
+.kulupunimi-pool-empty {
+  text-align: center; color: var(--ink-soft); font-style: italic; padding: 12px;
+}
+.kulupunimi-token {
+  display: flex; align-items: center; gap: 10px; padding: 8px 12px;
+  background: var(--paper); border: 2.5px solid var(--ink); border-radius: 12px;
+  box-shadow: 2px 2px 0 var(--ink);
+}
+.kn-token-glyph { font-size: 1.6rem; flex-shrink: 0; }
+.kn-token-latin { font-weight: 800; font-size: 0.9rem; flex: 1; }
+.kn-token-actions { display: flex; gap: 6px; }
+.kn-assign-btn {
+  width: 38px; height: 38px; border: 2px solid var(--ink); border-radius: 10px;
+  background: var(--yellow); cursor: pointer; font-size: 1.2rem;
+  box-shadow: 2px 2px 0 var(--ink);
+}
+.kn-assign-btn:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 var(--ink); }
+.kulupunimi-bins {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px;
+}
+@media (max-width: 480px) { .kulupunimi-bins { grid-template-columns: 1fr; } }
+.kn-bin {
+  background: var(--paper); border: 3px solid var(--ink); border-radius: 14px;
+  padding: 10px; min-height: 100px;
+}
+.kn-bin-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; padding-bottom: 6px; border-bottom: 2px dashed var(--ink-faint); }
+.kn-bin-icon { font-size: 1.4rem; }
+.kn-bin-label { flex: 1; font-weight: 900; font-size: 0.88rem; }
+.kn-bin-count { font-size: 0.78rem; font-weight: 700; color: var(--ink-soft); background: var(--cream); border: 1.5px solid var(--ink); border-radius: 999px; padding: 0 8px; }
+.kn-bin-body { display: flex; flex-wrap: wrap; gap: 6px; }
+.kn-bin-empty { color: var(--ink-soft); font-style: italic; font-size: 0.78rem; padding: 8px; }
+.kn-bin-item {
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  padding: 6px 10px; background: var(--cream); border: 2px solid var(--ink);
+  border-radius: 10px; cursor: pointer; font: inherit; box-shadow: 2px 2px 0 var(--ink);
+}
+.kn-bin-item:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 var(--ink); }
+.kn-bin-item.is-correct { background: var(--good-soft); border-color: var(--good); }
+.kn-bin-item.is-wrong { background: #ffcccc; border-color: #e74c3c; }
+.kn-bin-glyph { font-size: 1.3rem; line-height: 1; }
+.kn-bin-latin { font-size: 0.7rem; font-weight: 700; }
+.kulupunimi-check {
+  display: block; width: 100%; background: var(--good); color: var(--paper);
+  border: 3px solid var(--ink); border-radius: 14px; padding: 14px 24px;
+  font-size: 1rem; font-weight: 900; cursor: pointer; box-shadow: 4px 4px 0 var(--ink);
+  transition: transform 0.12s, box-shadow 0.12s;
+}
+.kulupunimi-check.disabled { background: var(--paper); color: var(--ink-soft); cursor: not-allowed; }
+.kulupunimi-check:not(.disabled):active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--ink); }
+
+/* ============ Nimi Sin (wordle) ============ */
+.nimisin-screen { max-width: 480px; margin: 0 auto; padding: 14px 14px 40px; animation: fadeUp 0.4s ease backwards; }
+.nimisin-header { display: flex; align-items: center; gap: 10px; }
+.nimisin-title-block { flex: 1; text-align: center; }
+.nimisin-title-block h2 { margin: 0; font-size: 1.2rem; color: var(--ink); }
+.nimisin-title-block p { margin: 2px 0 0; font-size: 0.78rem; color: var(--ink-soft); font-weight: 600; }
+.nimisin-meta {
+  display: flex; gap: 6px; justify-content: center; align-items: center;
+  font-size: 0.78rem; color: var(--ink-soft); font-weight: 700; margin: 8px 0 14px;
+}
+.nimisin-toast {
+  background: var(--ink); color: var(--paper); border-radius: 8px; padding: 8px 14px;
+  text-align: center; font-weight: 700; font-size: 0.84rem;
+  margin: 0 auto 10px; max-width: 280px; animation: fadeIn 0.2s ease;
+}
+.nimisin-board {
+  display: flex; flex-direction: column; gap: 6px; margin: 14px 0;
+}
+.nimisin-board.shake { animation: nsShake 0.4s ease; }
+@keyframes nsShake {
+  0%,100% { transform: translateX(0); }
+  20%  { transform: translateX(-6px); }
+  40%  { transform: translateX(6px); }
+  60%  { transform: translateX(-4px); }
+  80%  { transform: translateX(4px); }
+}
+.nimisin-row {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;
+  max-width: 280px; margin: 0 auto;
+}
+.nimisin-cell {
+  aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+  border: 2.5px solid var(--ink-faint); border-radius: 8px; background: var(--paper);
+  font-weight: 900; font-size: 1.6rem; text-transform: lowercase;
+  color: var(--ink); transition: background 0.2s, border-color 0.2s;
+}
+.nimisin-cell.typing { border-color: var(--ink); }
+.nimisin-cell.filled { color: var(--paper); border-color: transparent; }
+.nimisin-cell.absent { background: #95a5a6; }
+.nimisin-cell.present { background: #f1c40f; color: var(--ink); }
+.nimisin-cell.correct { background: var(--good); }
+.nimisin-keyboard { display: flex; flex-direction: column; gap: 6px; margin-top: 18px; }
+.nimisin-keyboard-row { display: flex; gap: 4px; justify-content: center; }
+.nimisin-key {
+  flex: 1; max-width: 42px; aspect-ratio: 1 / 1.2;
+  background: var(--paper); border: 2px solid var(--ink); border-radius: 6px;
+  font-weight: 800; font-size: 1rem; cursor: pointer; color: var(--ink);
+  text-transform: lowercase; box-shadow: 2px 2px 0 var(--ink); padding: 0;
+}
+.nimisin-key:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 var(--ink); }
+.nimisin-key.absent { background: #95a5a6; color: var(--paper); }
+.nimisin-key.present { background: #f1c40f; color: var(--ink); }
+.nimisin-key.correct { background: var(--good); color: var(--paper); }
+.nimisin-key.wide { max-width: 90px; font-size: 0.82rem; }
+.nimisin-key.primary { background: var(--good); color: var(--paper); }
+.nimisin-result {
+  text-align: center; padding: 22px 18px; margin-top: 18px;
+  background: var(--paper); border: 3px solid var(--ink); border-radius: 18px;
+  box-shadow: 5px 5px 0 var(--ink); animation: fadeUp 0.35s ease;
+}
+.nimisin-result.won { background: var(--good-soft); }
+.nimisin-result-icon { font-size: 3rem; filter: drop-shadow(3px 3px 0 var(--ink)); margin-bottom: 4px; }
+.nimisin-result-title { font-size: 1.4rem; font-weight: 900; color: var(--ink); margin-bottom: 4px; }
+.nimisin-result-sub { font-size: 0.92rem; color: var(--ink-soft); margin-bottom: 10px; }
+.nimisin-result-sub strong { color: var(--ink); font-weight: 900; }
+.nimisin-result-reward {
+  background: var(--yellow); border: 3px solid var(--ink); border-radius: 12px;
+  padding: 10px 16px; font-weight: 900; display: inline-block; margin: 4px 0 10px;
+  box-shadow: 3px 3px 0 var(--ink);
+}
+.nimisin-result-tomorrow { font-size: 0.78rem; color: var(--ink-soft); font-style: italic; }
+
+/* ============ Kala Alasa (arcade · pesca) ============ */
+.kalaalasa-screen { max-width: 720px; margin: 0 auto; padding: 14px 14px 40px; animation: fadeUp 0.4s ease backwards; }
+.kalaalasa-header { display: flex; align-items: center; gap: 10px; }
+.kalaalasa-title-block { flex: 1; text-align: center; }
+.kalaalasa-title-block h2 { margin: 0; font-size: 1.2rem; color: var(--ink); }
+.kalaalasa-title-block p { margin: 2px 0 0; font-size: 0.78rem; color: var(--ink-soft); font-weight: 600; }
+.kalaalasa-banner {
+  background: var(--cream); border: 3px solid var(--ink); border-radius: 14px;
+  padding: 12px 16px; font-weight: 600; font-size: 0.88rem; line-height: 1.5;
+  box-shadow: 4px 4px 0 var(--ink); margin: 14px 0 18px;
+}
+.kalaalasa-rules { display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
+.kalaalasa-rule {
+  display: flex; align-items: center; gap: 12px; padding: 10px 14px;
+  background: var(--paper); border: 2px solid var(--ink); border-radius: 12px;
+  font-size: 0.86rem; font-weight: 600;
+}
+.kalaalasa-rule > span:first-child { font-size: 1.2rem; flex-shrink: 0; }
+.kalaalasa-game-header { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
+.kalaalasa-hud {
+  flex: 1; display: flex; flex-wrap: wrap; gap: 8px; justify-content: space-around;
+  background: var(--paper); border: 3px solid var(--ink); border-radius: 12px;
+  padding: 8px 12px; box-shadow: 3px 3px 0 var(--ink);
+}
+.kalaalasa-hud > span { font-weight: 800; font-size: 0.82rem; white-space: nowrap; }
+.kalaalasa-target {
+  background: var(--yellow); border: 3px solid var(--ink); border-radius: 14px;
+  padding: 10px 16px; text-align: center; margin-bottom: 12px;
+  box-shadow: 4px 4px 0 var(--ink);
+}
+.kalaalasa-target-label { font-size: 0.78rem; font-weight: 700; color: var(--ink-soft); }
+.kalaalasa-target-meaning { font-size: 1.15rem; font-weight: 900; color: var(--ink); margin-top: 2px; }
+.kalaalasa-arena {
+  position: relative;
+  height: 280px;
+  background: linear-gradient(180deg, #b3d9ff 0%, #7fbfff 100%);
+  border: 3px solid var(--ink); border-radius: 16px;
+  overflow: hidden; box-shadow: 4px 4px 0 var(--ink);
+}
+.kalaalasa-fish {
+  position: absolute; display: flex; align-items: center; gap: 6px;
+  background: var(--paper); border: 2.5px solid var(--ink); border-radius: 999px;
+  padding: 4px 12px 4px 6px; cursor: pointer; font: inherit; color: var(--ink);
+  box-shadow: 2px 2px 0 var(--ink); white-space: nowrap;
+  transition: transform 0.1s;
+}
+.kalaalasa-fish:active { transform: scale(0.92); }
+.kalaalasa-fish-emoji { font-size: 1.4rem; }
+.kalaalasa-fish-word { font-weight: 800; font-size: 0.9rem; }
+.kalaalasa-wave {
+  position: absolute; left: 0; right: 0; text-align: center;
+  color: rgba(255,255,255,0.5); font-size: 0.7rem;
+  pointer-events: none; user-select: none;
+}
+.kalaalasa-screen.flash-good { animation: flashGood 0.25s ease; }
+.kalaalasa-screen.flash-bad  { animation: flashBad  0.25s ease; }
+@keyframes flashGood { 0% { background-color: #c8e6c9; } 100% { background-color: transparent; } }
+@keyframes flashBad  { 0% { background-color: #ffcdd2; } 100% { background-color: transparent; } }
+.kalaalasa-stats {
+  text-align: center; font-size: 0.92rem; font-weight: 700; color: var(--ink-soft);
+}
+.kalaalasa-stats strong { color: var(--ink); font-weight: 900; }

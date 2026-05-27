@@ -10,17 +10,32 @@ const isNative = Capacitor.isNativePlatform()
 
 // ============ Native (Capacitor / Android) ============
 
-async function nativeSpeak(text, opts = {}) {
-  // Comprobar si hay motor TTS disponible
+// Cache de voces: getSupportedVoices() cruza el bridge JS↔nativo,
+// llamarlo en cada speak introduce ~50-200ms de latencia perceptible.
+let nativeVoicesCache = null
+let nativeEngineReady = false
+
+async function getNativeVoicesCached() {
+  if (nativeVoicesCache !== null) return nativeVoicesCache
   try {
     const { voices } = await TextToSpeech.getSupportedVoices()
-    if (!voices || voices.length === 0) {
-      console.warn('No native TTS engine, falling back to web speech')
-      return webSpeak(text, opts)
-    }
+    nativeVoicesCache = voices ?? []
   } catch (e) {
     console.warn('Cannot query TTS voices:', e)
+    nativeVoicesCache = []
   }
+  return nativeVoicesCache
+}
+
+async function nativeSpeak(text, opts = {}) {
+  const voices = await getNativeVoicesCached()
+  if (!voices || voices.length === 0) {
+    console.warn('No native TTS engine, falling back to web speech')
+    return webSpeak(text, opts)
+  }
+
+  // Cancelar cualquier speak previo para responder rápido a clics seguidos.
+  try { await TextToSpeech.stop() } catch {}
 
   try {
     opts.onStart?.()
@@ -42,6 +57,31 @@ async function nativeSpeak(text, opts = {}) {
 
 async function nativeStop() {
   try { await TextToSpeech.stop() } catch {}
+}
+
+// Warm-up del motor TTS: en Android la primera invocación carga el modelo
+// de voz (~200-800ms). Lo disparamos al iniciar la app para que el primer
+// speak real sea instantáneo.
+async function nativeWarmUp() {
+  if (nativeEngineReady) return
+  nativeEngineReady = true
+  try {
+    const voices = await getNativeVoicesCached()
+    if (!voices || voices.length === 0) return
+    // "speak" silencioso con texto mínimo: dispara la carga del modelo
+    // sin emitir audio audible.
+    await TextToSpeech.speak({
+      text: 'a',
+      lang: 'it-IT',
+      rate: 2.0,
+      pitch: 1.0,
+      volume: 0.0,
+      voice: 0,
+      category: 'ambient'
+    })
+  } catch (e) {
+    console.warn('TTS warm-up failed (non-fatal):', e)
+  }
 }
 
 // ============ Web (navegador) ============
@@ -128,7 +168,11 @@ let primed = false
 export async function primeAudio() {
   if (primed) return
   primed = true
-  if (isNative) return // Android no necesita "primer"
+  if (isNative) {
+    // En Android: cachear voces + warm-up del motor TTS para que el primer
+    // speak real no tenga que cargar el modelo.
+    return nativeWarmUp()
+  }
   try {
     if (typeof window === 'undefined' || !('speechSynthesis' in window)) return
     await ensureVoices()

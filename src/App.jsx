@@ -4,6 +4,7 @@ import { App as CapApp } from '@capacitor/app'
 import { useProgress } from './hooks/useProgress.js'
 import { useLang } from './data/i18n.js'
 import { checkAutoAchievements } from './hooks/useAchievements.js'
+import { primeAudio } from './hooks/useSpeech.js'
 import Home from './components/Home.jsx'
 import Lesson from './components/Lesson.jsx'
 import Practice from './components/Practice.jsx'
@@ -22,6 +23,10 @@ import Kulupu from './components/Kulupu.jsx'
 import KamaSona from './components/KamaSona.jsx'
 import LipuPakala from './components/LipuPakala.jsx'
 import Minijuegos from './components/Minijuegos.jsx'
+import KalamaKute from './components/KalamaKute.jsx'
+import KulupuNimi from './components/KulupuNimi.jsx'
+import NimiSin from './components/NimiSin.jsx'
+import KalaAlasa from './components/KalaAlasa.jsx'
 
 // Lienzo lazy-loaded: contiene Konva (~300KB) — solo se carga al entrar.
 const SitelenLienzo = lazy(() => import('./components/SitelenLienzo.jsx'))
@@ -47,11 +52,22 @@ export default function App() {
   const openKamaSona   = () => setScreen({ name: 'kamasona' })
   const openLipuPakala = () => setScreen({ name: 'lipupakala' })
   const openMinijuegos = () => setScreen({ name: 'minijuegos' })
+  const openKalamaKute = () => setScreen({ name: 'kalamakute' })
+  const openKulupuNimi = () => setScreen({ name: 'kulupunimi' })
+  const openNimiSin    = () => setScreen({ name: 'nimisin' })
+  const openKalaAlasa  = () => setScreen({ name: 'kalaalasa' })
 
   // Chequear logros automáticos cada vez que cambia el estado de progress
   useEffect(() => {
     checkAutoAchievements(progress.state)
   }, [progress.state.completed.length, progress.state.xp])
+
+  // Warm-up del motor TTS al arrancar la app — corre en background mientras
+  // el usuario navega Home → Lección. Sin esto, el primer 🔊 tiene ~500ms
+  // de retraso en Android (carga del modelo de voz).
+  useEffect(() => {
+    primeAudio()
+  }, [])
 
   // Manejo del botón Atrás del sistema (Android)
   // Mapeo: dónde va "atrás" desde cada pantalla. null = exit app
@@ -76,6 +92,10 @@ export default function App() {
       nimitu:        'minijuegos',
       kamasona:      'minijuegos',
       lipupakala:    'minijuegos',
+      kalamakute:    'minijuegos',
+      kulupunimi:    'minijuegos',
+      nimisin:       'minijuegos',
+      kalaalasa:     'minijuegos',
       complete:      'home'
     }
     let handle
@@ -192,7 +212,23 @@ export default function App() {
           onNimiTu={openNimiTu}
           onKamaSona={openKamaSona}
           onLipuPakala={openLipuPakala}
+          onKalamaKute={openKalamaKute}
+          onKulupuNimi={openKulupuNimi}
+          onNimiSin={openNimiSin}
+          onKalaAlasa={openKalaAlasa}
         />
+      )}
+      {screen.name === 'kalamakute' && (
+        <KalamaKute progress={progress} lang={lang} onExit={goMinijuegos} />
+      )}
+      {screen.name === 'kulupunimi' && (
+        <KulupuNimi progress={progress} lang={lang} onExit={goMinijuegos} />
+      )}
+      {screen.name === 'nimisin' && (
+        <NimiSin progress={progress} lang={lang} onExit={goMinijuegos} />
+      )}
+      {screen.name === 'kalaalasa' && (
+        <KalaAlasa progress={progress} lang={lang} onExit={goMinijuegos} />
       )}
 
       <AchievementToast lang={lang} />
