@@ -181,6 +181,32 @@ export const STRINGS = {
   // theme toggle
   themeToggle:        { es: 'cambiar tema',                       en: 'change theme' },
 
+  // toki — modo conversación
+  tokiTitle:          { es: 'conversaciones',                     en: 'conversations' },
+  tokiSub:            { es: 'practicá diálogos reales · elegí tu respuesta', en: 'practice real dialogues · pick your reply' },
+  tokiCtaSub:         { es: 'pedí café, presentate, pedí ayuda · 3 diálogos', en: 'order coffee, introduce yourself, ask for help · 3 dialogues' },
+  tokiIntro:          { es: 'cada conversación tiene 2-4 turnos donde elegís qué responder. las opciones "buenas" dan XP bonus. una vez por día por diálogo.', en: 'each conversation has 2-4 turns where you pick what to reply. "good" choices give bonus XP. once per day per dialogue.' },
+  tokiPickReply:      { es: 'elegí tu respuesta',                 en: 'pick your reply' },
+  tokiResultTitle:    { es: '¡conversación completa!',            en: 'conversation done!' },
+  tokiAnother:        { es: 'otra conversación',                  en: 'another conversation' },
+  tokiGoodChoices:    { es: 'buenas elecciones',                  en: 'good choices' },
+
+  // onboarding (tutorial primera vez)
+  onboardSkip:        { es: 'saltar',                             en: 'skip' },
+  onboardBack:        { es: 'atrás',                              en: 'back' },
+  onboardNext:        { es: 'siguiente',                          en: 'next' },
+  onboardStart:       { es: 'empezar',                            en: 'start' },
+  onboardSlide1Title: { es: 'toki! bienvenido',                   en: 'toki! welcome' },
+  onboardSlide1Body:  { es: 'toki pona es un idioma minimalista creado en 2001 por Sonja Lang. solo 120 palabras para expresar cualquier idea. esta app te va a enseñar paso a paso.', en: 'toki pona is a minimalist language created in 2001 by Sonja Lang. only 120 words to express any idea. this app will teach you step by step.' },
+  onboardSlide2Title: { es: 'lecciones · 50 niveles',             en: 'lessons · 50 levels' },
+  onboardSlide2Body:  { es: 'aprendé palabras y frases con ejercicios interactivos. ganás ⭐ XP por acierto y 🪙 mani para comprar cuentos. tenés ❤️ vidas — si te equivocás se gastan, pero se regeneran solas.', en: 'learn words and phrases with interactive exercises. earn ⭐ XP per correct answer and 🪙 mani to buy stories. you have ❤️ hearts — wrong answers spend them, but they regenerate automatically.' },
+  onboardSlide3Title: { es: 'minijuegos · 9 modos',               en: 'minigames · 9 modes' },
+  onboardSlide3Body:  { es: 'wordle pona, sopa de letras, memoria, caligrafía, arcade y más. cada minijuego se puede jugar una vez por día — así dura más tu progreso y la práctica es significativa.', en: 'wordle pona, word search, memory, calligraphy, arcade and more. each minigame can be played once per day — keeps your progress meaningful.' },
+  onboardSlide4Title: { es: 'cuentos · leé en toki pona',         en: 'stories · read in toki pona' },
+  onboardSlide4Body:  { es: 'desbloqueá 15 cuentos cortos con tu mani. cada cuento tiene TTS, traducción y se desbloquea según las lecciones que completaste.', en: 'unlock 15 short stories with your mani. each story has TTS, translation, and unlocks as you complete lessons.' },
+  onboardSlide5Title: { es: 'progreso · todo en un lugar',        en: 'progress · all in one place' },
+  onboardSlide5Body:  { es: 'el dashboard te muestra tu racha, XP por día, palabras dominadas y avance por sección. la app está en tu idioma y siempre es family-safe. ¡buena suerte!', en: 'the dashboard shows your streak, XP per day, mastered words and progress by section. the app is in your language and always family-safe. good luck!' },
+
   // kalama kute (audio-first)
   kalamaKuteTitle:    { es: 'kalama kute',                        en: 'kalama kute' },
   kalamaKuteSub:      { es: 'escuchá y elegí el glifo',           en: 'listen and pick the glyph' },

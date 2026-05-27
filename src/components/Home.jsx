@@ -12,7 +12,7 @@ import FeedbackButton from './FeedbackButton.jsx'
 import KofiButton from './KofiButton.jsx'
 import NoHeartsModal from './NoHeartsModal.jsx'
 
-export default function Home({ progress, lang, setLang, onOpen, onPractice, onDictionary, onGrammar, onSitelen, onLienzo, onAchievements, onCuentos, onHistoria, onAtlas, onKulupu, onMinijuegos, onDashboard, theme, onCycleTheme }) {
+export default function Home({ progress, lang, setLang, onOpen, onPractice, onDictionary, onGrammar, onSitelen, onLienzo, onAchievements, onCuentos, onHistoria, onAtlas, onKulupu, onMinijuegos, onDashboard, onToki, theme, onCycleTheme }) {
   const { state, isUnlocked, reset, MAX_HEARTS } = progress
   const t = makeT(lang)
   const practiceAvailable = state.completed.length >= 1
@@ -54,6 +54,7 @@ export default function Home({ progress, lang, setLang, onOpen, onPractice, onDi
   const handleKulupu = () => { playClick(); onKulupu() }
   const handleMinijuegos = () => { playClick(); onMinijuegos() }
   const handleDashboard = () => { playClick(); onDashboard() }
+  const handleToki = () => { playClick(); onToki() }
   const handleThemeCycle = () => { playClick(); onCycleTheme?.() }
 
   const themeIcon = theme === 'dark' ? '🌙' : theme === 'sepia' ? '📜' : '☀️'
@@ -185,6 +186,15 @@ export default function Home({ progress, lang, setLang, onOpen, onPractice, onDi
           </span>
         </button>
       </div>
+
+      <button className="toki-cta" onClick={handleToki}>
+        <span className="toki-cta-icon">💬</span>
+        <span className="toki-cta-text">
+          <span className="toki-cta-title">{t('tokiTitle')}</span>
+          <span className="toki-cta-sub">{t('tokiCtaSub')}</span>
+        </span>
+        <span className="toki-cta-badge">⭐ +25 XP</span>
+      </button>
 
       <button className="cuentos-cta" onClick={handleCuentos}>
         <span className="cuentos-cta-icon">📚</span>

@@ -231,6 +231,16 @@ export const ACHIEVEMENTS = [
     id: 'sitelen-sin-complete', icon: '🖋️', category: 'creativity',
     title: { es: 'calígrafo',                    en: 'calligrapher' },
     desc:  { es: 'completaste una sesión de sitelen sin', en: 'completed a sitelen sin session' }
+  },
+  {
+    id: 'toki-first-convo', icon: '💬', category: 'discovery',
+    title: { es: 'primera charla',               en: 'first chat' },
+    desc:  { es: 'completaste una conversación interactiva', en: 'finished an interactive conversation' }
+  },
+  {
+    id: 'toki-perfect-convo', icon: '🎙️', category: 'discovery',
+    title: { es: 'orador pona',                  en: 'eloquent speaker' },
+    desc:  { es: 'todas las opciones "buenas" en una conversación', en: 'all "good" choices in one conversation' }
   }
 ]
 

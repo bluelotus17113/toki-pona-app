@@ -30,7 +30,10 @@ import KalaAlasa from './components/KalaAlasa.jsx'
 import AlasaNimi from './components/AlasaNimi.jsx'
 import SitelenSin from './components/SitelenSin.jsx'
 import Dashboard from './components/Dashboard.jsx'
+import Toki from './components/Toki.jsx'
+import Onboarding, { isOnboarded } from './components/Onboarding.jsx'
 import { useTheme } from './hooks/useTheme.js'
+import { ensureDailyNotifications, isSetupDone as notifSetupDone } from './hooks/useNotifications.js'
 
 // Lienzo lazy-loaded: contiene Konva (~300KB) — solo se carga al entrar.
 const SitelenLienzo = lazy(() => import('./components/SitelenLienzo.jsx'))
@@ -40,6 +43,7 @@ export default function App() {
   const { lang, setLang } = useLang()
   const { theme, cycleTheme } = useTheme()
   const [screen, setScreen] = useState({ name: 'home' })
+  const [needsOnboarding, setNeedsOnboarding] = useState(() => !isOnboarded())
 
   const openLesson     = (lessonId) => setScreen({ name: 'lesson', lessonId })
   const openPractice   = () => setScreen({ name: 'practice' })
@@ -64,6 +68,7 @@ export default function App() {
   const openAlasaNimi  = () => setScreen({ name: 'alasanimi' })
   const openSitelenSin = () => setScreen({ name: 'sitelensin' })
   const openDashboard  = () => setScreen({ name: 'dashboard' })
+  const openToki       = () => setScreen({ name: 'toki' })
 
   // Chequear logros automáticos cada vez que cambia el estado de progress
   useEffect(() => {
@@ -76,6 +81,14 @@ export default function App() {
   useEffect(() => {
     primeAudio()
   }, [])
+
+  // Programar notificaciones diarias una vez que terminó el onboarding.
+  // Si el usuario rechaza el permiso, no insistimos.
+  useEffect(() => {
+    if (needsOnboarding) return
+    if (notifSetupDone()) return
+    ensureDailyNotifications({ lang }).catch(() => {})
+  }, [needsOnboarding, lang])
 
   // Manejo del botón Atrás del sistema (Android)
   // Mapeo: dónde va "atrás" desde cada pantalla. null = exit app
@@ -107,6 +120,7 @@ export default function App() {
       alasanimi:     'minijuegos',
       sitelensin:    'minijuegos',
       dashboard:     'home',
+      toki:          'home',
       complete:      'home'
     }
     let handle
@@ -135,6 +149,16 @@ export default function App() {
   const goHome = () => setScreen({ name: 'home' })
   const goMinijuegos = () => setScreen({ name: 'minijuegos' })
 
+  // Pantalla de onboarding: bloquea todo lo demás hasta completarse o saltarse.
+  if (needsOnboarding) {
+    return (
+      <div className="app">
+        <BackgroundOrbs />
+        <Onboarding lang={lang} onFinish={() => setNeedsOnboarding(false)} />
+      </div>
+    )
+  }
+
   return (
     <div className="app">
       <BackgroundOrbs />
@@ -157,6 +181,7 @@ export default function App() {
           onKulupu={openKulupu}
           onMinijuegos={openMinijuegos}
           onDashboard={openDashboard}
+          onToki={openToki}
           theme={theme}
           onCycleTheme={cycleTheme}
         />
@@ -242,6 +267,9 @@ export default function App() {
       )}
       {screen.name === 'dashboard' && (
         <Dashboard progress={progress} lang={lang} onExit={goHome} />
+      )}
+      {screen.name === 'toki' && (
+        <Toki progress={progress} lang={lang} onExit={goHome} />
       )}
       {screen.name === 'kalamakute' && (
         <KalamaKute progress={progress} lang={lang} onExit={goMinijuegos} />
