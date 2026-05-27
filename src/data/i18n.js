@@ -103,6 +103,19 @@ export const STRINGS = {
   wodLabel:           { es: 'palabra del día',                    en: 'word of the day' },
   wodTitle:           { es: 'tocá para escuchar',                 en: 'tap to hear' },
 
+  // minijuegos (hub)
+  minijuegosTitle:    { es: 'minijuegos',                         en: 'minigames' },
+  minijuegosSub:      { es: 'juegos cortos para practicar jugando', en: 'short games to learn while playing' },
+  minijuegosHomeSub:  { es: '3 juegos disponibles',               en: '3 games available' },
+  minijuegosBanner:   { es: 'cada minijuego te da mani para comprar cuentos. mientras más jugás, más palabras quedan en tu memoria.', en: 'every minigame gives you mani to buy stories. the more you play, the more words stick.' },
+  minijuegosFootnote: { es: 'pronto más minijuegos · sugerí los tuyos en feedback', en: 'more minigames coming · suggest yours in feedback' },
+  nimiTuHubSub:       { es: 'combiná 2 palabras y formá una nueva', en: 'combine 2 words to form a new one' },
+  nimiTuHubMechanic:  { es: '10 rondas · acierto rápido',         en: '10 rounds · quick recall' },
+  kamaSonaHubSub:     { es: 'memoria — empareja glifo y significado', en: 'memory — match glyph and meaning' },
+  kamaSonaHubMechanic:{ es: '3 niveles · 4 a 8 parejas',          en: '3 levels · 4 to 8 pairs' },
+  lipuPakalaHubSub:   { es: 'frases rotas — ordená las palabras', en: 'broken sentences — order the words' },
+  lipuPakalaHubMechanic:{ es: '5 frases · contra reloj',          en: '5 sentences · against the clock' },
+
   // kama sona (memory game)
   kamaSonaTitle:      { es: 'kama sona',                          en: 'kama sona' },
   kamaSonaSub:        { es: 'memoria — empareja glifo y significado', en: 'memory — match glyph and meaning' },

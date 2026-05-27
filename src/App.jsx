@@ -21,6 +21,7 @@ import SitelenAtlas from './components/SitelenAtlas.jsx'
 import Kulupu from './components/Kulupu.jsx'
 import KamaSona from './components/KamaSona.jsx'
 import LipuPakala from './components/LipuPakala.jsx'
+import Minijuegos from './components/Minijuegos.jsx'
 
 // Lienzo lazy-loaded: contiene Konva (~300KB) — solo se carga al entrar.
 const SitelenLienzo = lazy(() => import('./components/SitelenLienzo.jsx'))
@@ -45,6 +46,7 @@ export default function App() {
   const openKulupu     = () => setScreen({ name: 'kulupu' })
   const openKamaSona   = () => setScreen({ name: 'kamasona' })
   const openLipuPakala = () => setScreen({ name: 'lipupakala' })
+  const openMinijuegos = () => setScreen({ name: 'minijuegos' })
 
   // Chequear logros automáticos cada vez que cambia el estado de progress
   useEffect(() => {
@@ -61,7 +63,6 @@ export default function App() {
       practice:      'home',
       dictionary:    'home',
       grammar:       'home',
-      nimitu:        'home',
       sitelen:       'home',
       lienzo:        'home',
       achievements:  'home',
@@ -70,8 +71,11 @@ export default function App() {
       historia:      'home',
       atlas:         'home',
       kulupu:        'home',
-      kamasona:      'home',
-      lipupakala:    'home',
+      minijuegos:    'home',
+      // los minijuegos vuelven al hub
+      nimitu:        'minijuegos',
+      kamasona:      'minijuegos',
+      lipupakala:    'minijuegos',
       complete:      'home'
     }
     let handle
@@ -80,10 +84,8 @@ export default function App() {
       if (target === null) {
         // estamos en home — minimizar/salir
         CapApp.exitApp()
-      } else if (target === 'cuentos') {
-        setScreen({ name: 'cuentos' })
       } else {
-        setScreen({ name: 'home' })
+        setScreen({ name: target })
       }
     }).then(h => { handle = h })
     return () => { if (handle) handle.remove() }
@@ -100,6 +102,7 @@ export default function App() {
   }
 
   const goHome = () => setScreen({ name: 'home' })
+  const goMinijuegos = () => setScreen({ name: 'minijuegos' })
 
   return (
     <div className="app">
@@ -121,8 +124,7 @@ export default function App() {
           onHistoria={openHistoria}
           onAtlas={openAtlas}
           onKulupu={openKulupu}
-          onKamaSona={openKamaSona}
-          onLipuPakala={openLipuPakala}
+          onMinijuegos={openMinijuegos}
         />
       )}
       {screen.name === 'lesson' && (
@@ -149,7 +151,7 @@ export default function App() {
         <Grammar lang={lang} onExit={goHome} />
       )}
       {screen.name === 'nimitu' && (
-        <NimiTu progress={progress} lang={lang} onExit={goHome} />
+        <NimiTu progress={progress} lang={lang} onExit={goMinijuegos} />
       )}
       {screen.name === 'sitelen' && (
         <SitelenPona lang={lang} onExit={goHome} />
@@ -178,10 +180,19 @@ export default function App() {
         <Kulupu lang={lang} onExit={goHome} />
       )}
       {screen.name === 'kamasona' && (
-        <KamaSona progress={progress} lang={lang} onExit={goHome} />
+        <KamaSona progress={progress} lang={lang} onExit={goMinijuegos} />
       )}
       {screen.name === 'lipupakala' && (
-        <LipuPakala progress={progress} lang={lang} onExit={goHome} />
+        <LipuPakala progress={progress} lang={lang} onExit={goMinijuegos} />
+      )}
+      {screen.name === 'minijuegos' && (
+        <Minijuegos
+          lang={lang}
+          onExit={goHome}
+          onNimiTu={openNimiTu}
+          onKamaSona={openKamaSona}
+          onLipuPakala={openLipuPakala}
+        />
       )}
 
       <AchievementToast lang={lang} />

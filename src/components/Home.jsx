@@ -12,7 +12,7 @@ import FeedbackButton from './FeedbackButton.jsx'
 import KofiButton from './KofiButton.jsx'
 import NoHeartsModal from './NoHeartsModal.jsx'
 
-export default function Home({ progress, lang, setLang, onOpen, onPractice, onDictionary, onGrammar, onNimiTu, onSitelen, onLienzo, onAchievements, onCuentos, onHistoria, onAtlas, onKulupu, onKamaSona, onLipuPakala }) {
+export default function Home({ progress, lang, setLang, onOpen, onPractice, onDictionary, onGrammar, onSitelen, onLienzo, onAchievements, onCuentos, onHistoria, onAtlas, onKulupu, onMinijuegos }) {
   const { state, isUnlocked, reset, MAX_HEARTS } = progress
   const t = makeT(lang)
   const practiceAvailable = state.completed.length >= 1
@@ -45,7 +45,6 @@ export default function Home({ progress, lang, setLang, onOpen, onPractice, onDi
   }
   const handleDictionary = () => { playClick(); onDictionary() }
   const handleGrammar = () => { playClick(); onGrammar() }
-  const handleNimiTu = () => { playClick(); onNimiTu() }
   const handleSitelen = () => { playClick(); onSitelen() }
   const handleLienzo = () => { playClick(); onLienzo() }
   const handleAchievements = () => { playClick(); onAchievements() }
@@ -53,8 +52,7 @@ export default function Home({ progress, lang, setLang, onOpen, onPractice, onDi
   const handleHistoria = () => { playClick(); onHistoria() }
   const handleAtlas = () => { playClick(); onAtlas() }
   const handleKulupu = () => { playClick(); onKulupu() }
-  const handleKamaSona = () => { playClick(); onKamaSona() }
-  const handleLipuPakala = () => { playClick(); onLipuPakala() }
+  const handleMinijuegos = () => { playClick(); onMinijuegos() }
 
   const lessonsBySection = SECTIONS.map(sec => ({
     section: sec,
@@ -151,11 +149,11 @@ export default function Home({ progress, lang, setLang, onOpen, onPractice, onDi
       </div>
 
       <div className="action-row triple compact">
-        <button className="action-btn nimitu" onClick={handleNimiTu}>
-          <span className="action-icon">🧩</span>
+        <button className="action-btn nimitu" onClick={handleMinijuegos}>
+          <span className="action-icon">🎮</span>
           <span className="action-text">
-            <span className="action-title">{t('nimiTu')}</span>
-            <span className="action-sub">{t('nimiTuSub')}</span>
+            <span className="action-title">{t('minijuegosTitle')}</span>
+            <span className="action-sub">{t('minijuegosHomeSub')}</span>
           </span>
         </button>
 
@@ -173,25 +171,6 @@ export default function Home({ progress, lang, setLang, onOpen, onPractice, onDi
             <span className="action-title">{t('iloSitelen')}</span>
             <span className="action-sub">{t('iloSitelenSub')}</span>
           </span>
-        </button>
-      </div>
-
-      <div className="minigame-row">
-        <button className="minigame-cta kama" onClick={handleKamaSona}>
-          <span className="minigame-cta-icon">🃏</span>
-          <span className="minigame-cta-text">
-            <span className="minigame-cta-title">{t('kamaSonaTitle')}</span>
-            <span className="minigame-cta-sub">{t('kamaSonaCtaSub')}</span>
-          </span>
-          <span className="minigame-cta-badge">🪙 +15</span>
-        </button>
-        <button className="minigame-cta lipu" onClick={handleLipuPakala}>
-          <span className="minigame-cta-icon">🧩</span>
-          <span className="minigame-cta-text">
-            <span className="minigame-cta-title">{t('lipuPakalaTitle')}</span>
-            <span className="minigame-cta-sub">{t('lipuPakalaCtaSub')}</span>
-          </span>
-          <span className="minigame-cta-badge">🪙 +15</span>
         </button>
       </div>
 

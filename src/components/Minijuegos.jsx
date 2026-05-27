@@ -1,0 +1,96 @@
+import { makeT } from '../data/i18n.js'
+import { playClick } from '../hooks/useSound.js'
+
+// Hub de minijuegos: tarjetas grandes que abren cada minijuego.
+// Cada tarjeta lleva: icono, glifo decorativo, título, descripción corta,
+// mecánica resumida y la recompensa máxima en mani.
+
+export default function Minijuegos({ lang = 'es', onNimiTu, onKamaSona, onLipuPakala, onExit }) {
+  const t = makeT(lang)
+
+  const GAMES = [
+    {
+      id: 'nimitu',
+      icon: '🧩',
+      glyph: 'nimi',
+      title: 'nimi tu',
+      sub: t('nimiTuHubSub'),
+      mechanic: t('nimiTuHubMechanic'),
+      reward: '🪙 +10',
+      accent: '#c6efd0',
+      onOpen: onNimiTu
+    },
+    {
+      id: 'kamasona',
+      icon: '🃏',
+      glyph: 'sona',
+      title: 'kama sona',
+      sub: t('kamaSonaHubSub'),
+      mechanic: t('kamaSonaHubMechanic'),
+      reward: '🪙 +15',
+      accent: '#ffd6e0',
+      onOpen: onKamaSona
+    },
+    {
+      id: 'lipupakala',
+      icon: '📝',
+      glyph: 'lipu',
+      title: 'lipu pakala',
+      sub: t('lipuPakalaHubSub'),
+      mechanic: t('lipuPakalaHubMechanic'),
+      reward: '🪙 +15',
+      accent: '#c7d4ff',
+      onOpen: onLipuPakala
+    }
+  ]
+
+  const handleOpen = (game) => {
+    playClick()
+    game.onOpen?.()
+  }
+
+  return (
+    <div className="minijuegos-screen">
+      <header className="minijuegos-header">
+        <button className="exit-btn" onClick={onExit}>←</button>
+        <div className="minijuegos-title-block">
+          <h2>🎮 {t('minijuegosTitle')}</h2>
+          <p>{t('minijuegosSub')}</p>
+        </div>
+      </header>
+
+      <div className="minijuegos-banner">
+        {t('minijuegosBanner')}
+      </div>
+
+      <div className="minijuegos-grid">
+        {GAMES.map(game => (
+          <button
+            key={game.id}
+            className="minijuego-card"
+            style={{ '--card-accent': game.accent }}
+            onClick={() => handleOpen(game)}
+          >
+            <div className="minijuego-card-top">
+              <span className="minijuego-card-icon">{game.icon}</span>
+              <span className="minijuego-card-glyph sitelen" aria-hidden="true">{game.glyph}</span>
+            </div>
+            <div className="minijuego-card-text">
+              <span className="minijuego-card-title">{game.title}</span>
+              <span className="minijuego-card-sub">{game.sub}</span>
+              <span className="minijuego-card-mechanic">{game.mechanic}</span>
+            </div>
+            <div className="minijuego-card-footer">
+              <span className="minijuego-card-reward">{game.reward}</span>
+              <span className="minijuego-card-arrow" aria-hidden="true">→</span>
+            </div>
+          </button>
+        ))}
+      </div>
+
+      <div className="minijuegos-footnote">
+        {t('minijuegosFootnote')}
+      </div>
+    </div>
+  )
+}
