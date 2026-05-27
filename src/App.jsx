@@ -31,9 +31,10 @@ import AlasaNimi from './components/AlasaNimi.jsx'
 import SitelenSin from './components/SitelenSin.jsx'
 import Dashboard from './components/Dashboard.jsx'
 import Toki from './components/Toki.jsx'
+import Settings from './components/Settings.jsx'
 import Onboarding, { isOnboarded } from './components/Onboarding.jsx'
 import { useTheme } from './hooks/useTheme.js'
-import { ensureDailyNotifications, isSetupDone as notifSetupDone } from './hooks/useNotifications.js'
+import { ensureDailyNotifications, isSetupDone as notifSetupDone, scheduleDaily } from './hooks/useNotifications.js'
 
 // Lienzo lazy-loaded: contiene Konva (~300KB) — solo se carga al entrar.
 const SitelenLienzo = lazy(() => import('./components/SitelenLienzo.jsx'))
@@ -41,7 +42,7 @@ const SitelenLienzo = lazy(() => import('./components/SitelenLienzo.jsx'))
 export default function App() {
   const progress = useProgress()
   const { lang, setLang } = useLang()
-  const { theme, cycleTheme } = useTheme()
+  const { theme, cycleTheme, setTheme } = useTheme()
   const [screen, setScreen] = useState({ name: 'home' })
   const [needsOnboarding, setNeedsOnboarding] = useState(() => !isOnboarded())
 
@@ -69,6 +70,7 @@ export default function App() {
   const openSitelenSin = () => setScreen({ name: 'sitelensin' })
   const openDashboard  = () => setScreen({ name: 'dashboard' })
   const openToki       = () => setScreen({ name: 'toki' })
+  const openSettings   = () => setScreen({ name: 'settings' })
 
   // Chequear logros automáticos cada vez que cambia el estado de progress
   useEffect(() => {
@@ -82,12 +84,16 @@ export default function App() {
     primeAudio()
   }, [])
 
-  // Programar notificaciones diarias una vez que terminó el onboarding.
-  // Si el usuario rechaza el permiso, no insistimos.
+  // Notificaciones: pedimos permiso la 1ra vez tras onboarding; si ya está
+  // setup, re-programamos el batch para mantener ~14 días futuros con la
+  // palabra del día calculada (cambia con la fecha).
   useEffect(() => {
     if (needsOnboarding) return
-    if (notifSetupDone()) return
-    ensureDailyNotifications({ lang }).catch(() => {})
+    if (notifSetupDone()) {
+      scheduleDaily({ lang }).catch(() => {})
+    } else {
+      ensureDailyNotifications({ lang }).catch(() => {})
+    }
   }, [needsOnboarding, lang])
 
   // Manejo del botón Atrás del sistema (Android)
@@ -121,6 +127,7 @@ export default function App() {
       sitelensin:    'minijuegos',
       dashboard:     'home',
       toki:          'home',
+      settings:      'home',
       complete:      'home'
     }
     let handle
@@ -182,6 +189,7 @@ export default function App() {
           onMinijuegos={openMinijuegos}
           onDashboard={openDashboard}
           onToki={openToki}
+          onSettings={openSettings}
           theme={theme}
           onCycleTheme={cycleTheme}
         />
@@ -270,6 +278,16 @@ export default function App() {
       )}
       {screen.name === 'toki' && (
         <Toki progress={progress} lang={lang} onExit={goHome} />
+      )}
+      {screen.name === 'settings' && (
+        <Settings
+          progress={progress}
+          lang={lang}
+          setLang={setLang}
+          theme={theme}
+          onSetTheme={setTheme}
+          onExit={goHome}
+        />
       )}
       {screen.name === 'kalamakute' && (
         <KalamaKute progress={progress} lang={lang} onExit={goMinijuegos} />

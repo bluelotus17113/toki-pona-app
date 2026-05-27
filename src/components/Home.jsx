@@ -12,7 +12,7 @@ import FeedbackButton from './FeedbackButton.jsx'
 import KofiButton from './KofiButton.jsx'
 import NoHeartsModal from './NoHeartsModal.jsx'
 
-export default function Home({ progress, lang, setLang, onOpen, onPractice, onDictionary, onGrammar, onSitelen, onLienzo, onAchievements, onCuentos, onHistoria, onAtlas, onKulupu, onMinijuegos, onDashboard, onToki, theme, onCycleTheme }) {
+export default function Home({ progress, lang, setLang, onOpen, onPractice, onDictionary, onGrammar, onSitelen, onLienzo, onAchievements, onCuentos, onHistoria, onAtlas, onKulupu, onMinijuegos, onDashboard, onToki, onSettings, theme, onCycleTheme }) {
   const { state, isUnlocked, reset, MAX_HEARTS } = progress
   const t = makeT(lang)
   const practiceAvailable = state.completed.length >= 1
@@ -55,6 +55,7 @@ export default function Home({ progress, lang, setLang, onOpen, onPractice, onDi
   const handleMinijuegos = () => { playClick(); onMinijuegos() }
   const handleDashboard = () => { playClick(); onDashboard() }
   const handleToki = () => { playClick(); onToki() }
+  const handleSettings = () => { playClick(); onSettings() }
   const handleThemeCycle = () => { playClick(); onCycleTheme?.() }
 
   const themeIcon = theme === 'dark' ? '🌙' : theme === 'sepia' ? '📜' : '☀️'
@@ -103,6 +104,14 @@ export default function Home({ progress, lang, setLang, onOpen, onPractice, onDi
             aria-label={t('themeToggle')}
           >
             {themeIcon}
+          </button>
+          <button
+            className="theme-toggle"
+            onClick={handleSettings}
+            title={t('settingsTitle')}
+            aria-label={t('settingsTitle')}
+          >
+            ⚙️
           </button>
         </div>
       </header>

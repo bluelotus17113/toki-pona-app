@@ -5268,6 +5268,178 @@ html, body, #root, .home {
   margin: 8px 0 4px;
 }
 
+/* ============ Settings (configuración centralizada) ============ */
+.settings-screen {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 14px 14px 40px;
+  animation: fadeUp 0.4s ease backwards;
+}
+.settings-header { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
+.settings-title-block { flex: 1; text-align: center; }
+.settings-title-block h2 { margin: 0; font-size: 1.2rem; color: var(--ink); }
+.settings-title-block p { margin: 2px 0 0; font-size: 0.78rem; color: var(--ink-soft); font-weight: 600; }
+
+.settings-section {
+  background: var(--paper);
+  border: 3px solid var(--ink);
+  border-radius: 14px;
+  box-shadow: 4px 4px 0 var(--ink);
+  padding: 14px;
+  margin-bottom: 14px;
+}
+.settings-section-title {
+  margin: 0 0 12px;
+  font-size: 0.95rem;
+  font-weight: 900;
+  color: var(--ink);
+}
+
+.settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px dashed var(--ink-faint);
+}
+.settings-row:last-child { border-bottom: 0; }
+.settings-row-label {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--ink);
+  gap: 2px;
+}
+.settings-row-sub {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+
+/* Segmented control (theme, language) */
+.settings-segment {
+  display: flex;
+  gap: 4px;
+  background: var(--cream);
+  border: 2px solid var(--ink);
+  border-radius: 10px;
+  padding: 3px;
+}
+.settings-segment-btn {
+  background: transparent;
+  border: 0;
+  padding: 6px 10px;
+  border-radius: 7px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  color: var(--ink-soft);
+}
+.settings-segment-btn.active {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+/* Toggle switch */
+.settings-toggle {
+  position: relative;
+  width: 50px;
+  height: 28px;
+  background: var(--ink-faint);
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.2s;
+  flex-shrink: 0;
+}
+.settings-toggle.on { background: var(--good); }
+.settings-toggle-dot {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  background: var(--paper);
+  border-radius: 999px;
+  transition: transform 0.2s;
+  box-shadow: 1px 1px 0 var(--ink);
+}
+.settings-toggle.on .settings-toggle-dot {
+  transform: translateX(22px);
+}
+
+/* Number input para hora */
+.settings-number-input {
+  width: 60px;
+  padding: 6px 8px;
+  border: 2px solid var(--ink);
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 800;
+  text-align: center;
+  color: var(--ink);
+  background: var(--paper);
+}
+.settings-hour-suffix {
+  font-weight: 800;
+  color: var(--ink-soft);
+}
+
+/* Action buttons (reset) */
+.settings-action-btn {
+  display: block;
+  width: 100%;
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 0.92rem;
+  font-weight: 800;
+  cursor: pointer;
+  color: var(--ink);
+  margin-top: 8px;
+  box-shadow: 2px 2px 0 var(--ink);
+  transition: transform 0.12s, box-shadow 0.12s;
+}
+.settings-action-btn:active { transform: translate(2px, 2px); box-shadow: 0 0 0 var(--ink); }
+.settings-action-btn.warn { background: var(--yellow); }
+.settings-action-btn.danger { background: var(--bad-soft); color: #8a1a1a; border-color: var(--bad); }
+.settings-action-help {
+  margin: 4px 0 12px;
+  font-size: 0.74rem;
+  color: var(--ink-soft);
+  font-style: italic;
+  font-weight: 600;
+}
+
+/* About */
+.settings-about {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.settings-about-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 0;
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--ink-soft);
+}
+.settings-about-value { color: var(--ink); font-weight: 900; }
+.settings-credits {
+  margin-top: 14px;
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+  font-style: italic;
+  font-weight: 600;
+}
+
 /* ============ Toki (conversaciones interactivas) ============ */
 .toki-cta {
   display: flex;
