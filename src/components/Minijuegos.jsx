@@ -10,6 +10,7 @@ export default function Minijuegos({
   lang = 'es',
   onNimiTu, onKamaSona, onLipuPakala,
   onKalamaKute, onKulupuNimi, onNimiSin, onKalaAlasa,
+  onAlasaNimi, onSitelenSin,
   onExit
 }) {
   const t = makeT(lang)
@@ -92,6 +93,28 @@ export default function Minijuegos({
       reward: '🪙 score/5',
       accent: '#c7e8d4',
       onOpen: onKalaAlasa
+    },
+    {
+      id: 'alasanimi',
+      icon: '🔍',
+      glyph: 'alasa',
+      title: 'alasa nimi',
+      sub: t('alasaNimiHubSub'),
+      mechanic: t('alasaNimiHubMechanic'),
+      reward: '🪙 +15',
+      accent: '#e6dafc',
+      onOpen: onAlasaNimi
+    },
+    {
+      id: 'sitelensin',
+      icon: '✍️',
+      glyph: 'sitelen',
+      title: 'sitelen sin',
+      sub: t('sitelenSinHubSub'),
+      mechanic: t('sitelenSinHubMechanic'),
+      reward: '🪙 +16',
+      accent: '#fff0c2',
+      onOpen: onSitelenSin
     }
   ]
 

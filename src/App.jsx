@@ -27,6 +27,10 @@ import KalamaKute from './components/KalamaKute.jsx'
 import KulupuNimi from './components/KulupuNimi.jsx'
 import NimiSin from './components/NimiSin.jsx'
 import KalaAlasa from './components/KalaAlasa.jsx'
+import AlasaNimi from './components/AlasaNimi.jsx'
+import SitelenSin from './components/SitelenSin.jsx'
+import Dashboard from './components/Dashboard.jsx'
+import { useTheme } from './hooks/useTheme.js'
 
 // Lienzo lazy-loaded: contiene Konva (~300KB) — solo se carga al entrar.
 const SitelenLienzo = lazy(() => import('./components/SitelenLienzo.jsx'))
@@ -34,6 +38,7 @@ const SitelenLienzo = lazy(() => import('./components/SitelenLienzo.jsx'))
 export default function App() {
   const progress = useProgress()
   const { lang, setLang } = useLang()
+  const { theme, cycleTheme } = useTheme()
   const [screen, setScreen] = useState({ name: 'home' })
 
   const openLesson     = (lessonId) => setScreen({ name: 'lesson', lessonId })
@@ -56,6 +61,9 @@ export default function App() {
   const openKulupuNimi = () => setScreen({ name: 'kulupunimi' })
   const openNimiSin    = () => setScreen({ name: 'nimisin' })
   const openKalaAlasa  = () => setScreen({ name: 'kalaalasa' })
+  const openAlasaNimi  = () => setScreen({ name: 'alasanimi' })
+  const openSitelenSin = () => setScreen({ name: 'sitelensin' })
+  const openDashboard  = () => setScreen({ name: 'dashboard' })
 
   // Chequear logros automáticos cada vez que cambia el estado de progress
   useEffect(() => {
@@ -96,6 +104,9 @@ export default function App() {
       kulupunimi:    'minijuegos',
       nimisin:       'minijuegos',
       kalaalasa:     'minijuegos',
+      alasanimi:     'minijuegos',
+      sitelensin:    'minijuegos',
+      dashboard:     'home',
       complete:      'home'
     }
     let handle
@@ -145,6 +156,9 @@ export default function App() {
           onAtlas={openAtlas}
           onKulupu={openKulupu}
           onMinijuegos={openMinijuegos}
+          onDashboard={openDashboard}
+          theme={theme}
+          onCycleTheme={cycleTheme}
         />
       )}
       {screen.name === 'lesson' && (
@@ -216,7 +230,18 @@ export default function App() {
           onKulupuNimi={openKulupuNimi}
           onNimiSin={openNimiSin}
           onKalaAlasa={openKalaAlasa}
+          onAlasaNimi={openAlasaNimi}
+          onSitelenSin={openSitelenSin}
         />
+      )}
+      {screen.name === 'alasanimi' && (
+        <AlasaNimi progress={progress} lang={lang} onExit={goMinijuegos} />
+      )}
+      {screen.name === 'sitelensin' && (
+        <SitelenSin progress={progress} lang={lang} onExit={goMinijuegos} />
+      )}
+      {screen.name === 'dashboard' && (
+        <Dashboard progress={progress} lang={lang} onExit={goHome} />
       )}
       {screen.name === 'kalamakute' && (
         <KalamaKute progress={progress} lang={lang} onExit={goMinijuegos} />

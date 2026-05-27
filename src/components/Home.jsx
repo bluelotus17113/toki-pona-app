@@ -12,7 +12,7 @@ import FeedbackButton from './FeedbackButton.jsx'
 import KofiButton from './KofiButton.jsx'
 import NoHeartsModal from './NoHeartsModal.jsx'
 
-export default function Home({ progress, lang, setLang, onOpen, onPractice, onDictionary, onGrammar, onSitelen, onLienzo, onAchievements, onCuentos, onHistoria, onAtlas, onKulupu, onMinijuegos }) {
+export default function Home({ progress, lang, setLang, onOpen, onPractice, onDictionary, onGrammar, onSitelen, onLienzo, onAchievements, onCuentos, onHistoria, onAtlas, onKulupu, onMinijuegos, onDashboard, theme, onCycleTheme }) {
   const { state, isUnlocked, reset, MAX_HEARTS } = progress
   const t = makeT(lang)
   const practiceAvailable = state.completed.length >= 1
@@ -53,6 +53,10 @@ export default function Home({ progress, lang, setLang, onOpen, onPractice, onDi
   const handleAtlas = () => { playClick(); onAtlas() }
   const handleKulupu = () => { playClick(); onKulupu() }
   const handleMinijuegos = () => { playClick(); onMinijuegos() }
+  const handleDashboard = () => { playClick(); onDashboard() }
+  const handleThemeCycle = () => { playClick(); onCycleTheme?.() }
+
+  const themeIcon = theme === 'dark' ? '🌙' : theme === 'sepia' ? '📜' : '☀️'
 
   const lessonsBySection = SECTIONS.map(sec => ({
     section: sec,
@@ -90,6 +94,14 @@ export default function Home({ progress, lang, setLang, onOpen, onPractice, onDi
             aria-label={soundOn ? t('soundOn') : t('soundOff')}
           >
             {soundOn ? '🔊' : '🔇'}
+          </button>
+          <button
+            className="theme-toggle"
+            onClick={handleThemeCycle}
+            title={t('themeToggle')}
+            aria-label={t('themeToggle')}
+          >
+            {themeIcon}
           </button>
         </div>
       </header>
@@ -276,6 +288,9 @@ export default function Home({ progress, lang, setLang, onOpen, onPractice, onDi
           </button>
           <button className="achievements-btn" onClick={handleKulupu} title={t('kulupuTitle')}>
             🌍 {t('kulupuTitle')}
+          </button>
+          <button className="achievements-btn" onClick={handleDashboard} title={t('dashboardTitle')}>
+            📊 {t('dashboardTitle')}
           </button>
           <FeedbackButton lang={lang} />
           <KofiButton variant="compact" lang={lang} />

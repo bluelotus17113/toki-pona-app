@@ -10,10 +10,38 @@ const defaultState = {
   xp: 0,                // experiencia total
   mani: 0,              // moneda interna (toki pona: mani = dinero)
   purchasedStories: [], // ids de cuentos comprados
-  streak: 0,            // racha de días
+  streak: 0,            // racha de días consecutivos
   hearts: MAX_HEARTS,   // vidas actuales
   nextRegenAt: null,    // timestamp ms en que llega la próxima vida (null si está al máximo)
-  unlockedAll: false
+  unlockedAll: false,
+  dailyXp: {},          // { "YYYY-MM-DD": xpGanadoEseDía } — para dashboard
+  lastActiveDate: null  // último día con actividad (clave YYYY-MM-DD)
+}
+
+function todayKey() {
+  const d = new Date()
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+}
+
+function yesterdayKey() {
+  const d = new Date()
+  d.setDate(d.getDate() - 1)
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+}
+
+// Incrementa XP del día actual y actualiza racha si es la primera actividad del día.
+// Si el último día activo fue ayer → streak++; si fue antes → streak = 1.
+function bumpDaily(state, gainedXp) {
+  const today = todayKey()
+  const prevDayXp = state.dailyXp?.[today] ?? 0
+  const nextDailyXp = { ...(state.dailyXp ?? {}), [today]: prevDayXp + gainedXp }
+  let nextStreak = state.streak ?? 0
+  let nextLastActive = state.lastActiveDate
+  if (state.lastActiveDate !== today) {
+    nextStreak = state.lastActiveDate === yesterdayKey() ? nextStreak + 1 : 1
+    nextLastActive = today
+  }
+  return { ...state, dailyXp: nextDailyXp, streak: nextStreak, lastActiveDate: nextLastActive }
 }
 
 // Aplica todas las regeneraciones que correspondan según el tiempo transcurrido
@@ -56,17 +84,18 @@ export function useProgress() {
   }, [])
 
   const completeLesson = (id, gainedXp = 20) => {
-    setState(s => ({
-      ...s,
-      completed: s.completed.includes(id) ? s.completed : [...s.completed, id],
-      xp: s.xp + gainedXp
-      // hearts y nextRegenAt se conservan: las vidas perdidas siguen perdidas
-      // y solo se recuperan por timer de 1h o viendo un anuncio
-    }))
+    setState(s => {
+      const next = {
+        ...s,
+        completed: s.completed.includes(id) ? s.completed : [...s.completed, id],
+        xp: s.xp + gainedXp
+      }
+      return bumpDaily(next, gainedXp)
+    })
   }
 
   const addXp = (gainedXp) => {
-    setState(s => ({ ...s, xp: s.xp + gainedXp }))
+    setState(s => bumpDaily({ ...s, xp: s.xp + gainedXp }, gainedXp))
   }
 
   const addMani = (gainedMani) => {

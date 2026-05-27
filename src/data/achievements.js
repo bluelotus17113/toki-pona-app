@@ -211,6 +211,26 @@ export const ACHIEVEMENTS = [
     id: 'kala-alasa-combo-10', icon: '🔥', category: 'creativity',
     title: { es: 'racha de fuego',               en: 'on fire' },
     desc:  { es: 'combo de 10 en kala alasa',    en: '10-combo in kala alasa' }
+  },
+  {
+    id: 'alasa-nimi-first-win', icon: '🔍', category: 'creativity',
+    title: { es: 'cazador de palabras',          en: 'word hunter' },
+    desc:  { es: 'completaste una ronda de alasa nimi', en: 'finished an alasa nimi round' }
+  },
+  {
+    id: 'alasa-nimi-perfect', icon: '🎯', category: 'creativity',
+    title: { es: 'rastreador',                   en: 'tracker' },
+    desc:  { es: 'encontraste todas en alasa nimi', en: 'found all words in alasa nimi' }
+  },
+  {
+    id: 'sitelen-sin-first-win', icon: '✍️', category: 'creativity',
+    title: { es: 'mano que escribe',             en: 'writing hand' },
+    desc:  { es: 'trazaste tu primer glifo',     en: 'traced your first glyph' }
+  },
+  {
+    id: 'sitelen-sin-complete', icon: '🖋️', category: 'creativity',
+    title: { es: 'calígrafo',                    en: 'calligrapher' },
+    desc:  { es: 'completaste una sesión de sitelen sin', en: 'completed a sitelen sin session' }
   }
 ]
 

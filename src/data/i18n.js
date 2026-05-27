@@ -106,7 +106,7 @@ export const STRINGS = {
   // minijuegos (hub)
   minijuegosTitle:    { es: 'minijuegos',                         en: 'minigames' },
   minijuegosSub:      { es: 'juegos cortos para practicar jugando', en: 'short games to learn while playing' },
-  minijuegosHomeSub:  { es: '7 juegos disponibles',               en: '7 games available' },
+  minijuegosHomeSub:  { es: '9 juegos disponibles',               en: '9 games available' },
   minijuegosBanner:   { es: 'cada minijuego te da mani para comprar cuentos. mientras más jugás, más palabras quedan en tu memoria.', en: 'every minigame gives you mani to buy stories. the more you play, the more words stick.' },
   minijuegosFootnote: { es: 'pronto más minijuegos · sugerí los tuyos en feedback', en: 'more minigames coming · suggest yours in feedback' },
   minijuegosPlayedBadge:{ es: 'jugado hoy',                       en: 'played today' },
@@ -132,6 +132,54 @@ export const STRINGS = {
   kulupuNimiHubMechanic:{ es: '5 rondas · 6 palabras cada una',   en: '5 rounds · 6 words each' },
   kalaAlasaHubSub:    { es: 'arcade · pescá la palabra correcta', en: 'arcade · catch the right word' },
   kalaAlasaHubMechanic:{ es: '60 segundos · combo x3',            en: '60 seconds · combo x3' },
+  alasaNimiHubSub:    { es: 'sopa de letras — encontrá palabras', en: 'word search — find the words' },
+  alasaNimiHubMechanic:{ es: 'grilla 7x7 · 5 palabras',           en: '7x7 grid · 5 words' },
+  sitelenSinHubSub:   { es: 'caligrafía — trazá los glifos',      en: 'calligraphy — trace the glyphs' },
+  sitelenSinHubMechanic:{ es: '8 palabras · sin presión',         en: '8 words · no pressure' },
+
+  // alasa nimi (sopa de letras)
+  alasaNimiTitle:     { es: 'alasa nimi',                         en: 'alasa nimi' },
+  alasaNimiPromptStart:{ es: 'tocá la primera letra de una palabra', en: 'tap the first letter of a word' },
+  alasaNimiPromptEnd: { es: 'tocá la última letra para marcar',   en: 'tap the last letter to mark it' },
+  alasaNimiGiveUp:    { es: 'rendirme',                           en: 'give up' },
+  alasaNimiGiveUpConfirm:{ es: '¿rendirte? terminás con lo que ya encontraste', en: 'give up? you end with what you have' },
+  alasaNimiResultTitle:{ es: '¡ronda terminada!',                 en: 'round finished!' },
+  alasaNimiPerfect:   { es: '¡pleno! todas encontradas',          en: 'perfect! all found' },
+  alasaNimiFound:     { es: 'encontradas',                        en: 'found' },
+
+  // sitelen sin (caligrafía)
+  sitelenSinTitle:    { es: 'sitelen sin',                        en: 'sitelen sin' },
+  sitelenSinSub:      { es: 'traza los glifos sitelen pona',      en: 'trace sitelen pona glyphs' },
+  sitelenSinIntro:    { es: 'el glifo aparece en gris claro como guía. trazalo con el dedo encima.', en: 'the glyph appears in light grey as a guide. trace it with your finger.' },
+  sitelenSinRule1:    { es: 'mirá el glifo en gris claro',        en: 'look at the grey glyph' },
+  sitelenSinRule2:    { es: 'trazalo con el dedo encima',         en: 'trace it with your finger' },
+  sitelenSinRule3:    { es: '+2 mani por cada glifo trazado',     en: '+2 mani per traced glyph' },
+  sitelenSinStart:    { es: 'empezar →',                          en: 'start →' },
+  sitelenSinClear:    { es: 'borrar',                             en: 'clear' },
+  sitelenSinSkip:     { es: 'saltar',                             en: 'skip' },
+  sitelenSinSkipConfirm:{ es: '¿saltar al final?',                en: 'skip to the end?' },
+  sitelenSinNext:     { es: 'siguiente',                          en: 'next' },
+  sitelenSinResultTitle:{ es: '¡terminado!',                      en: 'done!' },
+  sitelenSinResultSub:{ es: 'gran trabajo trazando los glifos',   en: 'great work tracing the glyphs' },
+
+  // dashboard
+  dashboardTitle:     { es: 'progreso',                           en: 'progress' },
+  dashboardSub:       { es: 'tus estadísticas en toki pona',      en: 'your toki pona stats' },
+  dashboardStreak:    { es: 'racha (días)',                       en: 'streak (days)' },
+  dashboardStreakAtRisk:{ es: '⚠ jugá hoy para mantenerla',       en: '⚠ play today to keep it' },
+  dashboardTotalXp:   { es: 'XP total',                           en: 'total XP' },
+  dashboardLessons:   { es: 'lecciones',                          en: 'lessons' },
+  dashboardMastered:  { es: 'dominadas',                          en: 'mastered' },
+  dashboardWords:     { es: 'palabras',                           en: 'words' },
+  dashboardXpChart:   { es: 'XP últimos 30 días',                 en: 'XP last 30 days' },
+  dashboardAvg7d:     { es: 'promedio 7d: {n} XP',                en: '7d avg: {n} XP' },
+  dashboardSectionsProgress:{ es: 'progreso por sección',         en: 'progress by section' },
+  dashboardVocab:     { es: 'vocabulario',                        en: 'vocabulary' },
+  dashboardLearning:  { es: 'aprendiendo',                        en: 'learning' },
+  dashboardDue:       { es: 'para repasar',                       en: 'due for review' },
+
+  // theme toggle
+  themeToggle:        { es: 'cambiar tema',                       en: 'change theme' },
 
   // kalama kute (audio-first)
   kalamaKuteTitle:    { es: 'kalama kute',                        en: 'kalama kute' },
