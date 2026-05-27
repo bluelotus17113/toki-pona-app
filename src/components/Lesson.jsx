@@ -13,6 +13,7 @@ import ListenChoose from './exercises/ListenChoose.jsx'
 import SitelenMc from './exercises/SitelenMc.jsx'
 import SitelenPair from './exercises/SitelenPair.jsx'
 import Hearts from './Hearts.jsx'
+import LessonIntro from './LessonIntro.jsx'
 
 export default function Lesson({ lessonId, progress, lang, onFinish, onExit }) {
   const t = makeT(lang)
@@ -21,6 +22,7 @@ export default function Lesson({ lessonId, progress, lang, onFinish, onExit }) {
   const [idx, setIdx] = useState(0)
   const [correct, setCorrect] = useState(0)
   const [mistakes, setMistakes] = useState(0)
+  const [showIntro, setShowIntro] = useState(true)
 
   useEffect(() => { primeAudio() }, [])
 
@@ -35,6 +37,31 @@ export default function Lesson({ lessonId, progress, lang, onFinish, onExit }) {
   }, [outOfHearts, onExit])
 
   if (!lesson) return <div>{t('lessonNotFound')}</div>
+
+  if (showIntro) {
+    return (
+      <div className="lesson">
+        <header className="lesson-header">
+          <button className="exit-btn" onClick={onExit}>✕</button>
+          <div className="progress-bar">
+            <div className="progress-fill" style={{ width: '0%' }} />
+          </div>
+          <Hearts
+            hearts={progress.state.hearts}
+            max={progress.MAX_HEARTS}
+            nextRegenAt={progress.state.nextRegenAt}
+            lang={lang}
+            compact
+          />
+        </header>
+        <LessonIntro
+          lesson={lesson}
+          lang={lang}
+          onStart={() => setShowIntro(false)}
+        />
+      </div>
+    )
+  }
 
   if (done) {
     const score = Math.max(5, correct * 2 - mistakes)

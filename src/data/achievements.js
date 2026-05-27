@@ -141,6 +141,36 @@ export const ACHIEVEMENTS = [
     title: { es: 'maestro ku',                   en: 'ku master' },
     desc:  { es: 'completaste las lecciones de palabras ku', en: 'completed the ku words lessons' },
     auto: (s) => [45,46,47,48,49,50].every(id => s.completed.includes(id))
+  },
+  {
+    id: 'kulupu-opened', icon: '🌍', category: 'discovery',
+    title: { es: 'encontré mi tribu',            en: 'found my tribe' },
+    desc:  { es: 'abriste la pantalla de comunidad', en: 'opened the community screen' }
+  },
+  {
+    id: 'kulupu-explorer', icon: '🧭', category: 'discovery',
+    title: { es: 'explorador de kulupu',         en: 'kulupu explorer' },
+    desc:  { es: 'visitaste un espacio de la comunidad real', en: 'visited a real community space' }
+  },
+  {
+    id: 'kama-sona-first-win', icon: '🃏', category: 'creativity',
+    title: { es: 'memoria pona',                 en: 'sharp memory' },
+    desc:  { es: 'ganaste una partida de kama sona', en: 'won a kama sona round' }
+  },
+  {
+    id: 'kama-sona-perfect', icon: '🧠', category: 'creativity',
+    title: { es: 'memoria suli',                 en: 'flawless mind' },
+    desc:  { es: 'ganaste kama sona sin errores', en: 'won kama sona without mistakes' }
+  },
+  {
+    id: 'lipu-pakala-first-win', icon: '🧩', category: 'creativity',
+    title: { es: 'frase armada',                 en: 'sentence assembled' },
+    desc:  { es: 'completaste una ronda de lipu pakala', en: 'finished a lipu pakala round' }
+  },
+  {
+    id: 'lipu-pakala-perfect', icon: '✨', category: 'creativity',
+    title: { es: 'pleno pakala',                 en: 'flawless pakala' },
+    desc:  { es: '5/5 en una ronda de lipu pakala', en: '5/5 in a lipu pakala round' }
   }
 ]
 

@@ -12,7 +12,7 @@ import FeedbackButton from './FeedbackButton.jsx'
 import KofiButton from './KofiButton.jsx'
 import NoHeartsModal from './NoHeartsModal.jsx'
 
-export default function Home({ progress, lang, setLang, onOpen, onPractice, onDictionary, onGrammar, onNimiTu, onSitelen, onLienzo, onAchievements, onCuentos, onHistoria, onAtlas }) {
+export default function Home({ progress, lang, setLang, onOpen, onPractice, onDictionary, onGrammar, onNimiTu, onSitelen, onLienzo, onAchievements, onCuentos, onHistoria, onAtlas, onKulupu, onKamaSona, onLipuPakala }) {
   const { state, isUnlocked, reset, MAX_HEARTS } = progress
   const t = makeT(lang)
   const practiceAvailable = state.completed.length >= 1
@@ -52,6 +52,9 @@ export default function Home({ progress, lang, setLang, onOpen, onPractice, onDi
   const handleCuentos = () => { playClick(); onCuentos() }
   const handleHistoria = () => { playClick(); onHistoria() }
   const handleAtlas = () => { playClick(); onAtlas() }
+  const handleKulupu = () => { playClick(); onKulupu() }
+  const handleKamaSona = () => { playClick(); onKamaSona() }
+  const handleLipuPakala = () => { playClick(); onLipuPakala() }
 
   const lessonsBySection = SECTIONS.map(sec => ({
     section: sec,
@@ -173,6 +176,25 @@ export default function Home({ progress, lang, setLang, onOpen, onPractice, onDi
         </button>
       </div>
 
+      <div className="minigame-row">
+        <button className="minigame-cta kama" onClick={handleKamaSona}>
+          <span className="minigame-cta-icon">🃏</span>
+          <span className="minigame-cta-text">
+            <span className="minigame-cta-title">{t('kamaSonaTitle')}</span>
+            <span className="minigame-cta-sub">{t('kamaSonaCtaSub')}</span>
+          </span>
+          <span className="minigame-cta-badge">🪙 +15</span>
+        </button>
+        <button className="minigame-cta lipu" onClick={handleLipuPakala}>
+          <span className="minigame-cta-icon">🧩</span>
+          <span className="minigame-cta-text">
+            <span className="minigame-cta-title">{t('lipuPakalaTitle')}</span>
+            <span className="minigame-cta-sub">{t('lipuPakalaCtaSub')}</span>
+          </span>
+          <span className="minigame-cta-badge">🪙 +15</span>
+        </button>
+      </div>
+
       <button className="cuentos-cta" onClick={handleCuentos}>
         <span className="cuentos-cta-icon">📚</span>
         <span className="cuentos-cta-text">
@@ -272,6 +294,9 @@ export default function Home({ progress, lang, setLang, onOpen, onPractice, onDi
           </button>
           <button className="achievements-btn" onClick={handleAtlas} title={t('atlasTitle')}>
             🔠 {t('atlasTitle')}
+          </button>
+          <button className="achievements-btn" onClick={handleKulupu} title={t('kulupuTitle')}>
+            🌍 {t('kulupuTitle')}
           </button>
           <FeedbackButton lang={lang} />
           <KofiButton variant="compact" lang={lang} />

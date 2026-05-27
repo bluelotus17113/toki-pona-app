@@ -103,6 +103,54 @@ export const STRINGS = {
   wodLabel:           { es: 'palabra del día',                    en: 'word of the day' },
   wodTitle:           { es: 'tocá para escuchar',                 en: 'tap to hear' },
 
+  // kama sona (memory game)
+  kamaSonaTitle:      { es: 'kama sona',                          en: 'kama sona' },
+  kamaSonaSub:        { es: 'memoria — empareja glifo y significado', en: 'memory — match glyph and meaning' },
+  kamaSonaCtaSub:     { es: 'minijuego de memoria · ganá mani',   en: 'memory minigame · earn mani' },
+  kamaSonaIntro:      { es: 'voltea dos cartas. si el glifo y el significado coinciden, las quedás. ¿podés con todas?', en: 'flip two cards. if the glyph and meaning match, you keep them. can you clear them all?' },
+  kamaSonaEasy:       { es: 'fácil',                              en: 'easy' },
+  kamaSonaMedium:     { es: 'medio',                              en: 'medium' },
+  kamaSonaHard:       { es: 'difícil',                            en: 'hard' },
+  kamaSonaPairs:      { es: '{n} parejas',                        en: '{n} pairs' },
+  kamaSonaAttempts:   { es: 'intentos',                           en: 'attempts' },
+  kamaSonaMistakes:   { es: 'errores',                            en: 'mistakes' },
+  kamaSonaTime:       { es: 'tiempo',                             en: 'time' },
+  kamaSonaWinTitle:   { es: '¡ganaste!',                          en: 'you won!' },
+  kamaSonaPerfect:    { es: '· ¡perfecto! +bonus',                en: '· perfect! +bonus' },
+  kamaSonaAgain:      { es: 'otra ronda',                         en: 'play again' },
+  kamaSonaChangeLevel:{ es: 'cambiar nivel',                      en: 'change level' },
+  kamaSonaNoProgress: { es: 'usamos palabras de muestra. completá lecciones para que aparezcan las tuyas.', en: 'using sample words. complete lessons to play with yours.' },
+  kamaSonaUsesWords:  { es: 'usa palabras de tus {n} lecciones completadas', en: 'uses words from your {n} completed lessons' },
+
+  // lipu pakala (frase rota)
+  lipuPakalaTitle:    { es: 'lipu pakala',                        en: 'lipu pakala' },
+  lipuPakalaSub:      { es: 'frases rotas — ordena las palabras', en: 'broken sentences — order the words' },
+  lipuPakalaCtaSub:   { es: 'arma frases · refuerza la sintaxis', en: 'build sentences · master syntax' },
+  lipuPakalaIntro:    { es: 'vas a ver una traducción y palabras desordenadas. ordenálas para armar la frase en toki pona.', en: "you'll see a translation and shuffled words. arrange them to form the toki pona sentence." },
+  lipuPakalaRule1:    { es: '5 frases por ronda',                 en: '5 sentences per round' },
+  lipuPakalaRule2:    { es: 'cronómetro al final · sin penalizar errores', en: 'timer at the end · no penalty for mistakes' },
+  lipuPakalaRule3:    { es: '+2 mani por acierto · bonus si perfecto', en: '+2 mani per hit · bonus if perfect' },
+  lipuPakalaStart:    { es: 'empezar →',                          en: 'start →' },
+  lipuPakalaNoProgress:{ es: 'usamos frases de muestra. completá lecciones para que aparezcan las tuyas.', en: 'using sample sentences. complete lessons to play with yours.' },
+  lipuPakalaUsesPhrases:{ es: 'usa frases de tus {n} lecciones completadas', en: 'uses sentences from your {n} completed lessons' },
+  lipuPakalaResultTitle:{ es: '¡ronda terminada!',                en: 'round finished!' },
+  lipuPakalaAccuracy: { es: 'aciertos',                           en: 'accuracy' },
+  lipuPakalaPerfect:  { es: ' · ¡pleno! +5 bonus',                en: ' · perfect! +5 bonus' },
+  lipuPakalaAgain:    { es: 'otra ronda',                         en: 'play again' },
+  lipuPakalaBack:     { es: 'volver',                             en: 'back' },
+
+  // kulupu (comunidad)
+  kulupuTitle:        { es: 'kulupu',                             en: 'kulupu' },
+  kulupuSub:          { es: 'la comunidad real de toki pona',     en: 'the real toki pona community' },
+  kulupuBanner:       { es: 'esta app es solo el comienzo. la verdadera comunidad vive en estos espacios — gente fluida, recursos, eventos y amigos que te esperan.', en: 'this app is just the start. the real community lives in these spaces — fluent people, resources, events and friends waiting for you.' },
+  kulupuFootnote:     { es: 'los enlaces se abren en tu navegador. nada se guarda en servidores nuestros.', en: 'links open in your browser. nothing is stored on our servers.' },
+
+  // lesson intro (vista previa de palabras)
+  lessonIntroTitle:   { es: 'palabras nuevas',                    en: 'new words' },
+  lessonIntroSub:     { es: 'mirá las palabras de esta lección antes de practicar', en: 'review the words of this lesson before practicing' },
+  lessonIntroStart:   { es: 'empezar →',                          en: 'start →' },
+  lessonIntroWordCount: { es: '{n} palabras',                     en: '{n} words' },
+
   // Historia
   historiaTitle:      { es: 'historia',                           en: 'history' },
   historiaSub:        { es: 'el origen y la filosofía de toki pona', en: 'the origin and philosophy of toki pona' },

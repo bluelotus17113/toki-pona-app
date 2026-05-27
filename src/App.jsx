@@ -18,6 +18,9 @@ import Cuentos from './components/Cuentos.jsx'
 import StoryReader from './components/StoryReader.jsx'
 import Historia from './components/Historia.jsx'
 import SitelenAtlas from './components/SitelenAtlas.jsx'
+import Kulupu from './components/Kulupu.jsx'
+import KamaSona from './components/KamaSona.jsx'
+import LipuPakala from './components/LipuPakala.jsx'
 
 // Lienzo lazy-loaded: contiene Konva (~300KB) — solo se carga al entrar.
 const SitelenLienzo = lazy(() => import('./components/SitelenLienzo.jsx'))
@@ -39,6 +42,9 @@ export default function App() {
   const openStory      = (storyId) => setScreen({ name: 'story', storyId })
   const openHistoria   = () => setScreen({ name: 'historia' })
   const openAtlas      = () => setScreen({ name: 'atlas' })
+  const openKulupu     = () => setScreen({ name: 'kulupu' })
+  const openKamaSona   = () => setScreen({ name: 'kamasona' })
+  const openLipuPakala = () => setScreen({ name: 'lipupakala' })
 
   // Chequear logros automáticos cada vez que cambia el estado de progress
   useEffect(() => {
@@ -63,6 +69,9 @@ export default function App() {
       story:         'cuentos',   // los cuentos se abren desde la tienda
       historia:      'home',
       atlas:         'home',
+      kulupu:        'home',
+      kamasona:      'home',
+      lipupakala:    'home',
       complete:      'home'
     }
     let handle
@@ -111,6 +120,9 @@ export default function App() {
           onCuentos={openCuentos}
           onHistoria={openHistoria}
           onAtlas={openAtlas}
+          onKulupu={openKulupu}
+          onKamaSona={openKamaSona}
+          onLipuPakala={openLipuPakala}
         />
       )}
       {screen.name === 'lesson' && (
@@ -161,6 +173,15 @@ export default function App() {
       )}
       {screen.name === 'atlas' && (
         <SitelenAtlas lang={lang} onExit={goHome} />
+      )}
+      {screen.name === 'kulupu' && (
+        <Kulupu lang={lang} onExit={goHome} />
+      )}
+      {screen.name === 'kamasona' && (
+        <KamaSona progress={progress} lang={lang} onExit={goHome} />
+      )}
+      {screen.name === 'lipupakala' && (
+        <LipuPakala progress={progress} lang={lang} onExit={goHome} />
       )}
 
       <AchievementToast lang={lang} />
