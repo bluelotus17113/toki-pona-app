@@ -241,6 +241,11 @@ export const ACHIEVEMENTS = [
     id: 'toki-perfect-convo', icon: '🎙️', category: 'discovery',
     title: { es: 'orador pona',                  en: 'eloquent speaker' },
     desc:  { es: 'todas las opciones "buenas" en una conversación', en: 'all "good" choices in one conversation' }
+  },
+  {
+    id: 'kon-pona', icon: '🍃', category: 'discovery',
+    title: { es: 'kon pona',                     en: 'kon pona' },
+    desc:  { es: 'encontraste la calma — 5 sesiones de meditación', en: 'found stillness — 5 meditation sessions' }
   }
 ]
 

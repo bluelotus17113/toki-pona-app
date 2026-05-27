@@ -181,6 +181,29 @@ export const STRINGS = {
   // theme toggle
   themeToggle:        { es: 'cambiar tema',                       en: 'change theme' },
 
+  // kon — meditación
+  konTitle:           { es: 'kon',                                en: 'kon' },
+  konSub:             { es: 'espíritu · aliento · meditación',    en: 'spirit · breath · meditation' },
+  konCtaSub:          { es: 'respirá · contemplá · descansá',     en: 'breathe · contemplate · rest' },
+  konQuote:           { es: 'toki pona es el camino del sentir bueno', en: 'toki pona is the path of feeling good' },
+  konBack:            { es: 'volver',                             en: 'back' },
+  konMinutes:         { es: 'min',                                en: 'min' },
+  konBreathTitle:     { es: 'respirá · kon',                      en: 'breathe · kon' },
+  konBreathSub:       { es: 'respiración guiada con frases TP',   en: 'guided breathing with TP phrases' },
+  konBreathPicker:    { es: '¿cuánto tiempo querés respirar?',    en: 'how long do you want to breathe?' },
+  konPhase_in:        { es: 'inhalar',                            en: 'inhale' },
+  konPhase_hold1:     { es: 'sostener',                           en: 'hold' },
+  konPhase_out:       { es: 'exhalar',                            en: 'exhale' },
+  konPhase_hold2:     { es: 'pausa',                              en: 'pause' },
+  konDoneTitle:       { es: 'pona tawa sina',                     en: 'pona tawa sina' },
+  konDoneSub:         { es: 'respiraste {n} minutos · gracias por estar acá', en: 'you breathed {n} minutes · thanks for being here' },
+  konMantraTitle:     { es: 'nimi awen',                          en: 'nimi awen' },
+  konMantraSub:       { es: 'mantra del día · contemplación',     en: 'mantra of the day · contemplation' },
+  konMantraHint:      { es: 'leé · escuchá · respirá con la frase',en: 'read · listen · breathe with the phrase' },
+  konSilenceTitle:    { es: 'insa pi pona',                       en: 'insa pi pona' },
+  konSilenceSub:      { es: 'silencio puro · sin guía',           en: 'pure silence · no guidance' },
+  konSilenceExit:     { es: 'salir',                              en: 'exit' },
+
   // Settings (configuración centralizada)
   settingsTitle:      { es: 'ajustes',                            en: 'settings' },
   settingsSub:        { es: 'preferencias y datos de la app',     en: 'app preferences and data' },

@@ -5268,6 +5268,337 @@ html, body, #root, .home {
   margin: 8px 0 4px;
 }
 
+/* ============ Kon (meditación) ============
+   Estilo intencionalmente más zen que el resto: bordes suaves, sombras
+   sutiles, paleta apagada. La feature está diseñada para reducir ruido. */
+
+.kon-cta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto 12px;
+  padding: 14px 18px;
+  background: linear-gradient(135deg, #d4e7d4 0%, #c0d8b8 100%);
+  border: 2.5px solid var(--ink);
+  border-radius: 18px;
+  box-shadow: 4px 4px 0 var(--ink);
+  cursor: pointer;
+  font: inherit;
+  color: var(--ink);
+  text-align: left;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.kon-cta:active { transform: translate(-1px, -1px); box-shadow: 5px 5px 0 var(--ink); }
+.kon-cta-icon { font-size: 2rem; filter: drop-shadow(2px 2px 0 var(--ink)); }
+.kon-cta-text { flex: 1; display: flex; flex-direction: column; }
+.kon-cta-title { font-weight: 900; font-size: 1.05rem; color: var(--ink); }
+.kon-cta-sub { font-size: 0.78rem; color: var(--ink-soft); font-weight: 600; margin-top: 2px; }
+
+.kon-screen {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 14px 14px 40px;
+  min-height: 100vh;
+  animation: fadeUp 0.5s ease backwards;
+}
+.kon-header { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
+.kon-title-block { flex: 1; text-align: center; }
+.kon-title-block h2 { margin: 0; font-size: 1.2rem; color: var(--ink); font-weight: 700; }
+.kon-title-block p { margin: 2px 0 0; font-size: 0.78rem; color: var(--ink-soft); font-weight: 500; font-style: italic; }
+
+.kon-quote {
+  text-align: center;
+  margin: 14px 0 26px;
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+.kon-quote em {
+  display: block;
+  font-size: 1.05rem;
+  color: var(--ink);
+  margin-bottom: 4px;
+  font-weight: 600;
+  font-style: normal;
+}
+.kon-quote span {
+  font-size: 0.78rem;
+  font-style: italic;
+}
+
+.kon-modes { display: flex; flex-direction: column; gap: 12px; }
+.kon-mode-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  background: var(--paper);
+  border: 2px solid var(--ink-faint);
+  border-radius: 16px;
+  cursor: pointer;
+  font: inherit;
+  color: var(--ink);
+  text-align: left;
+  transition: border-color 0.2s, transform 0.15s;
+}
+.kon-mode-card:hover, .kon-mode-card:active {
+  border-color: var(--ink);
+  transform: translateY(-1px);
+}
+.kon-mode-card.breathing { background: linear-gradient(135deg, var(--paper), #e8f0ff); }
+.kon-mode-card.mantra    { background: linear-gradient(135deg, var(--paper), #f0fae0); }
+.kon-mode-card.silence   { background: linear-gradient(135deg, var(--paper), #e8e0f0); }
+.kon-mode-icon { font-size: 2rem; }
+.kon-mode-text { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+.kon-mode-title { font-weight: 800; font-size: 1rem; color: var(--ink); }
+.kon-mode-sub { font-size: 0.8rem; color: var(--ink-soft); font-style: italic; }
+
+/* ---- Picker de duración (respiración) ---- */
+.kon-breathing-picker .kon-duration-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 24px;
+}
+.kon-duration-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 12px;
+  background: var(--paper);
+  border: 2px solid var(--ink-faint);
+  border-radius: 16px;
+  cursor: pointer;
+  font: inherit;
+  color: var(--ink);
+  transition: border-color 0.2s, transform 0.15s;
+}
+.kon-duration-btn:active { border-color: var(--ink); transform: translateY(-1px); }
+.kon-duration-num { font-size: 2.4rem; font-weight: 900; line-height: 1; }
+.kon-duration-unit { font-size: 0.86rem; color: var(--ink-soft); font-weight: 600; margin-top: 4px; }
+
+/* ---- Sesión de respiración activa ---- */
+.kon-breathing-active {
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(180deg, #e8f0ff 0%, #d4dff2 100%);
+}
+:root.theme-dark .kon-breathing-active {
+  background: linear-gradient(180deg, #1a2238 0%, #0f1424 100%);
+}
+.kon-remaining {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+.kon-breath-stage {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  min-height: 260px;
+  margin: 30px 0;
+}
+.kon-breath-circle {
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.6), rgba(45,154,72,0.4) 60%, rgba(45,154,72,0.7));
+  border: 3px solid var(--ink);
+  transition: transform 1s ease-in-out;
+  box-shadow: 0 0 40px rgba(45,154,72,0.3), inset 0 0 30px rgba(255,255,255,0.4);
+}
+:root.theme-dark .kon-breath-circle {
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.2), rgba(74,222,128,0.3) 60%, rgba(74,222,128,0.5));
+  box-shadow: 0 0 60px rgba(74,222,128,0.4), inset 0 0 30px rgba(255,255,255,0.1);
+}
+.kon-breath-label {
+  position: absolute;
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: var(--ink);
+  text-transform: lowercase;
+  letter-spacing: 0.1em;
+  background: rgba(255,255,255,0.7);
+  padding: 4px 14px;
+  border-radius: 999px;
+  border: 1.5px solid var(--ink);
+}
+:root.theme-dark .kon-breath-label {
+  background: rgba(0,0,0,0.4);
+  color: var(--ink);
+  border-color: var(--ink-soft);
+}
+.kon-breath-phrase {
+  text-align: center;
+  margin: 20px 0;
+}
+.kon-breath-tp {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+.kon-breath-tr {
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+  font-style: italic;
+}
+.kon-breath-dots {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+.kon-breath-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ink-faint);
+  transition: background 0.4s, transform 0.4s;
+}
+.kon-breath-dot.active {
+  background: var(--good);
+  transform: scale(1.4);
+}
+
+/* ---- Mantra ---- */
+.kon-mantra {
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(180deg, #f5fae8 0%, #e8f0d4 100%);
+}
+:root.theme-dark .kon-mantra {
+  background: linear-gradient(180deg, #1a2238 0%, #0f1424 100%);
+}
+.kon-mantra-stage {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 20px;
+  gap: 20px;
+}
+.kon-mantra-tp {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--ink);
+  line-height: 1.4;
+  max-width: 380px;
+}
+.kon-mantra-divider {
+  width: 40px;
+  height: 2px;
+  background: var(--ink-faint);
+  border-radius: 999px;
+}
+.kon-mantra-tr {
+  font-size: 1.1rem;
+  font-style: italic;
+  color: var(--ink-soft);
+  font-weight: 500;
+  max-width: 320px;
+}
+.kon-mantra-speak {
+  background: rgba(255,255,255,0.6);
+  border: 1.5px solid var(--ink-faint);
+  border-radius: 999px;
+  width: 56px;
+  height: 56px;
+  font-size: 1.4rem;
+  cursor: pointer;
+  margin-top: 10px;
+}
+.kon-mantra-speak.playing { background: var(--yellow); border-color: var(--ink); }
+.kon-mantra-hint {
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+  font-style: italic;
+  margin: 10px 0 30px;
+}
+
+/* ---- Silencio puro ---- */
+.kon-silence {
+  background: linear-gradient(180deg, #2a2e3f 0%, #1a1e2a 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 0;
+  max-width: none;
+  margin: 0;
+}
+.kon-silence-exit {
+  position: absolute;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.25);
+  color: rgba(255,255,255,0.45);
+  padding: 6px 16px;
+  border-radius: 999px;
+  font: inherit;
+  font-size: 0.78rem;
+  cursor: pointer;
+  font-variant-numeric: tabular-nums;
+}
+.kon-silence-exit:hover { color: rgba(255,255,255,0.8); }
+.kon-silence-stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.kon-silence-glyph {
+  font-size: 12rem;
+  color: rgba(255,255,255,0.55);
+  animation: konPulse 6s ease-in-out infinite;
+  user-select: none;
+}
+@keyframes konPulse {
+  0%, 100% { opacity: 0.35; transform: scale(0.95); }
+  50%      { opacity: 0.7;  transform: scale(1.05); }
+}
+
+/* ---- Done screen (respiración) ---- */
+.kon-done {
+  display: flex;
+  flex-direction: column;
+}
+.kon-done-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 20px;
+  gap: 16px;
+}
+.kon-done-icon { font-size: 4rem; }
+.kon-done-title { margin: 0; font-size: 1.6rem; font-weight: 700; color: var(--ink); }
+.kon-done-sub { margin: 0; font-size: 0.95rem; color: var(--ink-soft); font-style: italic; max-width: 320px; line-height: 1.5; }
+.kon-done-btn {
+  margin-top: 24px;
+  background: var(--paper);
+  color: var(--ink);
+  border: 2px solid var(--ink);
+  border-radius: 14px;
+  padding: 12px 32px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
 /* ============ Settings (configuración centralizada) ============ */
 .settings-screen {
   max-width: 640px;

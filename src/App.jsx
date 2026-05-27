@@ -32,6 +32,7 @@ import SitelenSin from './components/SitelenSin.jsx'
 import Dashboard from './components/Dashboard.jsx'
 import Toki from './components/Toki.jsx'
 import Settings from './components/Settings.jsx'
+import Kon from './components/Kon.jsx'
 import Onboarding, { isOnboarded } from './components/Onboarding.jsx'
 import { useTheme } from './hooks/useTheme.js'
 import { ensureDailyNotifications, isSetupDone as notifSetupDone, scheduleDaily } from './hooks/useNotifications.js'
@@ -71,6 +72,7 @@ export default function App() {
   const openDashboard  = () => setScreen({ name: 'dashboard' })
   const openToki       = () => setScreen({ name: 'toki' })
   const openSettings   = () => setScreen({ name: 'settings' })
+  const openKon        = () => setScreen({ name: 'kon' })
 
   // Chequear logros automáticos cada vez que cambia el estado de progress
   useEffect(() => {
@@ -128,6 +130,7 @@ export default function App() {
       dashboard:     'home',
       toki:          'home',
       settings:      'home',
+      kon:           'home',
       complete:      'home'
     }
     let handle
@@ -190,6 +193,7 @@ export default function App() {
           onDashboard={openDashboard}
           onToki={openToki}
           onSettings={openSettings}
+          onKon={openKon}
           theme={theme}
           onCycleTheme={cycleTheme}
         />
@@ -288,6 +292,9 @@ export default function App() {
           onSetTheme={setTheme}
           onExit={goHome}
         />
+      )}
+      {screen.name === 'kon' && (
+        <Kon lang={lang} onExit={goHome} />
       )}
       {screen.name === 'kalamakute' && (
         <KalamaKute progress={progress} lang={lang} onExit={goMinijuegos} />
