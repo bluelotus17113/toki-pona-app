@@ -10,33 +10,27 @@ const isNative = Capacitor.isNativePlatform()
 
 // ============ Native (Capacitor / Android) ============
 
-// Cache de voces: getSupportedVoices() cruza el bridge JS↔nativo,
-// llamarlo en cada speak introduce ~50-200ms de latencia perceptible.
+// Cache de voces: SOLO se cachea si hay voces; nunca cacheamos vacío.
+// Algunos motores Android devuelven [] si los consultás antes de estar listos;
+// si cachearamos eso, todas las llamadas siguientes harían fallback a webSpeak
+// (que en Android no funciona) y la app quedaría muda.
 let nativeVoicesCache = null
-let nativeEngineReady = false
 
 async function getNativeVoicesCached() {
-  if (nativeVoicesCache !== null) return nativeVoicesCache
+  if (nativeVoicesCache && nativeVoicesCache.length > 0) return nativeVoicesCache
   try {
     const { voices } = await TextToSpeech.getSupportedVoices()
-    nativeVoicesCache = voices ?? []
+    if (voices && voices.length > 0) nativeVoicesCache = voices
+    return voices ?? []
   } catch (e) {
     console.warn('Cannot query TTS voices:', e)
-    nativeVoicesCache = []
+    return []
   }
-  return nativeVoicesCache
 }
 
 async function nativeSpeak(text, opts = {}) {
-  const voices = await getNativeVoicesCached()
-  if (!voices || voices.length === 0) {
-    console.warn('No native TTS engine, falling back to web speech')
-    return webSpeak(text, opts)
-  }
-
-  // Cancelar cualquier speak previo para responder rápido a clics seguidos.
-  try { await TextToSpeech.stop() } catch {}
-
+  // No bloqueamos en voices=[]: algunos motores reportan vacío pero igual
+  // pueden hablar. Si el speak realmente falla, capturamos el error.
   try {
     opts.onStart?.()
     await TextToSpeech.speak({
@@ -60,16 +54,17 @@ async function nativeStop() {
 }
 
 // Warm-up del motor TTS: en Android la primera invocación carga el modelo
-// de voz (~200-800ms). Lo disparamos al iniciar la app para que el primer
-// speak real sea instantáneo.
+// de voz (~200-800ms). Lo disparamos al iniciar la app, pero de forma
+// totalmente defensiva — cualquier error es silenciado y NO afecta
+// ningún speak real posterior.
+let warmUpDone = false
 async function nativeWarmUp() {
-  if (nativeEngineReady) return
-  nativeEngineReady = true
+  if (warmUpDone) return
+  warmUpDone = true
+  // Disparamos el cache de voces en background (sin bloquear).
+  getNativeVoicesCached().catch(() => {})
+  // speak silencioso de calentamiento — fire-and-forget; si falla, no rompe nada.
   try {
-    const voices = await getNativeVoicesCached()
-    if (!voices || voices.length === 0) return
-    // "speak" silencioso con texto mínimo: dispara la carga del modelo
-    // sin emitir audio audible.
     await TextToSpeech.speak({
       text: 'a',
       lang: 'it-IT',
@@ -80,7 +75,9 @@ async function nativeWarmUp() {
       category: 'ambient'
     })
   } catch (e) {
-    console.warn('TTS warm-up failed (non-fatal):', e)
+    // Esperado en algunos dispositivos si el motor todavía no está listo —
+    // el siguiente speak real se encarga.
+    console.warn('TTS warm-up skipped:', e?.message ?? e)
   }
 }
 
