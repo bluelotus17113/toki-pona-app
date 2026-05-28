@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useMemo, useState } from 'react'
 import { LESSONS, SECTIONS, SECTION_THEMES } from '../data/lessons.js'
 import { VOCAB } from '../data/vocabulary.js'
-import { LANGS, makeT } from '../data/i18n.js'
+import { makeT } from '../data/i18n.js'
 import { practiceExerciseCount } from '../data/exerciseBuilder.js'
 import { playClick, useSoundToggle } from '../hooks/useSound.js'
 import { speak } from '../hooks/useSpeech.js'
@@ -19,7 +19,8 @@ export default function Home({ progress, lang, setLang, onOpen, onPractice, onDi
   const practiceCount = practiceExerciseCount(state.completed.length)
 
   const [noHeartsOpen, setNoHeartsOpen] = useState(false)
-  const [moreOpen, setMoreOpen] = useState(false)
+  const [activeSheet, setActiveSheet] = useState(null)  // null | 'more' | 'practicas' | 'escritura' | 'complementos'
+  const closeSheet = () => setActiveSheet(null)
   const [soundOn, toggleSound] = useSoundToggle()
   const wod = useMemo(() => getWordOfTheDay(), [])
   const [wodPlaying, setWodPlaying] = useState(false)
@@ -58,9 +59,6 @@ export default function Home({ progress, lang, setLang, onOpen, onPractice, onDi
   const handleToki = () => { playClick(); onToki() }
   const handleSettings = () => { playClick(); onSettings() }
   const handleKon = () => { playClick(); onKon() }
-  const handleThemeCycle = () => { playClick(); onCycleTheme?.() }
-
-  const themeIcon = theme === 'dark' ? '🌙' : theme === 'sepia' ? '📜' : '☀️'
 
   const lessonsBySection = SECTIONS.map(sec => ({
     section: sec,
@@ -90,7 +88,6 @@ export default function Home({ progress, lang, setLang, onOpen, onPractice, onDi
           </div>
         </button>
         <div className="header-controls">
-          <LangSwitcher lang={lang} setLang={setLang} />
           <button
             className={`sound-toggle ${soundOn ? 'on' : 'off'}`}
             onClick={toggleSound}
@@ -98,14 +95,6 @@ export default function Home({ progress, lang, setLang, onOpen, onPractice, onDi
             aria-label={soundOn ? t('soundOn') : t('soundOff')}
           >
             {soundOn ? '🔊' : '🔇'}
-          </button>
-          <button
-            className="theme-toggle"
-            onClick={handleThemeCycle}
-            title={t('themeToggle')}
-            aria-label={t('themeToggle')}
-          >
-            {themeIcon}
           </button>
           <button
             className="theme-toggle"
@@ -140,86 +129,36 @@ export default function Home({ progress, lang, setLang, onOpen, onPractice, onDi
         )}
       </div>
 
-      <div className="action-row triple compact">
-        <button
-          className={`action-btn practice ${practiceAvailable ? '' : 'locked'}`}
-          disabled={!practiceAvailable}
-          onClick={tryOpenPractice}
-        >
+      <div className="action-row quad compact">
+        <button className="action-btn cat-practicas" onClick={() => { playClick(); setActiveSheet('practicas') }}>
           <span className="action-icon">🎲</span>
           <span className="action-text">
-            <span className="action-title">{t('practice')}</span>
-            <span className="action-sub">
-              {practiceAvailable ? t('practiceSub', { n: practiceCount }) : t('practiceLocked')}
-            </span>
+            <span className="action-title">{t('homePracticas')}</span>
+            <span className="action-sub">{t('homePracticasSub')}</span>
           </span>
         </button>
 
-        <button className="action-btn dictionary" onClick={handleDictionary}>
-          <span className="action-icon">📖</span>
+        <button className="action-btn cat-escritura" onClick={() => { playClick(); setActiveSheet('escritura') }}>
+          <span className="action-icon">✍️</span>
           <span className="action-text">
-            <span className="action-title">{t('dictionary')}</span>
-            <span className="action-sub">{t('dictionarySub', { n: Object.keys(VOCAB).length })}</span>
+            <span className="action-title">{t('homeEscritura')}</span>
+            <span className="action-sub">{t('homeEscrituraSub')}</span>
           </span>
         </button>
 
-        <button className="action-btn grammar" onClick={handleGrammar}>
-          <span className="action-icon">📐</span>
-          <span className="action-text">
-            <span className="action-title">{t('grammar')}</span>
-            <span className="action-sub">{t('grammarSub')}</span>
-          </span>
-        </button>
-      </div>
-
-      <div className="action-row triple compact">
-        <button className="action-btn nimitu" onClick={handleMinijuegos}>
+        <button className="action-btn cat-minijuegos" onClick={handleMinijuegos}>
           <span className="action-icon">🎮</span>
           <span className="action-text">
-            <span className="action-title">{t('minijuegosTitle')}</span>
-            <span className="action-sub">{t('minijuegosHomeSub')}</span>
+            <span className="action-title">{t('homeMinijuegos')}</span>
+            <span className="action-sub">{t('homeMinijuegosSub')}</span>
           </span>
         </button>
 
-        <button className="action-btn sitelen" onClick={handleSitelen}>
-          <span className="action-icon">☉</span>
-          <span className="action-text">
-            <span className="action-title">{t('sitelenPona')}</span>
-            <span className="action-sub">{t('sitelenPonaSub2')}</span>
-          </span>
-        </button>
-
-        <button className="action-btn lienzo" onClick={handleLienzo}>
-          <span className="action-icon">🖼️</span>
-          <span className="action-text">
-            <span className="action-title">{t('iloSitelen')}</span>
-            <span className="action-sub">{t('iloSitelenSub')}</span>
-          </span>
-        </button>
-      </div>
-
-      <div className="action-row triple compact complements">
-        <button className="action-btn kon-mini" onClick={handleKon}>
+        <button className="action-btn cat-complementos" onClick={() => { playClick(); setActiveSheet('complementos') }}>
           <span className="action-icon">🍃</span>
           <span className="action-text">
-            <span className="action-title">{t('konTitle')}</span>
-            <span className="action-sub">{t('konCtaSub')}</span>
-          </span>
-        </button>
-
-        <button className="action-btn toki-mini" onClick={handleToki}>
-          <span className="action-icon">💬</span>
-          <span className="action-text">
-            <span className="action-title">{t('tokiTitle')}</span>
-            <span className="action-sub">{t('tokiCtaSub')}</span>
-          </span>
-        </button>
-
-        <button className="action-btn cuentos-mini" onClick={handleCuentos}>
-          <span className="action-icon">📚</span>
-          <span className="action-text">
-            <span className="action-title">{t('cuentosTitle')}</span>
-            <span className="action-sub">🪙 {state.mani}</span>
+            <span className="action-title">{t('homeComplementos')}</span>
+            <span className="action-sub">{t('homeComplementosSub')}</span>
           </span>
         </button>
       </div>
@@ -308,7 +247,7 @@ export default function Home({ progress, lang, setLang, onOpen, onPractice, onDi
         <div className="footer-actions">
           <button
             className="achievements-btn more-btn"
-            onClick={() => { playClick(); setMoreOpen(true) }}
+            onClick={() => { playClick(); setActiveSheet('more') }}
             title={t('moreLabel')}
           >
             ⋯ {t('moreLabel')}
@@ -322,15 +261,97 @@ export default function Home({ progress, lang, setLang, onOpen, onPractice, onDi
         <p className="footnote">{t('footnote')}</p>
       </footer>
 
-      {moreOpen && (
-        <MoreSheet
+      {activeSheet === 'practicas' && (
+        <ActionSheet
           lang={lang}
-          onClose={() => setMoreOpen(false)}
-          onAchievements={() => { setMoreOpen(false); handleAchievements() }}
-          onHistoria={() => { setMoreOpen(false); handleHistoria() }}
-          onAtlas={() => { setMoreOpen(false); handleAtlas() }}
-          onKulupu={() => { setMoreOpen(false); handleKulupu() }}
-          onDashboard={() => { setMoreOpen(false); handleDashboard() }}
+          title={t('sheetPracticasTitle')}
+          onClose={closeSheet}
+          items={[
+            {
+              icon: '🎲',
+              label: t('practice'),
+              sub: practiceAvailable ? t('practiceSub', { n: practiceCount }) : t('practiceLocked'),
+              locked: !practiceAvailable,
+              onClick: () => { closeSheet(); tryOpenPractice() }
+            },
+            {
+              icon: '📖',
+              label: t('dictionary'),
+              sub: t('dictionarySub', { n: Object.keys(VOCAB).length }),
+              onClick: () => { closeSheet(); handleDictionary() }
+            },
+            {
+              icon: '📐',
+              label: t('grammar'),
+              sub: t('grammarSub'),
+              onClick: () => { closeSheet(); handleGrammar() }
+            }
+          ]}
+        />
+      )}
+
+      {activeSheet === 'escritura' && (
+        <ActionSheet
+          lang={lang}
+          title={t('sheetEscrituraTitle')}
+          onClose={closeSheet}
+          items={[
+            {
+              icon: '☉',
+              label: t('sitelenPona'),
+              sub: t('sitelenPonaSub2'),
+              onClick: () => { closeSheet(); handleSitelen() }
+            },
+            {
+              icon: '🖼️',
+              label: t('iloSitelen'),
+              sub: t('iloSitelenSub'),
+              onClick: () => { closeSheet(); handleLienzo() }
+            }
+          ]}
+        />
+      )}
+
+      {activeSheet === 'complementos' && (
+        <ActionSheet
+          lang={lang}
+          title={t('sheetComplementosTitle')}
+          onClose={closeSheet}
+          items={[
+            {
+              icon: '🍃',
+              label: t('konTitle'),
+              sub: t('konCtaSub'),
+              onClick: () => { closeSheet(); handleKon() }
+            },
+            {
+              icon: '💬',
+              label: t('tokiTitle'),
+              sub: t('tokiCtaSub'),
+              onClick: () => { closeSheet(); handleToki() }
+            },
+            {
+              icon: '📚',
+              label: t('cuentosTitle'),
+              sub: `🪙 ${state.mani}`,
+              onClick: () => { closeSheet(); handleCuentos() }
+            }
+          ]}
+        />
+      )}
+
+      {activeSheet === 'more' && (
+        <ActionSheet
+          lang={lang}
+          title={t('moreSheetTitle')}
+          onClose={closeSheet}
+          items={[
+            { icon: '🏆', label: t('achievementsTitle'), onClick: () => { closeSheet(); handleAchievements() } },
+            { icon: '📊', label: t('dashboardTitle'),    onClick: () => { closeSheet(); handleDashboard() } },
+            { icon: '📜', label: t('historiaTitle'),     onClick: () => { closeSheet(); handleHistoria() } },
+            { icon: '🔠', label: t('atlasTitle'),        onClick: () => { closeSheet(); handleAtlas() } },
+            { icon: '🌍', label: t('kulupuTitle'),       onClick: () => { closeSheet(); handleKulupu() } }
+          ]}
         />
       )}
 
@@ -356,25 +377,24 @@ function Stat({ icon, label, value }) {
   )
 }
 
-function MoreSheet({ lang, onClose, onAchievements, onHistoria, onAtlas, onKulupu, onDashboard }) {
+function ActionSheet({ lang, title, items, onClose }) {
   const t = makeT(lang)
-  const items = [
-    { icon: '🏆', label: t('achievementsTitle'), onClick: onAchievements },
-    { icon: '📊', label: t('dashboardTitle'),    onClick: onDashboard    },
-    { icon: '📜', label: t('historiaTitle'),     onClick: onHistoria     },
-    { icon: '🔠', label: t('atlasTitle'),        onClick: onAtlas        },
-    { icon: '🌍', label: t('kulupuTitle'),       onClick: onKulupu       }
-  ]
   return (
     <div className="more-sheet-backdrop" onClick={onClose}>
       <div className="more-sheet" onClick={(e) => e.stopPropagation()}>
         <div className="more-sheet-grabber" aria-hidden="true" />
-        <h3 className="more-sheet-title">{t('moreSheetTitle')}</h3>
+        <h3 className="more-sheet-title">{title}</h3>
         <div className="more-sheet-grid">
           {items.map(it => (
-            <button key={it.label} className="more-sheet-item" onClick={it.onClick}>
+            <button
+              key={it.label}
+              className={`more-sheet-item ${it.locked ? 'is-locked' : ''}`}
+              onClick={it.onClick}
+              disabled={!!it.locked}
+            >
               <span className="more-sheet-item-icon">{it.icon}</span>
               <span className="more-sheet-item-label">{it.label}</span>
+              {it.sub && <span className="more-sheet-item-sub">{it.sub}</span>}
             </button>
           ))}
         </div>
@@ -384,19 +404,3 @@ function MoreSheet({ lang, onClose, onAchievements, onHistoria, onAtlas, onKulup
   )
 }
 
-function LangSwitcher({ lang, setLang }) {
-  return (
-    <div className="lang-switcher">
-      {LANGS.map(l => (
-        <button
-          key={l.code}
-          className={`lang-pill ${lang === l.code ? 'active' : ''}`}
-          onClick={() => setLang(l.code)}
-          title={l.label}
-        >
-          {l.flag} {l.code.toUpperCase()}
-        </button>
-      ))}
-    </div>
-  )
-}

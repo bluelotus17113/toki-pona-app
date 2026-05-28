@@ -209,6 +209,19 @@ export const STRINGS = {
   moreSheetTitle:     { es: 'más opciones',                       en: 'more options' },
   moreSheetClose:     { es: 'cerrar',                             en: 'close' },
 
+  // Categorías del home (4 botones grandes)
+  homePracticas:      { es: 'prácticas',                          en: 'practice' },
+  homePracticasSub:   { es: 'práctica · diccionario · gramática', en: 'practice · dictionary · grammar' },
+  homeEscritura:      { es: 'escritura',                          en: 'writing' },
+  homeEscrituraSub:   { es: 'sitelen pona · lienzo',              en: 'sitelen pona · canvas' },
+  homeMinijuegos:     { es: 'minijuegos',                         en: 'minigames' },
+  homeMinijuegosSub:  { es: '9 juegos · 1 por día',               en: '9 games · 1 a day' },
+  homeComplementos:   { es: 'complementos',                       en: 'extras' },
+  homeComplementosSub:{ es: 'meditar · conversar · leer',         en: 'meditate · chat · read' },
+  sheetPracticasTitle:{ es: 'prácticas',                          en: 'practice' },
+  sheetEscrituraTitle:{ es: 'escritura',                          en: 'writing' },
+  sheetComplementosTitle:{ es: 'complementos',                    en: 'extras' },
+
   // Settings (configuración centralizada)
   settingsTitle:      { es: 'ajustes',                            en: 'settings' },
   settingsSub:        { es: 'preferencias y datos de la app',     en: 'app preferences and data' },

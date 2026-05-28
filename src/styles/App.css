@@ -6550,14 +6550,39 @@ html, body, #root, .home {
 }
 .sitelensin-result-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--ink); }
 
-/* ============ Home: complementos (kon/toki/cuentos en fila compacta) ============ */
-.action-row.complements { margin-bottom: 20px; }
-.action-btn.kon-mini    { background: linear-gradient(135deg, #d4e7d4 0%, #c0d8b8 100%); }
-.action-btn.toki-mini   { background: linear-gradient(135deg, #d4f7d4 0%, #c6efd0 100%); }
-.action-btn.cuentos-mini{ background: linear-gradient(110deg, #fde74c, #ffd6a5); }
-.action-btn.kon-mini:not(.locked):hover,
-.action-btn.toki-mini:not(.locked):hover,
-.action-btn.cuentos-mini:not(.locked):hover { filter: brightness(1.03); }
+/* ============ Home: fila de 4 categorías (Prácticas / Escritura / Minijuegos / Complementos) ============ */
+.action-row.quad.compact {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.action-row.quad.compact .action-btn {
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 12px 6px;
+  gap: 6px;
+  border-radius: 16px;
+  box-shadow: 3px 3px 0 var(--ink);
+}
+.action-row.quad.compact .action-btn:not(.locked):hover { box-shadow: 5px 5px 0 var(--ink); }
+.action-row.quad.compact .action-icon { font-size: 1.55rem; }
+.action-row.quad.compact .action-title { font-size: 0.85rem; font-weight: 800; line-height: 1.1; }
+.action-row.quad.compact .action-sub   { font-size: 0.62rem; color: var(--ink-soft); font-weight: 600; line-height: 1.1; }
+
+.action-btn.cat-practicas    { background: var(--cream); }
+.action-btn.cat-escritura    { background: var(--sky); }
+.action-btn.cat-minijuegos   { background: linear-gradient(135deg, #fde74c 0%, #ffd6a5 100%); }
+.action-btn.cat-complementos { background: linear-gradient(135deg, #d4f7d4 0%, #c6efd0 100%); }
+
+@media (max-width: 520px) {
+  .action-row.quad.compact { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .action-row.quad.compact .action-sub { display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+}
+@media (max-width: 360px) {
+  .action-row.quad.compact .action-sub { display: none; }
+}
 
 /* ============ Home: bottom-sheet "más" ============ */
 .more-sheet-backdrop {
@@ -6619,11 +6644,21 @@ html, body, #root, .home {
 }
 .more-sheet-item-icon { font-size: 1.6rem; }
 .more-sheet-item-label {
-  font-size: 0.78rem;
-  font-weight: 700;
+  font-size: 0.85rem;
+  font-weight: 800;
   text-align: center;
   line-height: 1.1;
 }
+.more-sheet-item-sub {
+  font-size: 0.66rem;
+  color: var(--ink-soft);
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.15;
+  margin-top: 2px;
+}
+.more-sheet-item.is-locked { opacity: 0.55; cursor: not-allowed; }
+.more-sheet-item.is-locked:active { transform: none; box-shadow: 3px 3px 0 var(--ink); }
 .more-sheet-close {
   display: block;
   width: 100%;
