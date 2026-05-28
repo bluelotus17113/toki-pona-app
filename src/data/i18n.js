@@ -209,6 +209,16 @@ export const STRINGS = {
   moreSheetTitle:     { es: 'más opciones',                       en: 'more options' },
   moreSheetClose:     { es: 'cerrar',                             en: 'close' },
 
+  // Sub-labels cortas para items dentro de los sheets (caben en 1-2 líneas)
+  sheetSubPractice:   { es: 'mezcla aleatoria',                   en: 'random mix' },
+  sheetSubDictionary: { es: 'todas las palabras',                 en: 'all words' },
+  sheetSubGrammar:    { es: 'reglas y partículas',                en: 'rules & particles' },
+  sheetSubSitelen:    { es: 'glifos del alfabeto',                en: 'alphabet glyphs' },
+  sheetSubLienzo:     { es: 'dibujá en canvas',                   en: 'draw on canvas' },
+  sheetSubKon:        { es: 'meditación',                         en: 'meditation' },
+  sheetSubToki:       { es: 'conversaciones',                     en: 'dialogues' },
+  sheetSubCuentos:    { es: 'lectura',                            en: 'reading' },
+
   // Categorías del home (4 botones grandes)
   homePracticas:      { es: 'prácticas',                          en: 'practice' },
   homePracticasSub:   { es: 'práctica · diccionario · gramática', en: 'practice · dictionary · grammar' },

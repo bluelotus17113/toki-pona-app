@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useMemo, useState } from 'react'
+import { Fragment, useEffect, useMemo, useRef, useState } from 'react'
 import { LESSONS, SECTIONS, SECTION_THEMES } from '../data/lessons.js'
 import { VOCAB } from '../data/vocabulary.js'
 import { makeT } from '../data/i18n.js'
@@ -270,20 +270,20 @@ export default function Home({ progress, lang, setLang, onOpen, onPractice, onDi
             {
               icon: '🎲',
               label: t('practice'),
-              sub: practiceAvailable ? t('practiceSub', { n: practiceCount }) : t('practiceLocked'),
+              sub: practiceAvailable ? t('sheetSubPractice') : t('practiceLocked'),
               locked: !practiceAvailable,
               onClick: () => { closeSheet(); tryOpenPractice() }
             },
             {
               icon: '📖',
               label: t('dictionary'),
-              sub: t('dictionarySub', { n: Object.keys(VOCAB).length }),
+              sub: t('sheetSubDictionary'),
               onClick: () => { closeSheet(); handleDictionary() }
             },
             {
               icon: '📐',
               label: t('grammar'),
-              sub: t('grammarSub'),
+              sub: t('sheetSubGrammar'),
               onClick: () => { closeSheet(); handleGrammar() }
             }
           ]}
@@ -299,13 +299,13 @@ export default function Home({ progress, lang, setLang, onOpen, onPractice, onDi
             {
               icon: '☉',
               label: t('sitelenPona'),
-              sub: t('sitelenPonaSub2'),
+              sub: t('sheetSubSitelen'),
               onClick: () => { closeSheet(); handleSitelen() }
             },
             {
               icon: '🖼️',
               label: t('iloSitelen'),
-              sub: t('iloSitelenSub'),
+              sub: t('sheetSubLienzo'),
               onClick: () => { closeSheet(); handleLienzo() }
             }
           ]}
@@ -321,13 +321,13 @@ export default function Home({ progress, lang, setLang, onOpen, onPractice, onDi
             {
               icon: '🍃',
               label: t('konTitle'),
-              sub: t('konCtaSub'),
+              sub: t('sheetSubKon'),
               onClick: () => { closeSheet(); handleKon() }
             },
             {
               icon: '💬',
               label: t('tokiTitle'),
-              sub: t('tokiCtaSub'),
+              sub: t('sheetSubToki'),
               onClick: () => { closeSheet(); handleToki() }
             },
             {
@@ -379,9 +379,57 @@ function Stat({ icon, label, value }) {
 
 function ActionSheet({ lang, title, items, onClose }) {
   const t = makeT(lang)
+  const startYRef = useRef(null)
+  const lastYRef = useRef(0)
+  const sheetRef = useRef(null)
+  const [dragY, setDragY] = useState(0)
+  const [closing, setClosing] = useState(false)
+
+  // Lock body scroll mientras el sheet está abierto
+  useEffect(() => {
+    const prev = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => { document.body.style.overflow = prev }
+  }, [])
+
+  // Cerrar con animación + delay para que termine el slide-down
+  const closeWithAnim = () => {
+    if (closing) return
+    setClosing(true)
+    setDragY(window.innerHeight)
+    setTimeout(onClose, 180)
+  }
+
+  const onTouchStart = (e) => {
+    startYRef.current = e.touches[0].clientY
+    lastYRef.current = 0
+  }
+  const onTouchMove = (e) => {
+    if (startYRef.current == null) return
+    const dy = e.touches[0].clientY - startYRef.current
+    if (dy > 0) {
+      lastYRef.current = dy
+      setDragY(dy)
+    }
+  }
+  const onTouchEnd = () => {
+    const dy = lastYRef.current
+    startYRef.current = null
+    if (dy > 100) closeWithAnim()
+    else setDragY(0)
+  }
+
   return (
-    <div className="more-sheet-backdrop" onClick={onClose}>
-      <div className="more-sheet" onClick={(e) => e.stopPropagation()}>
+    <div className="more-sheet-backdrop" onClick={closeWithAnim}>
+      <div
+        className={`more-sheet ${closing ? 'is-closing' : ''}`}
+        ref={sheetRef}
+        style={{ transform: `translateY(${dragY}px)`, transition: dragY === 0 || closing ? 'transform 0.18s ease' : 'none' }}
+        onClick={(e) => e.stopPropagation()}
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onTouchEnd={onTouchEnd}
+      >
         <div className="more-sheet-grabber" aria-hidden="true" />
         <h3 className="more-sheet-title">{title}</h3>
         <div className="more-sheet-grid">
@@ -398,7 +446,7 @@ function ActionSheet({ lang, title, items, onClose }) {
             </button>
           ))}
         </div>
-        <button className="more-sheet-close" onClick={onClose}>{t('moreSheetClose')}</button>
+        <button className="more-sheet-close" onClick={closeWithAnim}>{t('moreSheetClose')}</button>
       </div>
     </div>
   )

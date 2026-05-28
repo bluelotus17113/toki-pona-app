@@ -6593,14 +6593,23 @@ html, body, #root, .home {
 }
 .more-sheet {
   width: 100%; max-width: 480px;
+  max-height: 80vh;
+  overflow: hidden;
   background: var(--paper);
   border-top: 3px solid var(--ink);
   border-left: 3px solid var(--ink);
   border-right: 3px solid var(--ink);
   border-radius: 22px 22px 0 0;
   box-shadow: 0 -6px 0 var(--ink);
-  padding: 10px 16px 22px;
+  padding: 10px 16px calc(22px + env(safe-area-inset-bottom, 0px));
   animation: slideUp 0.22s ease;
+  touch-action: pan-y;
+  display: flex;
+  flex-direction: column;
+}
+.more-sheet-grid {
+  overflow: hidden;
+  flex: 0 1 auto;
 }
 .more-sheet-grabber {
   width: 44px; height: 5px;
