@@ -1,11 +1,19 @@
+import { useEffect, useState } from 'react'
 import { formatRemaining } from '../hooks/useProgress.js'
 import { makeT } from '../data/i18n.js'
 
 export default function Hearts({ hearts, max, nextRegenAt, lang = 'es', compact = false }) {
   const t = makeT(lang)
-  const now = Date.now()
-  const remainingMs = nextRegenAt ? Math.max(0, nextRegenAt - now) : 0
   const showTimer = hearts < max && nextRegenAt
+  // Tick local para que el countdown se vea fluido aunque `state` no cambie
+  // (useProgress evita re-render cuando applyRegen no modifica el estado).
+  const [now, setNow] = useState(() => Date.now())
+  useEffect(() => {
+    if (!showTimer) return
+    const id = setInterval(() => setNow(Date.now()), 1000)
+    return () => clearInterval(id)
+  }, [showTimer])
+  const remainingMs = nextRegenAt ? Math.max(0, nextRegenAt - now) : 0
 
   if (compact) {
     return (
