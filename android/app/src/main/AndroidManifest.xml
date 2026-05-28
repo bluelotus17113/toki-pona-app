@@ -38,4 +38,7 @@
     <!-- Permissions -->
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Alarma exacta para que la notif diaria dispare a la hora prometida.
+         Sin esto, Android 12+ batchea la alarma y puede atrasarla horas. -->
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
 </manifest>

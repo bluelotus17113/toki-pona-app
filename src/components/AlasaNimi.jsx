@@ -125,7 +125,8 @@ function cellKey([r, c]) { return `${r},${c}` }
 export default function AlasaNimi({ progress, lang = 'es', onExit }) {
   const t = makeT(lang)
 
-  const [{ grid, words }] = useState(() => [generateGrid()])
+  const [gameState] = useState(generateGrid)
+  const { grid, words } = gameState
   const [firstPick, setFirstPick] = useState(null)   // [r, c] o null
   const [foundWords, setFoundWords] = useState({})   // word -> [cells]
   const [feedback, setFeedback] = useState(null)     // 'right' | 'wrong'
