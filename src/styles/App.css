@@ -6554,34 +6554,35 @@ html, body, #root, .home {
 .action-row.quad.compact {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
-  gap: 8px;
-  margin-bottom: 20px;
+  gap: 6px;
+  margin-bottom: 18px;
 }
 .action-row.quad.compact .action-btn {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 12px 6px;
-  gap: 6px;
-  border-radius: 16px;
-  box-shadow: 3px 3px 0 var(--ink);
+  padding: 8px 4px;
+  gap: 3px;
+  border-radius: 14px;
+  box-shadow: 2px 2px 0 var(--ink);
 }
-.action-row.quad.compact .action-btn:not(.locked):hover { box-shadow: 5px 5px 0 var(--ink); }
-.action-row.quad.compact .action-icon { font-size: 1.55rem; }
-.action-row.quad.compact .action-title { font-size: 0.85rem; font-weight: 800; line-height: 1.1; }
-.action-row.quad.compact .action-sub   { font-size: 0.62rem; color: var(--ink-soft); font-weight: 600; line-height: 1.1; }
+.action-row.quad.compact .action-btn:not(.locked):hover { box-shadow: 4px 4px 0 var(--ink); }
+.action-row.quad.compact .action-icon { font-size: 1.25rem; }
+.action-row.quad.compact .action-title { font-size: 0.72rem; font-weight: 800; line-height: 1.05; }
+.action-row.quad.compact .action-sub   { display: none; }
 
 .action-btn.cat-practicas    { background: var(--cream); }
 .action-btn.cat-escritura    { background: var(--sky); }
 .action-btn.cat-minijuegos   { background: linear-gradient(135deg, #fde74c 0%, #ffd6a5 100%); }
 .action-btn.cat-complementos { background: linear-gradient(135deg, #d4f7d4 0%, #c6efd0 100%); }
 
-@media (max-width: 520px) {
-  .action-row.quad.compact { grid-template-columns: 1fr 1fr; gap: 10px; }
-  .action-row.quad.compact .action-sub { display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
-}
-@media (max-width: 360px) {
-  .action-row.quad.compact .action-sub { display: none; }
+/* En tablets/desktop sí mostramos sub-label */
+@media (min-width: 600px) {
+  .action-row.quad.compact { gap: 8px; }
+  .action-row.quad.compact .action-btn { padding: 10px 6px; gap: 5px; }
+  .action-row.quad.compact .action-icon { font-size: 1.5rem; }
+  .action-row.quad.compact .action-title { font-size: 0.85rem; }
+  .action-row.quad.compact .action-sub { display: block; font-size: 0.62rem; color: var(--ink-soft); font-weight: 600; line-height: 1.1; }
 }
 
 /* ============ Home: bottom-sheet "más" ============ */
@@ -6601,7 +6602,8 @@ html, body, #root, .home {
   border-right: 3px solid var(--ink);
   border-radius: 22px 22px 0 0;
   box-shadow: 0 -6px 0 var(--ink);
-  padding: 10px 16px calc(22px + env(safe-area-inset-bottom, 0px));
+  /* clearance generoso para barra de nav Android (3-botones ≈ 48dp, gesto ≈ 24dp) */
+  padding: 10px 16px calc(70px + env(safe-area-inset-bottom, 0px));
   animation: slideUp 0.22s ease;
   touch-action: pan-y;
   display: flex;
