@@ -6565,6 +6565,15 @@ html, body, #root, .home {
   gap: 3px;
   border-radius: 14px;
   box-shadow: 2px 2px 0 var(--ink);
+  /* enforce equal-width columns aunque el label tenga texto largo */
+  min-width: 0;
+  overflow: hidden;
+}
+.action-row.quad.compact .action-btn .action-title {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .action-row.quad.compact .action-btn:not(.locked):hover { box-shadow: 4px 4px 0 var(--ink); }
 .action-row.quad.compact .action-icon { font-size: 1.25rem; }

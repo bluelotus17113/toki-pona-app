@@ -226,11 +226,11 @@ export const STRINGS = {
   homeEscrituraSub:   { es: 'sitelen pona · lienzo',              en: 'sitelen pona · canvas' },
   homeMinijuegos:     { es: 'minijuegos',                         en: 'minigames' },
   homeMinijuegosSub:  { es: '9 juegos · 1 por día',               en: '9 games · 1 a day' },
-  homeComplementos:   { es: 'complementos',                       en: 'extras' },
+  homeComplementos:   { es: 'extras',                             en: 'extras' },
   homeComplementosSub:{ es: 'meditar · conversar · leer',         en: 'meditate · chat · read' },
   sheetPracticasTitle:{ es: 'prácticas',                          en: 'practice' },
   sheetEscrituraTitle:{ es: 'escritura',                          en: 'writing' },
-  sheetComplementosTitle:{ es: 'complementos',                    en: 'extras' },
+  sheetComplementosTitle:{ es: 'extras',                          en: 'extras' },
 
   // Settings (configuración centralizada)
   settingsTitle:      { es: 'ajustes',                            en: 'settings' },
