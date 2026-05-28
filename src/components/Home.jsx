@@ -19,6 +19,7 @@ export default function Home({ progress, lang, setLang, onOpen, onPractice, onDi
   const practiceCount = practiceExerciseCount(state.completed.length)
 
   const [noHeartsOpen, setNoHeartsOpen] = useState(false)
+  const [moreOpen, setMoreOpen] = useState(false)
   const [soundOn, toggleSound] = useSoundToggle()
   const wod = useMemo(() => getWordOfTheDay(), [])
   const [wodPlaying, setWodPlaying] = useState(false)
@@ -197,31 +198,31 @@ export default function Home({ progress, lang, setLang, onOpen, onPractice, onDi
         </button>
       </div>
 
-      <button className="kon-cta" onClick={handleKon}>
-        <span className="kon-cta-icon">🍃</span>
-        <span className="kon-cta-text">
-          <span className="kon-cta-title">{t('konTitle')}</span>
-          <span className="kon-cta-sub">{t('konCtaSub')}</span>
-        </span>
-      </button>
+      <div className="action-row triple compact complements">
+        <button className="action-btn kon-mini" onClick={handleKon}>
+          <span className="action-icon">🍃</span>
+          <span className="action-text">
+            <span className="action-title">{t('konTitle')}</span>
+            <span className="action-sub">{t('konCtaSub')}</span>
+          </span>
+        </button>
 
-      <button className="toki-cta" onClick={handleToki}>
-        <span className="toki-cta-icon">💬</span>
-        <span className="toki-cta-text">
-          <span className="toki-cta-title">{t('tokiTitle')}</span>
-          <span className="toki-cta-sub">{t('tokiCtaSub')}</span>
-        </span>
-        <span className="toki-cta-badge">⭐ +25 XP</span>
-      </button>
+        <button className="action-btn toki-mini" onClick={handleToki}>
+          <span className="action-icon">💬</span>
+          <span className="action-text">
+            <span className="action-title">{t('tokiTitle')}</span>
+            <span className="action-sub">{t('tokiCtaSub')}</span>
+          </span>
+        </button>
 
-      <button className="cuentos-cta" onClick={handleCuentos}>
-        <span className="cuentos-cta-icon">📚</span>
-        <span className="cuentos-cta-text">
-          <span className="cuentos-cta-title">{t('cuentosTitle')}</span>
-          <span className="cuentos-cta-sub">{t('cuentosCtaSub')}</span>
-        </span>
-        <span className="cuentos-cta-balance">🪙 {state.mani}</span>
-      </button>
+        <button className="action-btn cuentos-mini" onClick={handleCuentos}>
+          <span className="action-icon">📚</span>
+          <span className="action-text">
+            <span className="action-title">{t('cuentosTitle')}</span>
+            <span className="action-sub">🪙 {state.mani}</span>
+          </span>
+        </button>
+      </div>
 
       <div className="course">
         {lessonsBySection.map(({ section, lessons }, secIdx) => {
@@ -305,20 +306,12 @@ export default function Home({ progress, lang, setLang, onOpen, onPractice, onDi
 
       <footer className="home-footer">
         <div className="footer-actions">
-          <button className="achievements-btn" onClick={handleAchievements} title={t('achievementsTitle')}>
-            🏆 {t('achievementsTitle')}
-          </button>
-          <button className="achievements-btn" onClick={handleHistoria} title={t('historiaTitle')}>
-            📜 {t('historiaTitle')}
-          </button>
-          <button className="achievements-btn" onClick={handleAtlas} title={t('atlasTitle')}>
-            🔠 {t('atlasTitle')}
-          </button>
-          <button className="achievements-btn" onClick={handleKulupu} title={t('kulupuTitle')}>
-            🌍 {t('kulupuTitle')}
-          </button>
-          <button className="achievements-btn" onClick={handleDashboard} title={t('dashboardTitle')}>
-            📊 {t('dashboardTitle')}
+          <button
+            className="achievements-btn more-btn"
+            onClick={() => { playClick(); setMoreOpen(true) }}
+            title={t('moreLabel')}
+          >
+            ⋯ {t('moreLabel')}
           </button>
           <FeedbackButton lang={lang} />
           <KofiButton variant="compact" lang={lang} />
@@ -328,6 +321,18 @@ export default function Home({ progress, lang, setLang, onOpen, onPractice, onDi
         </div>
         <p className="footnote">{t('footnote')}</p>
       </footer>
+
+      {moreOpen && (
+        <MoreSheet
+          lang={lang}
+          onClose={() => setMoreOpen(false)}
+          onAchievements={() => { setMoreOpen(false); handleAchievements() }}
+          onHistoria={() => { setMoreOpen(false); handleHistoria() }}
+          onAtlas={() => { setMoreOpen(false); handleAtlas() }}
+          onKulupu={() => { setMoreOpen(false); handleKulupu() }}
+          onDashboard={() => { setMoreOpen(false); handleDashboard() }}
+        />
+      )}
 
       {noHeartsOpen && (
         <NoHeartsModal
@@ -347,6 +352,34 @@ function Stat({ icon, label, value }) {
       <span className="stat-icon">{icon}</span>
       <span className="stat-value">{value}</span>
       <span className="stat-label">{label}</span>
+    </div>
+  )
+}
+
+function MoreSheet({ lang, onClose, onAchievements, onHistoria, onAtlas, onKulupu, onDashboard }) {
+  const t = makeT(lang)
+  const items = [
+    { icon: '🏆', label: t('achievementsTitle'), onClick: onAchievements },
+    { icon: '📊', label: t('dashboardTitle'),    onClick: onDashboard    },
+    { icon: '📜', label: t('historiaTitle'),     onClick: onHistoria     },
+    { icon: '🔠', label: t('atlasTitle'),        onClick: onAtlas        },
+    { icon: '🌍', label: t('kulupuTitle'),       onClick: onKulupu       }
+  ]
+  return (
+    <div className="more-sheet-backdrop" onClick={onClose}>
+      <div className="more-sheet" onClick={(e) => e.stopPropagation()}>
+        <div className="more-sheet-grabber" aria-hidden="true" />
+        <h3 className="more-sheet-title">{t('moreSheetTitle')}</h3>
+        <div className="more-sheet-grid">
+          {items.map(it => (
+            <button key={it.label} className="more-sheet-item" onClick={it.onClick}>
+              <span className="more-sheet-item-icon">{it.icon}</span>
+              <span className="more-sheet-item-label">{it.label}</span>
+            </button>
+          ))}
+        </div>
+        <button className="more-sheet-close" onClick={onClose}>{t('moreSheetClose')}</button>
+      </div>
     </div>
   )
 }

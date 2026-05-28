@@ -204,6 +204,11 @@ export const STRINGS = {
   konSilenceSub:      { es: 'silencio puro · sin guía',           en: 'pure silence · no guidance' },
   konSilenceExit:     { es: 'salir',                              en: 'exit' },
 
+  // Menú "más" — sheet con accesos secundarios del home
+  moreLabel:          { es: 'más',                                en: 'more' },
+  moreSheetTitle:     { es: 'más opciones',                       en: 'more options' },
+  moreSheetClose:     { es: 'cerrar',                             en: 'close' },
+
   // Settings (configuración centralizada)
   settingsTitle:      { es: 'ajustes',                            en: 'settings' },
   settingsSub:        { es: 'preferencias y datos de la app',     en: 'app preferences and data' },

@@ -6549,3 +6549,104 @@ html, body, #root, .home {
   cursor: pointer; box-shadow: 3px 3px 0 var(--ink);
 }
 .sitelensin-result-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--ink); }
+
+/* ============ Home: complementos (kon/toki/cuentos en fila compacta) ============ */
+.action-row.complements { margin-bottom: 20px; }
+.action-btn.kon-mini    { background: linear-gradient(135deg, #d4e7d4 0%, #c0d8b8 100%); }
+.action-btn.toki-mini   { background: linear-gradient(135deg, #d4f7d4 0%, #c6efd0 100%); }
+.action-btn.cuentos-mini{ background: linear-gradient(110deg, #fde74c, #ffd6a5); }
+.action-btn.kon-mini:not(.locked):hover,
+.action-btn.toki-mini:not(.locked):hover,
+.action-btn.cuentos-mini:not(.locked):hover { filter: brightness(1.03); }
+
+/* ============ Home: bottom-sheet "más" ============ */
+.more-sheet-backdrop {
+  position: fixed; inset: 0; z-index: 60;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex; align-items: flex-end; justify-content: center;
+  animation: fadeIn 0.18s ease;
+}
+.more-sheet {
+  width: 100%; max-width: 480px;
+  background: var(--paper);
+  border-top: 3px solid var(--ink);
+  border-left: 3px solid var(--ink);
+  border-right: 3px solid var(--ink);
+  border-radius: 22px 22px 0 0;
+  box-shadow: 0 -6px 0 var(--ink);
+  padding: 10px 16px 22px;
+  animation: slideUp 0.22s ease;
+}
+.more-sheet-grabber {
+  width: 44px; height: 5px;
+  background: var(--ink-faint);
+  border-radius: 999px;
+  margin: 0 auto 12px;
+}
+.more-sheet-title {
+  text-align: center;
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: var(--ink-soft);
+  margin: 0 0 14px;
+  text-transform: lowercase;
+  letter-spacing: 0.02em;
+}
+.more-sheet-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+@media (max-width: 380px) {
+  .more-sheet-grid { grid-template-columns: 1fr 1fr; }
+}
+.more-sheet-item {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  padding: 14px 8px;
+  background: var(--cream);
+  border: 2px solid var(--ink);
+  border-radius: 14px;
+  box-shadow: 3px 3px 0 var(--ink);
+  cursor: pointer;
+  font: inherit;
+  color: var(--ink);
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+.more-sheet-item:active {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0 var(--ink);
+}
+.more-sheet-item-icon { font-size: 1.6rem; }
+.more-sheet-item-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.1;
+}
+.more-sheet-close {
+  display: block;
+  width: 100%;
+  background: var(--paper);
+  border: 2px solid var(--ink-faint);
+  border-radius: 12px;
+  padding: 10px;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--ink-soft);
+  cursor: pointer;
+  text-transform: lowercase;
+}
+.achievements-btn.more-btn {
+  background: var(--yellow-hi);
+  font-weight: 800;
+}
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
