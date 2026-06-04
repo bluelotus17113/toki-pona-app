@@ -16,6 +16,38 @@ import SitelenPair from './exercises/SitelenPair.jsx'
 import Hearts from './Hearts.jsx'
 import LessonIntro from './LessonIntro.jsx'
 
+// Emite N partículas con ángulo + distancia random desde el centro de su contenedor.
+// El padre controla la posición (fixed center para success-burst, absolute para heart-burst).
+function Particles({ count = 12, emojis = ['✨'], minDist = 60, maxDist = 140, className = '' }) {
+  const items = useMemo(
+    () => Array.from({ length: count }, (_, i) => ({
+      id: i,
+      angle: Math.random() * 360,
+      dist: minDist + Math.random() * (maxDist - minDist),
+      delay: Math.random() * 90,
+      scale: 0.85 + Math.random() * 0.5,
+      emoji: emojis[Math.floor(Math.random() * emojis.length)]
+    })),
+    [count, emojis, minDist, maxDist]
+  )
+  return (
+    <div className={`particles-burst ${className}`} aria-hidden="true">
+      {items.map(p => (
+        <span
+          key={p.id}
+          className="particle"
+          style={{
+            '--angle': `${p.angle}deg`,
+            '--dist': `${p.dist}px`,
+            '--scale': p.scale,
+            animationDelay: `${p.delay}ms`
+          }}
+        >{p.emoji}</span>
+      ))}
+    </div>
+  )
+}
+
 export default function Lesson({ lessonId, progress, lang, onFinish, onExit }) {
   const t = makeT(lang)
   const lesson = LESSONS.find(l => l.id === lessonId)
@@ -30,17 +62,19 @@ export default function Lesson({ lessonId, progress, lang, onFinish, onExit }) {
   const [resumedBadge, setResumedBadge] = useState(!!draft)
   // Feedback visual: 'right' | 'wrong' | null — pinta toda la pantalla por 550ms
   const [flash, setFlash] = useState(null)
+  // Token que se incrementa con cada respuesta para remountar las partículas
+  const [burstKey, setBurstKey] = useState(0)
   // Shake del contador de vidas cuando perdés una
   const [heartShake, setHeartShake] = useState(false)
   const prevHeartsRef = useRef(progress.state.hearts)
 
   useEffect(() => { primeAudio() }, [])
 
-  // Detectar caída de vidas para gatillar shake
+  // Detectar caída de vidas para gatillar shake + shatter
   useEffect(() => {
     if (progress.state.hearts < prevHeartsRef.current) {
       setHeartShake(true)
-      const id = setTimeout(() => setHeartShake(false), 520)
+      const id = setTimeout(() => setHeartShake(false), 720)
       prevHeartsRef.current = progress.state.hearts
       return () => clearTimeout(id)
     }
@@ -120,6 +154,7 @@ export default function Lesson({ lessonId, progress, lang, onFinish, onExit }) {
     if (current?.targetWord)  recordAnswer(current.targetWord, isCorrect)
     if (current?.targetWords) recordAnswers(current.targetWords, isCorrect)
     setFlash(isCorrect ? 'right' : 'wrong')
+    setBurstKey(k => k + 1)
     setTimeout(() => setFlash(null), 550)
     if (isCorrect) {
       setCorrect(c => c + 1)
@@ -149,8 +184,29 @@ export default function Lesson({ lessonId, progress, lang, onFinish, onExit }) {
             lang={lang}
             compact
           />
+          {heartShake && (
+            <Particles
+              key={`heart-${burstKey}`}
+              count={10}
+              emojis={['💔', '💥', '✖']}
+              minDist={30}
+              maxDist={75}
+              className="heart-burst"
+            />
+          )}
         </div>
       </header>
+
+      {flash === 'right' && (
+        <Particles
+          key={`right-${burstKey}`}
+          count={18}
+          emojis={['✨', '⭐', '🌟', '💚', '🌸', '🍃']}
+          minDist={120}
+          maxDist={260}
+          className="success-burst"
+        />
+      )}
 
       {resumedBadge && (
         <div className="lesson-resumed-badge" role="status">
