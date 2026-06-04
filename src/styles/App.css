@@ -671,6 +671,19 @@ button:disabled { cursor: not-allowed; }
 }
 .lesson-header {
   display: flex; align-items: center; gap: 14px;
+  /* Fijo al top del viewport mientras scrolleás el área de ejercicio */
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--sky);
+  padding: 12px 0 10px;
+  /* compensa el padding-top de .app (24px) para que el header pegue al borde
+     cuando está sticky, sin un hueco extraño arriba */
+  margin: -24px -16px 0;
+  padding-left: 16px;
+  padding-right: 16px;
+  /* línea inferior sutil que se ve mejor cuando está stuck */
+  box-shadow: 0 2px 0 rgba(27, 32, 153, 0.08);
 }
 .exit-btn {
   width: 38px; height: 38px;
