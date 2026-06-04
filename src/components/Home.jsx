@@ -66,7 +66,8 @@ export default function Home({ progress, lang, setLang, onOpen, onPractice, onDi
   })).filter(g => g.lessons.length > 0)
 
   return (
-    <div className="home">
+    <>
+    <div className="home has-bottom-nav">
       <header className="home-header compact">
         <div className="title-block">
           <h1 className="logo">toki pona <span className="leaf">a!</span></h1>
@@ -138,39 +139,6 @@ export default function Home({ progress, lang, setLang, onOpen, onPractice, onDi
         )}
       </div>
 
-      <div className="action-row quad compact">
-        <button className="action-btn cat-practicas" onClick={() => { playClick(); setActiveSheet('practicas') }}>
-          <span className="action-icon">🎲</span>
-          <span className="action-text">
-            <span className="action-title">{t('homePracticas')}</span>
-            <span className="action-sub">{t('homePracticasSub')}</span>
-          </span>
-        </button>
-
-        <button className="action-btn cat-escritura" onClick={() => { playClick(); setActiveSheet('escritura') }}>
-          <span className="action-icon">✍️</span>
-          <span className="action-text">
-            <span className="action-title">{t('homeEscritura')}</span>
-            <span className="action-sub">{t('homeEscrituraSub')}</span>
-          </span>
-        </button>
-
-        <button className="action-btn cat-minijuegos" onClick={handleMinijuegos}>
-          <span className="action-icon">🎮</span>
-          <span className="action-text">
-            <span className="action-title">{t('homeMinijuegos')}</span>
-            <span className="action-sub">{t('homeMinijuegosSub')}</span>
-          </span>
-        </button>
-
-        <button className="action-btn cat-complementos" onClick={() => { playClick(); setActiveSheet('complementos') }}>
-          <span className="action-icon">🍃</span>
-          <span className="action-text">
-            <span className="action-title">{t('homeComplementos')}</span>
-            <span className="action-sub">{t('homeComplementosSub')}</span>
-          </span>
-        </button>
-      </div>
 
       <div className="course">
         {lessonsBySection.map(({ section, lessons }, secIdx) => {
@@ -269,6 +237,43 @@ export default function Home({ progress, lang, setLang, onOpen, onPractice, onDi
         </div>
         <p className="footnote">{t('footnote')}</p>
       </footer>
+    </div>
+
+    <nav className="home-bottom-nav" aria-label="navegación principal">
+      <div className="home-bottom-nav-inner action-row quad compact">
+        <button className="action-btn cat-practicas" onClick={() => { playClick(); setActiveSheet('practicas') }}>
+          <span className="action-icon">🎲</span>
+          <span className="action-text">
+            <span className="action-title">{t('homePracticas')}</span>
+            <span className="action-sub">{t('homePracticasSub')}</span>
+          </span>
+        </button>
+
+        <button className="action-btn cat-escritura" onClick={() => { playClick(); setActiveSheet('escritura') }}>
+          <span className="action-icon">✍️</span>
+          <span className="action-text">
+            <span className="action-title">{t('homeEscritura')}</span>
+            <span className="action-sub">{t('homeEscrituraSub')}</span>
+          </span>
+        </button>
+
+        <button className="action-btn cat-minijuegos" onClick={handleMinijuegos}>
+          <span className="action-icon">🎮</span>
+          <span className="action-text">
+            <span className="action-title">{t('homeMinijuegos')}</span>
+            <span className="action-sub">{t('homeMinijuegosSub')}</span>
+          </span>
+        </button>
+
+        <button className="action-btn cat-complementos" onClick={() => { playClick(); setActiveSheet('complementos') }}>
+          <span className="action-icon">🍃</span>
+          <span className="action-text">
+            <span className="action-title">{t('homeComplementos')}</span>
+            <span className="action-sub">{t('homeComplementosSub')}</span>
+          </span>
+        </button>
+      </div>
+    </nav>
 
       {activeSheet === 'practicas' && (
         <ActionSheet
@@ -372,7 +377,7 @@ export default function Home({ progress, lang, setLang, onOpen, onPractice, onDi
           lang={lang}
         />
       )}
-    </div>
+    </>
   )
 }
 

@@ -6704,6 +6704,31 @@ html, body, #root, .home {
   gap: 6px;
   margin-bottom: 18px;
 }
+
+/* ============ Bottom Nav fijo (estilo Duolingo) ============ */
+.home.has-bottom-nav {
+  /* deja espacio para que el último item no quede oculto bajo el nav */
+  padding-bottom: 100px;
+}
+.home-bottom-nav {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  z-index: 20;
+  background: var(--paper);
+  border-top: 3px solid var(--ink);
+  box-shadow: 0 -4px 0 var(--ink);
+  padding: 10px 12px calc(10px + env(safe-area-inset-bottom, 0px));
+  animation: navSlideUp 0.35s cubic-bezier(.2,.8,.2,1) backwards;
+}
+.home-bottom-nav-inner {
+  max-width: 720px;
+  margin: 0 auto;
+  margin-bottom: 0 !important; /* el nav ya tiene su propio padding */
+}
+@keyframes navSlideUp {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
 .action-row.quad.compact .action-btn {
   flex-direction: column;
   align-items: center;
