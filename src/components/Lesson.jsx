@@ -6,6 +6,7 @@ import { primeAudio } from '../hooks/useSpeech.js'
 import { playSuccess, playError, playLessonComplete } from '../hooks/useSound.js'
 import { unlock } from '../hooks/useAchievements.js'
 import { recordAnswer, recordAnswers } from '../hooks/useSrs.js'
+import { loadDraft, saveDraft, clearDraft } from '../utils/lessonDraft.js'
 import MultipleChoice from './exercises/MultipleChoice.jsx'
 import Matching from './exercises/Matching.jsx'
 import SentenceBuilder from './exercises/SentenceBuilder.jsx'
@@ -19,12 +20,32 @@ export default function Lesson({ lessonId, progress, lang, onFinish, onExit }) {
   const t = makeT(lang)
   const lesson = LESSONS.find(l => l.id === lessonId)
   const exercises = useMemo(() => buildLessonExercises(lesson, lang), [lessonId, lang])
-  const [idx, setIdx] = useState(0)
-  const [correct, setCorrect] = useState(0)
-  const [mistakes, setMistakes] = useState(0)
-  const [showIntro, setShowIntro] = useState(true)
+
+  // Restaurar draft si el usuario había empezado esta lección antes
+  const draft = useMemo(() => loadDraft(lessonId, exercises.length, lang), [lessonId, exercises.length, lang])
+  const [idx, setIdx] = useState(() => draft?.idx ?? 0)
+  const [correct, setCorrect] = useState(() => draft?.correct ?? 0)
+  const [mistakes, setMistakes] = useState(() => draft?.mistakes ?? 0)
+  const [showIntro, setShowIntro] = useState(() => draft ? false : true)
+  const [resumedBadge, setResumedBadge] = useState(!!draft)
 
   useEffect(() => { primeAudio() }, [])
+
+  // Auto-save: persistir progreso cada vez que cambia algo relevante
+  useEffect(() => {
+    // No guardar antes de empezar (idx 0 + showIntro)
+    if (idx === 0 && showIntro) return
+    // No guardar si ya terminó (se limpia al completar)
+    if (idx >= exercises.length) return
+    saveDraft(lessonId, { idx, correct, mistakes, showIntro, total: exercises.length, lang })
+  }, [idx, correct, mistakes, showIntro, lessonId, exercises.length, lang])
+
+  // Auto-hide del badge "continuaste donde quedaste" tras 2.5s
+  useEffect(() => {
+    if (!resumedBadge) return
+    const id = setTimeout(() => setResumedBadge(false), 2500)
+    return () => clearTimeout(id)
+  }, [resumedBadge])
 
   const done = idx >= exercises.length
   const outOfHearts = !done && progress.state.hearts <= 0
@@ -70,6 +91,7 @@ export default function Lesson({ lessonId, progress, lang, onFinish, onExit }) {
     const maniReward = mistakes === 0 ? 6 : 3
     progress.addMani(maniReward)
     playLessonComplete()
+    clearDraft(lessonId)
     setTimeout(() => onFinish(lesson.id, score, maniReward), 0)
     return null
   }
@@ -109,6 +131,12 @@ export default function Lesson({ lessonId, progress, lang, onFinish, onExit }) {
           compact
         />
       </header>
+
+      {resumedBadge && (
+        <div className="lesson-resumed-badge" role="status">
+          ↻ {t('lessonResumed')}
+        </div>
+      )}
 
       <div className="exercise-area" key={idx}>
         {current.type === 'mc' && <MultipleChoice ex={current} lang={lang} onResult={handleResult} />}

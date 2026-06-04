@@ -6550,6 +6550,27 @@ html, body, #root, .home {
 }
 .sitelensin-result-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--ink); }
 
+/* ============ Streak chip + lesson resumed badge ============ */
+.status-stat.streak-stat .status-icon { font-size: 1.05rem; }
+.status-stat.streak-stat .status-value { color: var(--bad); font-weight: 800; }
+
+.lesson-resumed-badge {
+  background: var(--yellow-hi);
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--ink);
+  margin: 0 auto 12px;
+  width: fit-content;
+  box-shadow: 2px 2px 0 var(--ink);
+  animation: fadeUp 0.3s ease backwards, fadeOutBadge 0.4s ease 2.1s forwards;
+}
+@keyframes fadeOutBadge {
+  to { opacity: 0; transform: translateY(-4px); }
+}
+
 /* ============ Home: fila de 4 categorías (Prácticas / Escritura / Minijuegos / Complementos) ============ */
 .action-row.quad.compact {
   display: grid;

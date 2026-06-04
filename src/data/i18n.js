@@ -204,6 +204,9 @@ export const STRINGS = {
   konSilenceSub:      { es: 'silencio puro · sin guía',           en: 'pure silence · no guidance' },
   konSilenceExit:     { es: 'salir',                              en: 'exit' },
 
+  streakTitle:        { es: 'racha de días consecutivos',          en: 'streak (consecutive days)' },
+  lessonResumed:      { es: 'continuaste donde quedaste',          en: 'resumed from where you left' },
+
   // Menú "más" — sheet con accesos secundarios del home
   moreLabel:          { es: 'más',                                en: 'more' },
   moreSheetTitle:     { es: 'más opciones',                       en: 'more options' },

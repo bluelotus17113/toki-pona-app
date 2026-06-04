@@ -124,6 +124,15 @@ export default function Home({ progress, lang, setLang, onOpen, onPractice, onDi
           <span className="status-icon">✅</span>
           <span className="status-value">{state.completed.length}/{LESSONS.length}</span>
         </div>
+        {(state.streak ?? 0) > 0 && (
+          <>
+            <div className="status-divider" aria-hidden="true" />
+            <div className="status-stat streak-stat" title={t('streakTitle')}>
+              <span className="status-icon">🔥</span>
+              <span className="status-value">{state.streak}</span>
+            </div>
+          </>
+        )}
         {state.hearts < MAX_HEARTS && (
           <AdRefillButton onReward={progress.addHeart} lang={lang} variant="icon" />
         )}
