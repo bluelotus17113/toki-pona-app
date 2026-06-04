@@ -4,6 +4,7 @@ import { buildLessonExercises } from '../data/exerciseBuilder.js'
 import { makeT } from '../data/i18n.js'
 import { primeAudio } from '../hooks/useSpeech.js'
 import { playSuccess, playError, playLessonComplete } from '../hooks/useSound.js'
+import { hapticHeavy } from '../hooks/useHaptics.js'
 import { unlock } from '../hooks/useAchievements.js'
 import { recordAnswer, recordAnswers } from '../hooks/useSrs.js'
 import { loadDraft, saveDraft, clearDraft } from '../utils/lessonDraft.js'
@@ -15,6 +16,16 @@ import SitelenMc from './exercises/SitelenMc.jsx'
 import SitelenPair from './exercises/SitelenPair.jsx'
 import Hearts from './Hearts.jsx'
 import LessonIntro from './LessonIntro.jsx'
+
+// Mensaje del banner de combo (X respuestas seguidas).
+// Devuelve { icon, key, args } — el componente hace el t(key, args).
+function comboMessage(n) {
+  if (n >= 25) return { icon: '🚀', key: 'comboMilestone25', args: { n } }
+  if (n >= 20) return { icon: '🌟', key: 'comboMilestone20', args: { n } }
+  if (n >= 15) return { icon: '💎', key: 'comboMilestone15', args: { n } }
+  if (n >= 10) return { icon: '⚡', key: 'comboMilestone10', args: { n } }
+  return         { icon: '🔥', key: 'comboMilestone5',  args: { n } }
+}
 
 // Emite N partículas con ángulo + distancia random desde el centro de su contenedor.
 // El padre controla la posición (fixed center para success-burst, absolute para heart-burst).
@@ -67,6 +78,11 @@ export default function Lesson({ lessonId, progress, lang, onFinish, onExit }) {
   // Shake del contador de vidas cuando perdés una
   const [heartShake, setHeartShake] = useState(false)
   const prevHeartsRef = useRef(progress.state.hearts)
+  // Combo: respuestas correctas consecutivas + banner cuando cruza un milestone
+  const [combo, setCombo] = useState(0)
+  const [comboBanner, setComboBanner] = useState(null)
+  // Celebración de lección perfecta (overlay 1.5s antes del resultado)
+  const [perfectShow, setPerfectShow] = useState(false)
 
   useEffect(() => { primeAudio() }, [])
 
@@ -139,10 +155,39 @@ export default function Lesson({ lessonId, progress, lang, onFinish, onExit }) {
     if (mistakes === 0) unlock('perfect-lesson')
     // Recompensa en mani: 3 base + 3 bonus si fue perfecta
     const maniReward = mistakes === 0 ? 6 : 3
-    progress.addMani(maniReward)
-    playLessonComplete()
-    clearDraft(lessonId)
-    setTimeout(() => onFinish(lesson.id, score, maniReward), 0)
+    if (!perfectShow) {
+      progress.addMani(maniReward)
+      playLessonComplete()
+      clearDraft(lessonId)
+      if (mistakes === 0) {
+        // Mostrar celebración 1.5s antes de navegar
+        setPerfectShow(true)
+        hapticHeavy()
+        setTimeout(() => onFinish(lesson.id, score, maniReward), 1500)
+      } else {
+        setTimeout(() => onFinish(lesson.id, score, maniReward), 0)
+        return null
+      }
+    }
+    if (perfectShow) {
+      return (
+        <div className="perfect-celebration" role="status">
+          <div className="perfect-celebration-inner">
+            <div className="perfect-celebration-icon">🌟</div>
+            <h2 className="perfect-celebration-title">{t('perfectLessonTitle')}</h2>
+            <p className="perfect-celebration-sub">{t('perfectLessonSub')}</p>
+          </div>
+          <Particles
+            key="perfect-burst"
+            count={28}
+            emojis={['✨', '⭐', '🌟', '💚', '🌸', '🍃', '💛']}
+            minDist={140}
+            maxDist={320}
+            className="success-burst"
+          />
+        </div>
+      )
+    }
     return null
   }
 
@@ -157,9 +202,18 @@ export default function Lesson({ lessonId, progress, lang, onFinish, onExit }) {
     setBurstKey(k => k + 1)
     setTimeout(() => setFlash(null), 550)
     if (isCorrect) {
+      const newCombo = combo + 1
+      setCombo(newCombo)
+      // Banner solo en milestones múltiplos de 5
+      if (newCombo >= 5 && newCombo % 5 === 0) {
+        setComboBanner(comboMessage(newCombo))
+        hapticHeavy()
+        setTimeout(() => setComboBanner(null), 1700)
+      }
       setCorrect(c => c + 1)
       playSuccess()
     } else {
+      setCombo(0)
       setMistakes(m => m + 1)
       progress.loseHeart()
       playError()
@@ -206,6 +260,13 @@ export default function Lesson({ lessonId, progress, lang, onFinish, onExit }) {
           maxDist={260}
           className="success-burst"
         />
+      )}
+
+      {comboBanner && (
+        <div className="combo-banner" role="status" aria-live="polite">
+          <span className="combo-banner-icon">{comboBanner.icon}</span>
+          <span className="combo-banner-text">{t(comboBanner.key, comboBanner.args)}</span>
+        </div>
       )}
 
       {resumedBadge && (

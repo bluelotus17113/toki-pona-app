@@ -6663,6 +6663,92 @@ html, body, #root, .home {
   top: 50%; left: 50%;
   font-size: 1.05rem;
 }
+
+/* ============ Combo banner (5/10/15+ seguidas) ============ */
+.combo-banner {
+  position: fixed;
+  top: 90px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 32;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 22px;
+  background: linear-gradient(135deg, var(--yellow) 0%, var(--yellow-deep) 100%);
+  border: 3px solid var(--ink);
+  border-radius: 999px;
+  box-shadow: 4px 4px 0 var(--ink);
+  font-weight: 900;
+  color: var(--ink);
+  font-size: 1.05rem;
+  white-space: nowrap;
+  animation: comboBannerEnter 0.45s cubic-bezier(.34,1.56,.64,1) backwards,
+             comboBannerExit 0.4s ease 1.3s forwards;
+  pointer-events: none;
+}
+.combo-banner-icon {
+  font-size: 1.6rem;
+  filter: drop-shadow(2px 2px 0 var(--ink));
+  animation: comboIconSpin 0.7s ease;
+}
+@keyframes comboBannerEnter {
+  0%   { opacity: 0; transform: translate(-50%, -40px) scale(0.6); }
+  60%  { opacity: 1; transform: translate(-50%, 6px)   scale(1.08); }
+  100% { opacity: 1; transform: translate(-50%, 0)     scale(1); }
+}
+@keyframes comboBannerExit {
+  to { opacity: 0; transform: translate(-50%, -20px) scale(0.92); }
+}
+@keyframes comboIconSpin {
+  0%   { transform: rotate(-20deg) scale(0.5); }
+  60%  { transform: rotate(10deg)  scale(1.3); }
+  100% { transform: rotate(0)      scale(1); }
+}
+
+/* ============ Perfect lesson celebration (1.5s antes del resultado) ============ */
+.perfect-celebration {
+  position: fixed; inset: 0; z-index: 40;
+  display: flex; align-items: center; justify-content: center;
+  background: radial-gradient(circle at 50% 50%, rgba(253, 231, 76, 0.18) 0%, rgba(45, 154, 72, 0.10) 50%, transparent 80%);
+  animation: perfectFadeIn 0.3s ease backwards;
+}
+.perfect-celebration-inner {
+  text-align: center;
+  padding: 30px;
+  animation: perfectInner 0.55s cubic-bezier(.34,1.56,.64,1) backwards;
+}
+.perfect-celebration-icon {
+  font-size: 4.5rem;
+  filter: drop-shadow(4px 4px 0 var(--ink));
+  margin-bottom: 12px;
+  animation: perfectIcon 1.4s ease infinite;
+}
+.perfect-celebration-title {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--ink);
+  text-shadow: 3px 3px 0 var(--yellow);
+}
+.perfect-celebration-sub {
+  margin: 6px 0 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--ink-soft);
+}
+@keyframes perfectFadeIn {
+  from { opacity: 0; } to { opacity: 1; }
+}
+@keyframes perfectInner {
+  0%   { opacity: 0; transform: scale(0.6) rotate(-8deg); }
+  60%  { opacity: 1; transform: scale(1.1) rotate(3deg); }
+  100% { opacity: 1; transform: scale(1)   rotate(0); }
+}
+@keyframes perfectIcon {
+  0%, 100% { transform: rotate(-6deg) scale(1); }
+  50%      { transform: rotate(6deg)  scale(1.1); }
+}
 .particles-burst .particle {
   position: absolute;
   display: inline-block;

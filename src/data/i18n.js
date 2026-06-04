@@ -207,6 +207,17 @@ export const STRINGS = {
   streakTitle:        { es: 'racha de días consecutivos',          en: 'streak (consecutive days)' },
   lessonResumed:      { es: 'continuaste donde quedaste',          en: 'resumed from where you left' },
 
+  // Combos durante la lección (X seguidas)
+  comboMilestone5:    { es: '¡{n} seguidas!',                      en: '{n} in a row!' },
+  comboMilestone10:   { es: '¡{n} seguidas! gran ritmo',           en: '{n} in a row! great pace' },
+  comboMilestone15:   { es: '¡imparable!',                         en: 'unstoppable!' },
+  comboMilestone20:   { es: '¡increíble!',                         en: 'amazing!' },
+  comboMilestone25:   { es: '¡{n}! sin freno',                     en: '{n}! no brakes' },
+
+  // Celebración de lección perfecta
+  perfectLessonTitle: { es: '¡sin ningún error!',                  en: 'flawless!' },
+  perfectLessonSub:   { es: 'lección perfecta',                    en: 'perfect lesson' },
+
   // Menú "más" — sheet con accesos secundarios del home
   moreLabel:          { es: 'más',                                en: 'more' },
   moreSheetTitle:     { es: 'más opciones',                       en: 'more options' },
