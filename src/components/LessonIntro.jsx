@@ -46,14 +46,18 @@ export default function LessonIntro({ lesson, lang = 'es', onStart }) {
       </header>
 
       <div className="lesson-intro-words">
-        {(lesson.words ?? []).map(word => {
+        {(lesson.words ?? []).map((word, idx) => {
           const entry = VOCAB[word]
           if (!entry) return null
           const meaning = entry[lang] ?? entry.es
           const typeLabel = TYPE_LABELS[entry.tipo]?.[lang] ?? entry.tipo
           const isNew = newWords.has(word)
           return (
-            <div key={word} className={`lesson-intro-word ${isNew ? 'is-new' : ''}`}>
+            <div
+              key={word}
+              className={`lesson-intro-word ${isNew ? 'is-new' : ''}`}
+              style={{ '--stagger-i': idx }}
+            >
               <div className="lesson-intro-glyph-block">
                 <span className="sitelen lesson-intro-glyph" aria-hidden="true">{entry.tp}</span>
                 <span className="lesson-intro-latin">{entry.tp}</span>
@@ -82,7 +86,7 @@ export default function LessonIntro({ lesson, lang = 'es', onStart }) {
             {lang === 'es' ? 'frases que vas a aprender' : 'phrases you will learn'}
           </h3>
           {lesson.phrases.map((p, i) => (
-            <div key={i} className="lesson-intro-phrase">
+            <div key={i} className="lesson-intro-phrase" style={{ '--stagger-i': i }}>
               <span className="lesson-intro-phrase-tp">{p.tp}</span>
               <span className="lesson-intro-phrase-tr">{p[lang] ?? p.es}</span>
             </div>

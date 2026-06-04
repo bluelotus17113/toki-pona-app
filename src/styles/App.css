@@ -709,11 +709,16 @@ button:disabled { cursor: not-allowed; }
 
 /* ============ Exercise card ============ */
 .exercise-area {
-  animation: slideIn 0.35s cubic-bezier(.2,.8,.2,1) both;
+  animation: exerciseEnter 0.42s cubic-bezier(.2,.8,.2,1) both;
 }
 @keyframes slideIn {
   from { opacity: 0; transform: translateY(16px); }
   to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes exerciseEnter {
+  0%   { opacity: 0; transform: translateX(36px) scale(0.96); filter: blur(4px); }
+  60%  { filter: blur(0); }
+  100% { opacity: 1; transform: translateX(0) scale(1); filter: blur(0); }
 }
 .ex-card {
   background: var(--paper);
@@ -773,11 +778,37 @@ button:disabled { cursor: not-allowed; }
 }
 .option.right {
   background: var(--good-soft);
-  animation: pulseRight 0.6s ease;
+  animation: pulseRight 0.6s ease, optionGlow 0.7s ease;
+  position: relative;
+  z-index: 1;
+}
+.option.right::after {
+  content: '';
+  position: absolute; inset: -8px;
+  border-radius: 22px;
+  background: radial-gradient(circle, var(--good) 0%, transparent 70%);
+  opacity: 0;
+  z-index: -1;
+  animation: glowBurst 0.7s ease;
+  pointer-events: none;
 }
 .option.wrong {
   background: var(--bad-soft);
-  animation: shake 0.4s ease;
+  animation: shake 0.4s ease, wrongBlur 0.5s ease;
+}
+@keyframes optionGlow {
+  0%   { box-shadow: 3px 3px 0 var(--ink), 0 0 0 0 var(--good); }
+  45%  { box-shadow: 3px 3px 0 var(--ink), 0 0 28px 6px var(--good); }
+  100% { box-shadow: 3px 3px 0 var(--ink), 0 0 0 0 transparent; }
+}
+@keyframes glowBurst {
+  0%   { opacity: 0; transform: scale(0.6); }
+  50%  { opacity: 0.55; transform: scale(1.05); }
+  100% { opacity: 0; transform: scale(1.25); }
+}
+@keyframes wrongBlur {
+  0%, 100% { filter: blur(0); }
+  35%      { filter: blur(2.5px) saturate(1.3); }
 }
 .option.dim { opacity: 0.45; }
 .option.mono { font-family: 'JetBrains Mono', 'Fira Code', monospace; font-size: 1.2rem; }
@@ -6569,6 +6600,56 @@ html, body, #root, .home {
 }
 @keyframes fadeOutBadge {
   to { opacity: 0; transform: translateY(-4px); }
+}
+
+/* ============ Lesson: flash overlay + heart shake + intro stagger ============ */
+.lesson { position: relative; }
+.lesson.lesson-flash-right::before,
+.lesson.lesson-flash-wrong::before {
+  content: '';
+  position: fixed; inset: 0;
+  z-index: 30;
+  pointer-events: none;
+  animation: lessonFlash 0.55s ease;
+}
+.lesson.lesson-flash-right::before { background: radial-gradient(circle at 50% 50%, rgba(45,154,72,0.28), rgba(45,154,72,0) 65%); }
+.lesson.lesson-flash-wrong::before { background: radial-gradient(circle at 50% 50%, rgba(232,93,117,0.30), rgba(232,93,117,0) 65%); }
+@keyframes lessonFlash {
+  0%   { opacity: 0; }
+  35%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.lesson-hearts-wrap { display: inline-flex; transform-origin: center; }
+.lesson-hearts-wrap.shaking {
+  animation: heartHitShake 0.5s cubic-bezier(.36,.07,.19,.97);
+}
+@keyframes heartHitShake {
+  0%, 100% { transform: translateX(0) rotate(0deg); }
+  15%      { transform: translateX(-6px) rotate(-3deg) scale(1.08); }
+  30%      { transform: translateX(6px)  rotate(3deg)  scale(1.08); }
+  45%      { transform: translateX(-4px) rotate(-2deg); }
+  60%      { transform: translateX(4px)  rotate(2deg); }
+  80%      { transform: translateX(-2px); }
+}
+
+/* Stagger en las palabras y frases del intro */
+.lesson-intro-word {
+  animation: introWordEnter 0.5s cubic-bezier(.2,.8,.2,1) backwards;
+  animation-delay: calc(var(--stagger-i, 0) * 70ms + 80ms);
+}
+.lesson-intro-phrase {
+  animation: introWordEnter 0.5s cubic-bezier(.2,.8,.2,1) backwards;
+  animation-delay: calc(var(--stagger-i, 0) * 60ms + 200ms);
+}
+@keyframes introWordEnter {
+  from { opacity: 0; transform: translateY(20px) scale(0.94); filter: blur(3px); }
+  to   { opacity: 1; transform: translateY(0)    scale(1);    filter: blur(0); }
+}
+
+/* Progress bar: pulso suave cuando se rellena */
+.progress-fill {
+  box-shadow: 0 0 10px rgba(253, 231, 76, 0.55);
 }
 
 /* ============ Home: fila de 4 categorías (Prácticas / Escritura / Minijuegos / Complementos) ============ */

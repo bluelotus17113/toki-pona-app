@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { LESSONS } from '../data/lessons.js'
 import { buildLessonExercises } from '../data/exerciseBuilder.js'
 import { makeT } from '../data/i18n.js'
@@ -28,8 +28,24 @@ export default function Lesson({ lessonId, progress, lang, onFinish, onExit }) {
   const [mistakes, setMistakes] = useState(() => draft?.mistakes ?? 0)
   const [showIntro, setShowIntro] = useState(() => draft ? false : true)
   const [resumedBadge, setResumedBadge] = useState(!!draft)
+  // Feedback visual: 'right' | 'wrong' | null — pinta toda la pantalla por 550ms
+  const [flash, setFlash] = useState(null)
+  // Shake del contador de vidas cuando perdés una
+  const [heartShake, setHeartShake] = useState(false)
+  const prevHeartsRef = useRef(progress.state.hearts)
 
   useEffect(() => { primeAudio() }, [])
+
+  // Detectar caída de vidas para gatillar shake
+  useEffect(() => {
+    if (progress.state.hearts < prevHeartsRef.current) {
+      setHeartShake(true)
+      const id = setTimeout(() => setHeartShake(false), 520)
+      prevHeartsRef.current = progress.state.hearts
+      return () => clearTimeout(id)
+    }
+    prevHeartsRef.current = progress.state.hearts
+  }, [progress.state.hearts])
 
   // Auto-save: persistir progreso cada vez que cambia algo relevante
   useEffect(() => {
@@ -103,6 +119,8 @@ export default function Lesson({ lessonId, progress, lang, onFinish, onExit }) {
     // Registrar en SRS la(s) palabra(s) trabajada(s) en este ejercicio
     if (current?.targetWord)  recordAnswer(current.targetWord, isCorrect)
     if (current?.targetWords) recordAnswers(current.targetWords, isCorrect)
+    setFlash(isCorrect ? 'right' : 'wrong')
+    setTimeout(() => setFlash(null), 550)
     if (isCorrect) {
       setCorrect(c => c + 1)
       playSuccess()
@@ -115,7 +133,7 @@ export default function Lesson({ lessonId, progress, lang, onFinish, onExit }) {
   }
 
   return (
-    <div className="lesson">
+    <div className={`lesson ${flash ? `lesson-flash-${flash}` : ''}`}>
       <header className="lesson-header">
         <button className="exit-btn" onClick={() => {
           if (confirm(t('exitConfirm'))) onExit()
@@ -123,13 +141,15 @@ export default function Lesson({ lessonId, progress, lang, onFinish, onExit }) {
         <div className="progress-bar">
           <div className="progress-fill" style={{ width: `${(idx / total) * 100}%` }} />
         </div>
-        <Hearts
-          hearts={progress.state.hearts}
-          max={progress.MAX_HEARTS}
-          nextRegenAt={progress.state.nextRegenAt}
-          lang={lang}
-          compact
-        />
+        <div className={`lesson-hearts-wrap ${heartShake ? 'shaking' : ''}`}>
+          <Hearts
+            hearts={progress.state.hearts}
+            max={progress.MAX_HEARTS}
+            nextRegenAt={progress.state.nextRegenAt}
+            lang={lang}
+            compact
+          />
+        </div>
       </header>
 
       {resumedBadge && (
