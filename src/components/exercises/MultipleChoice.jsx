@@ -20,7 +20,7 @@ export default function MultipleChoice({ ex, lang = 'es', onResult }) {
     if (locked) return
     setPicked(opt)
     setLocked(true)
-    setTimeout(() => onResult(opt === ex.answer), 900)
+    onResult(opt === ex.answer, { correctAnswer: ex.answer })
   }
 
   const status = (opt) => {

@@ -25,7 +25,7 @@ export default function SentenceBuilder({ ex, lang = 'es', onResult }) {
     setLocked(true)
     setFeedback(isCorrect ? 'right' : 'wrong')
     if (isCorrect) speak(ex.answer.join(' '))
-    setTimeout(() => onResult(isCorrect), 1300)
+    onResult(isCorrect, { correctAnswer: ex.answer.join(' ') })
   }
 
   const promptText = typeof ex.prompt === 'string'

@@ -83,6 +83,9 @@ export default function Lesson({ lessonId, progress, lang, onFinish, onExit }) {
   const [comboBanner, setComboBanner] = useState(null)
   // Celebración de lección perfecta (overlay 1.5s antes del resultado)
   const [perfectShow, setPerfectShow] = useState(false)
+  // Resultado pendiente: muestra el footer "CONTINUAR" antes de avanzar
+  // { isCorrect: bool, correctAnswer?: string }
+  const [pendingResult, setPendingResult] = useState(null)
 
   useEffect(() => { primeAudio() }, [])
 
@@ -194,7 +197,7 @@ export default function Lesson({ lessonId, progress, lang, onFinish, onExit }) {
   const current = exercises[idx]
   const total = exercises.length
 
-  const handleResult = (isCorrect) => {
+  const handleResult = (isCorrect, info = {}) => {
     // Registrar en SRS la(s) palabra(s) trabajada(s) en este ejercicio
     if (current?.targetWord)  recordAnswer(current.targetWord, isCorrect)
     if (current?.targetWords) recordAnswers(current.targetWords, isCorrect)
@@ -218,6 +221,12 @@ export default function Lesson({ lessonId, progress, lang, onFinish, onExit }) {
       progress.loseHeart()
       playError()
     }
+    // No avanzamos idx — el footer CONTINUAR maneja el avance
+    setPendingResult({ isCorrect, correctAnswer: info.correctAnswer })
+  }
+
+  const handleContinue = () => {
+    setPendingResult(null)
     setIdx(i => i + 1)
   }
 
@@ -266,6 +275,28 @@ export default function Lesson({ lessonId, progress, lang, onFinish, onExit }) {
         <div className="combo-banner" role="status" aria-live="polite">
           <span className="combo-banner-icon">{comboBanner.icon}</span>
           <span className="combo-banner-text">{t(comboBanner.key, comboBanner.args)}</span>
+        </div>
+      )}
+
+      {pendingResult && (
+        <div className={`continue-footer ${pendingResult.isCorrect ? 'is-right' : 'is-wrong'}`} role="status">
+          <div className="continue-msg">
+            <div className="continue-headline">
+              <span className="continue-icon">{pendingResult.isCorrect ? '✓' : '✗'}</span>
+              <span className="continue-title">
+                {pendingResult.isCorrect ? t('answerRight') : t('answerWrong')}
+              </span>
+            </div>
+            {!pendingResult.isCorrect && pendingResult.correctAnswer && (
+              <div className="continue-detail">
+                <span className="continue-label">{t('correctAnswerWas')}</span>
+                <span className="continue-correct">{pendingResult.correctAnswer}</span>
+              </div>
+            )}
+          </div>
+          <button className="continue-btn" onClick={handleContinue}>
+            {t('continue')}
+          </button>
         </div>
       )}
 

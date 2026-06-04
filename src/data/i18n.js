@@ -218,6 +218,12 @@ export const STRINGS = {
   perfectLessonTitle: { es: '¡sin ningún error!',                  en: 'flawless!' },
   perfectLessonSub:   { es: 'lección perfecta',                    en: 'perfect lesson' },
 
+  // Footer CONTINUAR (estilo Duolingo)
+  answerRight:        { es: '¡correcto!',                          en: 'correct!' },
+  answerWrong:        { es: 'incorrecto',                          en: 'wrong' },
+  correctAnswerWas:   { es: 'la respuesta correcta era',           en: 'the correct answer was' },
+  continue:           { es: 'CONTINUAR',                           en: 'CONTINUE' },
+
   // Menú "más" — sheet con accesos secundarios del home
   moreLabel:          { es: 'más',                                en: 'more' },
   moreSheetTitle:     { es: 'más opciones',                       en: 'more options' },

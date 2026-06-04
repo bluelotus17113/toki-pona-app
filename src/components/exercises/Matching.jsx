@@ -36,7 +36,7 @@ export default function Matching({ ex, lang = 'es', onResult }) {
       setMatched(next)
       setSelected(null)
       if (next.size === ex.pairs.length) {
-        setTimeout(() => onResult(mistakes === 0), 600)
+        onResult(mistakes === 0)
       }
     } else {
       setWrong(item.pairKey + '|' + selected.pairKey)

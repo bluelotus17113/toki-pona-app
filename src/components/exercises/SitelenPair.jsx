@@ -38,7 +38,7 @@ export default function SitelenPair({ ex, lang = 'es', onResult }) {
       setMatched(next)
       setSelected(null)
       if (next.size === ex.words.length) {
-        setTimeout(() => onResult(mistakes === 0), 600)
+        onResult(mistakes === 0)
       }
     } else {
       setWrong(item.pairKey + '|' + selected.pairKey)
