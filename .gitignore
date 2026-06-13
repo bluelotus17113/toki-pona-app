@@ -46,6 +46,8 @@ android/app/src/main/assets/capacitor.plugins.json
 *.jks
 *.p12
 key.properties
+keystore.properties
+android/keystore.properties
 
 # iOS (por si lo agregás luego)
 ios/App/Pods/
