@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools">
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -41,4 +42,15 @@
     <!-- Alarma exacta para que la notif diaria dispare a la hora prometida.
          Sin esto, Android 12+ batchea la alarma y puede atrasarla horas. -->
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+
+    <!-- El SDK de AdMob mete estos permisos por fusión de manifiestos. Google
+         Play RECHAZA las apps dirigidas a menores que pidan el identificador
+         publicitario con targetSdk 33 o superior, y esta app se declara
+         child-directed en useAds.js (COPPA + GDPR-K, ads no personalizados).
+         Pedirlo sería además incoherente: con tagForChildDirectedTreatment
+         AdMob no lo usa. Los quitamos de la fusión. -->
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID"
+                     tools:node="remove" />
+    <uses-permission android:name="android.permission.ACCESS_ADSERVICES_AD_ID"
+                     tools:node="remove" />
 </manifest>
