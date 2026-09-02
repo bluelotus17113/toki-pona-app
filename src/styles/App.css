@@ -5783,6 +5783,22 @@ html, body, #root, .home {
 .settings-action-btn:active { transform: translate(2px, 2px); box-shadow: 0 0 0 var(--ink); }
 .settings-action-btn.warn { background: var(--yellow); }
 .settings-action-btn.danger { background: var(--bad-soft); color: #8a1a1a; border-color: var(--bad); }
+.settings-action-btn.good { background: var(--good-soft); border-color: var(--good); }
+.settings-action-btn:disabled { opacity: 0.55; cursor: default; transform: none; }
+
+/* Resultado de exportar/restaurar la copia de seguridad */
+.settings-backup-msg {
+  margin: 8px 0 12px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1.35;
+  /* la ruta del archivo puede ser larguísima y no debe desbordar la tarjeta */
+  overflow-wrap: anywhere;
+}
+.settings-backup-msg.ok  { background: var(--good-soft); color: var(--ink); border: 2px solid var(--good); }
+.settings-backup-msg.err { background: var(--bad-soft);  color: var(--ink); border: 2px solid var(--bad); }
 .settings-action-help {
   margin: 4px 0 12px;
   font-size: 0.74rem;

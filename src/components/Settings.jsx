@@ -1,5 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { Capacitor } from '@capacitor/core'
 import { LANGS, makeT } from '../data/i18n.js'
+import { exportBackup, readBackupFile, applyBackup } from '../utils/backup.js'
 import { LESSONS } from '../data/lessons.js'
 import { TOTAL_ACHIEVEMENTS } from '../data/achievements.js'
 import { THEMES } from '../hooks/useTheme.js'
@@ -51,6 +53,53 @@ export default function Settings({ progress, lang, setLang, theme, onSetTheme, o
     if (notifSetup) {
       // re-programar con la nueva hora
       await scheduleDaily({ lang })
+    }
+  }
+
+  // ---- copia de seguridad ----
+  const fileInputRef = useRef(null)
+  const [backupBusy, setBackupBusy] = useState(false)
+  const [backupMsg, setBackupMsg] = useState(null)  // { kind: 'ok' | 'err', text }
+
+  const handleExport = async () => {
+    setBackupBusy(true)
+    setBackupMsg(null)
+    try {
+      const { location } = await exportBackup()
+      const key = Capacitor.isNativePlatform() ? 'backupSaved' : 'backupSavedWeb'
+      setBackupMsg({ kind: 'ok', text: t(key, { location }) })
+    } catch {
+      setBackupMsg({ kind: 'err', text: t('backupErrWrite') })
+    } finally {
+      setBackupBusy(false)
+    }
+  }
+
+  const handleImportFile = async (e) => {
+    const file = e.target.files?.[0]
+    // Limpiar el input permite volver a elegir el MISMO archivo después
+    // (sin esto, el onChange no dispara la segunda vez).
+    e.target.value = ''
+    if (!file) return
+    setBackupMsg(null)
+    try {
+      const backup = await readBackupFile(file)
+      const date = backup.exportedAt
+        ? new Date(backup.exportedAt).toLocaleDateString()
+        : '—'
+      // Mostrar qué trae la copia ANTES de pisar lo que el usuario tiene ahora:
+      // restaurar un backup viejo por error es tan destructivo como el reset.
+      if (!confirm(t('backupRestoreConfirm', { date, ...backup.summary }))) return
+      applyBackup(backup)
+      setBackupMsg({ kind: 'ok', text: t('backupRestored') })
+      // Recargar para que los singletons (SRS, logros) relean el almacenamiento.
+      setTimeout(() => window.location.reload(), 700)
+    } catch (err) {
+      const key = err?.message ?? ''
+      setBackupMsg({
+        kind: 'err',
+        text: key.startsWith('backupErr') ? t(key) : t('backupErrNotJson')
+      })
     }
   }
 
@@ -166,6 +215,33 @@ export default function Settings({ progress, lang, setLang, theme, onSetTheme, o
       {/* Acciones de progreso */}
       <section className="settings-section">
         <h3 className="settings-section-title">📦 {t('settingsData')}</h3>
+
+        <button className="settings-action-btn good" onClick={handleExport} disabled={backupBusy}>
+          💾 {backupBusy ? t('backupWorking') : t('backupExport')}
+        </button>
+        <p className="settings-action-help">{t('backupExportHelp')}</p>
+
+        <button
+          className="settings-action-btn"
+          onClick={() => fileInputRef.current?.click()}
+          disabled={backupBusy}
+        >
+          ↩️ {t('backupImport')}
+        </button>
+        <p className="settings-action-help">{t('backupImportHelp')}</p>
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="application/json,.json"
+          onChange={handleImportFile}
+          hidden
+        />
+
+        {backupMsg && (
+          <p className={`settings-backup-msg ${backupMsg.kind}`} role="status">
+            {backupMsg.text}
+          </p>
+        )}
 
         <button className="settings-action-btn warn" onClick={handleResetOnboardingOnly}>
           🌱 {t('settingsResetOnboarding')}
