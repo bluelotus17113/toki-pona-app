@@ -126,6 +126,39 @@ export default function Lesson({ lessonId, progress, lang, onFinish, onExit }) {
     return () => clearTimeout(timer)
   }, [outOfHearts, onExit])
 
+  // Cierre de la lección: premio en mani, sonido, limpiar el draft y navegar.
+  // Vive en un efecto y no en el render porque progress.addMani() escribe en el
+  // estado del PADRE: hacerlo durante el render dispara un re-render que vuelve
+  // a entrar con `done` todavía en true y premia de más (React además lo prohíbe
+  // explícitamente y avisa en consola).
+  // Deps solo [done]: esto debe correr una vez al terminar. `progress`/`onFinish`
+  // cambian de identidad en cada render y re-dispararían el premio; settledRef lo
+  // blinda igual. No cancelamos el timeout al desmontar a propósito — si lo
+  // hiciéramos, el doble montaje de StrictMode mataría la navegación (el segundo
+  // pase sale por la guarda y ya no programa uno nuevo).
+  const settledRef = useRef(false)
+  useEffect(() => {
+    if (!done || !lesson || settledRef.current) return
+    settledRef.current = true
+
+    const score = Math.max(5, correct * 2 - mistakes)
+    const isPerfect = mistakes === 0
+    const maniReward = isPerfect ? 6 : 3
+
+    progress.addMani(maniReward)
+    playLessonComplete()
+    clearDraft(lessonId)
+
+    if (isPerfect) {
+      unlock('perfect-lesson')
+      hapticHeavy()
+      setPerfectShow(true)   // celebración 1.5s antes de navegar
+      setTimeout(() => onFinish(lesson.id, score, maniReward), 1500)
+    } else {
+      setTimeout(() => onFinish(lesson.id, score, maniReward), 0)
+    }
+  }, [done])
+
   if (!lesson) return <div>{t('lessonNotFound')}</div>
 
   if (showIntro) {
@@ -153,25 +186,8 @@ export default function Lesson({ lessonId, progress, lang, onFinish, onExit }) {
     )
   }
 
+  // El premio y la navegación los maneja el efecto de arriba; acá solo pintamos.
   if (done) {
-    const score = Math.max(5, correct * 2 - mistakes)
-    if (mistakes === 0) unlock('perfect-lesson')
-    // Recompensa en mani: 3 base + 3 bonus si fue perfecta
-    const maniReward = mistakes === 0 ? 6 : 3
-    if (!perfectShow) {
-      progress.addMani(maniReward)
-      playLessonComplete()
-      clearDraft(lessonId)
-      if (mistakes === 0) {
-        // Mostrar celebración 1.5s antes de navegar
-        setPerfectShow(true)
-        hapticHeavy()
-        setTimeout(() => onFinish(lesson.id, score, maniReward), 1500)
-      } else {
-        setTimeout(() => onFinish(lesson.id, score, maniReward), 0)
-        return null
-      }
-    }
     if (perfectShow) {
       return (
         <div className="perfect-celebration" role="status">

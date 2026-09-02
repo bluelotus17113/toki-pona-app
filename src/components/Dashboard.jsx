@@ -21,7 +21,7 @@ function lastNDays(n) {
 
 export default function Dashboard({ progress, lang = 'es', onExit }) {
   const t = makeT(lang)
-  const { state } = progress
+  const { state, effectiveStreak } = progress
 
   // Últimos 30 días de XP
   const days = useMemo(() => lastNDays(30), [])
@@ -76,9 +76,11 @@ export default function Dashboard({ progress, lang = 'es', onExit }) {
       <div className="dashboard-stats-grid">
         <div className="dashboard-stat">
           <div className="dashboard-stat-icon">🔥</div>
-          <div className="dashboard-stat-value">{state.streak ?? 0}</div>
+          <div className="dashboard-stat-value">{effectiveStreak}</div>
           <div className="dashboard-stat-label">{t('dashboardStreak')}</div>
-          {!activeToday && (state.streak ?? 0) > 0 && (
+          {/* "en riesgo" solo si la racha sigue viva (ayer) y hoy aún no juega —
+              antes avisaba igual con rachas muertas hace semanas. */}
+          {!activeToday && effectiveStreak > 0 && (
             <div className="dashboard-stat-warn">{t('dashboardStreakAtRisk')}</div>
           )}
         </div>

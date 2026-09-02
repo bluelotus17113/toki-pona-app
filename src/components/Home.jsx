@@ -13,7 +13,7 @@ import KofiButton from './KofiButton.jsx'
 import NoHeartsModal from './NoHeartsModal.jsx'
 
 export default function Home({ progress, lang, setLang, onOpen, onPractice, onDictionary, onGrammar, onSitelen, onLienzo, onAchievements, onCuentos, onHistoria, onAtlas, onKulupu, onMinijuegos, onDashboard, onToki, onSettings, onKon, theme, onCycleTheme }) {
-  const { state, isUnlocked, reset, MAX_HEARTS } = progress
+  const { state, isUnlocked, reset, MAX_HEARTS, effectiveStreak } = progress
   const t = makeT(lang)
   const practiceAvailable = state.completed.length >= 1
   const practiceCount = practiceExerciseCount(state.completed.length)
@@ -125,12 +125,12 @@ export default function Home({ progress, lang, setLang, onOpen, onPractice, onDi
           <span className="status-icon">✅</span>
           <span className="status-value">{state.completed.length}/{LESSONS.length}</span>
         </div>
-        {(state.streak ?? 0) > 0 && (
+        {effectiveStreak > 0 && (
           <>
             <div className="status-divider" aria-hidden="true" />
             <div className="status-stat streak-stat" title={t('streakTitle')}>
               <span className="status-icon">🔥</span>
-              <span className="status-value">{state.streak}</span>
+              <span className="status-value">{effectiveStreak}</span>
             </div>
           </>
         )}

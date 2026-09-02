@@ -44,6 +44,18 @@ function bumpDaily(state, gainedXp) {
   return { ...state, dailyXp: nextDailyXp, streak: nextStreak, lastActiveDate: nextLastActive }
 }
 
+// La racha guardada solo se recalcula dentro de bumpDaily, o sea al ganar XP.
+// Si el usuario deja de jugar, el número se queda congelado y miente hasta que
+// vuelve a completar una lección. Para mostrarla hay que derivarla: la racha
+// sigue viva solo si la última actividad fue hoy o ayer.
+// No tocamos state.streak — bumpDaily ya la reinicia bien cuando el usuario vuelve.
+export function effectiveStreak(state) {
+  const stored = state.streak ?? 0
+  if (stored === 0) return 0
+  const last = state.lastActiveDate
+  return (last === todayKey() || last === yesterdayKey()) ? stored : 0
+}
+
 // Aplica todas las regeneraciones que correspondan según el tiempo transcurrido
 function applyRegen(state, now) {
   if (state.hearts >= MAX_HEARTS) {
@@ -168,6 +180,9 @@ export function useProgress() {
   return {
     state,
     MAX_HEARTS,
+    // Racha real para mostrar: 0 si se rompió por inactividad (ver effectiveStreak).
+    // El tick de 1s hace que cruce la medianoche sola, sin recargar la app.
+    effectiveStreak: effectiveStreak(state),
     completeLesson,
     addXp,
     addMani,

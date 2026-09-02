@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import { LANGS, makeT } from '../data/i18n.js'
+import { LESSONS } from '../data/lessons.js'
+import { TOTAL_ACHIEVEMENTS } from '../data/achievements.js'
 import { THEMES } from '../hooks/useTheme.js'
 import { useSoundToggle } from '../hooks/useSound.js'
 import {
@@ -184,9 +186,12 @@ export default function Settings({ progress, lang, setLang, theme, onSetTheme, o
             <span>toki pona a!</span>
             <span className="settings-about-value">v{APP_VERSION}</span>
           </div>
+          {/* Contados desde los datos: hardcodearlos ya nos dejó "42 logros"
+              cuando en realidad hay 44. Minijuegos sigue fijo porque no hay
+              catálogo del cual contarlos. */}
           <div className="settings-about-row">
             <span>{t('settingsLessons')}</span>
-            <span className="settings-about-value">50</span>
+            <span className="settings-about-value">{LESSONS.length}</span>
           </div>
           <div className="settings-about-row">
             <span>{t('settingsMinigames')}</span>
@@ -194,7 +199,7 @@ export default function Settings({ progress, lang, setLang, theme, onSetTheme, o
           </div>
           <div className="settings-about-row">
             <span>{t('settingsAchievements')}</span>
-            <span className="settings-about-value">42</span>
+            <span className="settings-about-value">{TOTAL_ACHIEVEMENTS}</span>
           </div>
           <p className="settings-credits">{t('settingsCredits')}</p>
         </div>
