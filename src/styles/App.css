@@ -789,6 +789,13 @@ button:disabled { cursor: not-allowed; }
   transform: translate(2px, 2px);
   box-shadow: 1px 1px 0 var(--ink);
 }
+/* Elegida pero todavía sin comprobar. A propósito ni verde ni roja: no debe
+   insinuar si acertó, solo marcar qué tocó. */
+.option.picked {
+  background: var(--sky);
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0 var(--ink);
+}
 .option.right {
   background: var(--good-soft);
   animation: pulseRight 0.6s ease, optionGlow 0.7s ease;
@@ -1168,21 +1175,33 @@ button:disabled { cursor: not-allowed; }
   padding: 14px 16px;
   box-shadow: 3px 3px 0 var(--ink);
   animation: fadeUp 0.35s ease both;
+  /* Sin esto, una palabra larguísima (kijetesantakalu, 15 letras) estira la
+     tarjeta más allá del ancho de la pantalla y desplaza la página entera. */
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 .dict-row {
   display: flex; align-items: center; gap: 10px;
   margin-bottom: 6px;
+  /* En pantallas angostas la etiqueta de tipo baja a su propia línea en vez de
+     empujar la fila fuera del viewport. */
+  flex-wrap: wrap;
+  min-width: 0;
 }
 .dict-tp {
   font-family: 'JetBrains Mono', 'Fira Code', monospace;
   font-size: 1.4rem;
   font-weight: 900;
   color: var(--ink);
+  /* La palabra guía NO se parte a mitad ni se encoge: la más larga del
+     vocabulario (kijetesantakalu, 15 letras) entra completa en una línea de
+     360px. Lo que cede es la fila, que envuelve las insignias abajo. */
   flex: 0 0 auto;
 }
 .dict-row .audio-btn {
   width: 32px; height: 32px;
   font-size: 0.9rem;
+  flex: 0 0 auto;
 }
 .dict-type-tag {
   margin-left: auto;
@@ -1194,6 +1213,8 @@ button:disabled { cursor: not-allowed; }
   font-weight: 800;
   color: var(--ink);
   text-transform: lowercase;
+  flex: 0 0 auto;
+  white-space: nowrap;
 }
 .dict-es {
   color: var(--ink); font-weight: 700; font-size: 0.95rem;
@@ -1206,6 +1227,9 @@ button:disabled { cursor: not-allowed; }
   background: var(--sky);
   border-radius: 8px;
   margin-top: 6px;
+  /* Las frases de ejemplo también son monoespaciadas y pueden ser largas. */
+  flex-wrap: wrap;
+  min-width: 0;
 }
 .dict-example-label {
   font-weight: 800;
@@ -1217,6 +1241,8 @@ button:disabled { cursor: not-allowed; }
   font-family: 'JetBrains Mono', monospace;
   color: var(--ink);
   font-weight: 600;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .dict-empty {
@@ -2181,11 +2207,14 @@ html, body, #root, .home {
   margin-right: 8px;
   vertical-align: middle;
   line-height: 1;
+  flex: 0 0 auto;
 }
 
 /* badge "ku" — palabras post-pu */
 .dict-ku-badge {
   display: inline-block;
+  flex: 0 0 auto;
+  white-space: nowrap;
   background: #ffd6a5;
   color: var(--ink);
   border: 2px solid var(--ink);
@@ -6795,6 +6824,14 @@ html, body, #root, .home {
 }
 .continue-footer.is-right { background: var(--good-soft); }
 .continue-footer.is-wrong { background: var(--bad-soft); }
+/* Etapa COMPROBAR: sin mensaje al lado, así que el botón ocupa todo el ancho.
+   El fondo lo dan las variantes is-right/is-wrong, así que esta necesita el suyo. */
+.continue-footer.is-check { background: var(--cream); }
+.continue-footer.is-check .continue-btn {
+  flex: 1;
+  background: var(--yellow);
+  color: var(--ink);
+}
 
 .continue-msg { flex: 1; min-width: 0; }
 .continue-headline {

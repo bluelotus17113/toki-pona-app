@@ -222,7 +222,11 @@ export const STRINGS = {
   answerRight:        { es: '¡correcto!',                          en: 'correct!' },
   answerWrong:        { es: 'incorrecto',                          en: 'wrong' },
   correctAnswerWas:   { es: 'la respuesta correcta era',           en: 'the correct answer was' },
-  continue:           { es: 'CONTINUAR',                           en: 'CONTINUE' },
+  // Botones del pie de la lección. Iban con la clave `continue`, que estaba
+  // duplicada más abajo ('continuar →') y la tapaba en silencio: el footer
+  // mostraba la versión chica. Ahora tienen clave propia.
+  lessonCheck:        { es: 'COMPROBAR',                           en: 'CHECK' },
+  lessonContinue:     { es: 'CONTINUAR',                           en: 'CONTINUE' },
 
   // Menú "más" — sheet con accesos secundarios del home
   moreLabel:          { es: 'más',                                en: 'more' },

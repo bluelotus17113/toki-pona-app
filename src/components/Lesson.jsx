@@ -86,6 +86,9 @@ export default function Lesson({ lessonId, progress, lang, onFinish, onExit }) {
   // Resultado pendiente: muestra el footer "CONTINUAR" antes de avanzar
   // { isCorrect: bool, correctAnswer?: string }
   const [pendingResult, setPendingResult] = useState(null)
+  // Opción elegida pero AÚN NO comprobada, en los ejercicios de opción múltiple.
+  // { isCorrect: bool, correctAnswer: string } | null
+  const [selection, setSelection] = useState(null)
 
   useEffect(() => { primeAudio() }, [])
 
@@ -241,8 +244,22 @@ export default function Lesson({ lessonId, progress, lang, onFinish, onExit }) {
     setPendingResult({ isCorrect, correctAnswer: info.correctAnswer })
   }
 
+  // Los ejercicios de opción múltiple avisan qué eligió el usuario, pero NO se
+  // evalúan solos: guardamos la elección y esperamos a COMPROBAR. Se puede
+  // cambiar de opción tantas veces como quiera antes de comprometerse.
+  const handleSelect = (payload) => {
+    if (pendingResult) return
+    setSelection(payload)
+  }
+
+  const handleCheck = () => {
+    if (!selection) return
+    handleResult(selection.isCorrect, { correctAnswer: selection.correctAnswer })
+  }
+
   const handleContinue = () => {
     setPendingResult(null)
+    setSelection(null)
     setIdx(i => i + 1)
   }
 
@@ -294,6 +311,16 @@ export default function Lesson({ lessonId, progress, lang, onFinish, onExit }) {
         </div>
       )}
 
+      {/* Pie en dos etapas: primero COMPROBAR (solo hay una opción elegida),
+          después el resultado con CONTINUAR. */}
+      {!pendingResult && selection && (
+        <div className="continue-footer is-check">
+          <button className="continue-btn" onClick={handleCheck}>
+            {t('lessonCheck')}
+          </button>
+        </div>
+      )}
+
       {pendingResult && (
         <div className={`continue-footer ${pendingResult.isCorrect ? 'is-right' : 'is-wrong'}`} role="status">
           <div className="continue-msg">
@@ -311,7 +338,7 @@ export default function Lesson({ lessonId, progress, lang, onFinish, onExit }) {
             )}
           </div>
           <button className="continue-btn" onClick={handleContinue}>
-            {t('continue')}
+            {t('lessonContinue')}
           </button>
         </div>
       )}
@@ -323,11 +350,15 @@ export default function Lesson({ lessonId, progress, lang, onFinish, onExit }) {
       )}
 
       <div className="exercise-area" key={idx}>
-        {current.type === 'mc' && <MultipleChoice ex={current} lang={lang} onResult={handleResult} />}
-        {current.type === 'listen' && <ListenChoose ex={current} lang={lang} onResult={handleResult} />}
+        {/* Opción múltiple: seleccionan y el pie comprueba (onSelect + revealed). */}
+        {current.type === 'mc' && <MultipleChoice ex={current} lang={lang} onSelect={handleSelect} revealed={!!pendingResult} />}
+        {current.type === 'listen' && <ListenChoose ex={current} lang={lang} onSelect={handleSelect} revealed={!!pendingResult} />}
+        {current.type === 'sitelen-mc' && <SitelenMc ex={current} lang={lang} onSelect={handleSelect} revealed={!!pendingResult} />}
+        {/* Estos ya tienen su propio momento de confirmación y no arriesgan un
+            toque accidental: armar la frase tiene su botón "comprobar", y en los
+            de emparejar una pareja mal solo hace temblar la ficha. */}
         {current.type === 'match' && <Matching ex={current} lang={lang} onResult={handleResult} />}
         {current.type === 'build' && <SentenceBuilder ex={current} lang={lang} onResult={handleResult} />}
-        {current.type === 'sitelen-mc' && <SitelenMc ex={current} lang={lang} onResult={handleResult} />}
         {current.type === 'sitelen-pair' && <SitelenPair ex={current} lang={lang} onResult={handleResult} />}
       </div>
 

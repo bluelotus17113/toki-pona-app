@@ -2,10 +2,13 @@ import { useState } from 'react'
 import { speak } from '../../hooks/useSpeech.js'
 import { makeT } from '../../data/i18n.js'
 
-export default function MultipleChoice({ ex, lang = 'es', onResult }) {
+// Elegir una opción solo la SELECCIONA — no la evalúa. La corrección la
+// dispara el botón COMPROBAR del pie, en Lesson.jsx. Así un toque accidental
+// no cuesta una vida y se puede cambiar de opinión antes de comprometerse.
+// `revealed` lo controla el padre: true una vez comprobada la respuesta.
+export default function MultipleChoice({ ex, lang = 'es', onSelect, revealed }) {
   const t = makeT(lang)
   const [picked, setPicked] = useState(null)
-  const [locked, setLocked] = useState(false)
   const [playing, setPlaying] = useState(false)
 
   const playAudio = () => {
@@ -17,14 +20,13 @@ export default function MultipleChoice({ ex, lang = 'es', onResult }) {
   }
 
   const handlePick = (opt) => {
-    if (locked) return
+    if (revealed) return
     setPicked(opt)
-    setLocked(true)
-    onResult(opt === ex.answer, { correctAnswer: ex.answer })
+    onSelect({ isCorrect: opt === ex.answer, correctAnswer: ex.answer })
   }
 
   const status = (opt) => {
-    if (!locked) return ''
+    if (!revealed) return opt === picked ? 'picked' : ''
     if (opt === ex.answer) return 'right'
     if (opt === picked) return 'wrong'
     return 'dim'
@@ -54,7 +56,7 @@ export default function MultipleChoice({ ex, lang = 'es', onResult }) {
             key={opt}
             className={`option ${status(opt)}`}
             onClick={() => handlePick(opt)}
-            disabled={locked}
+            disabled={revealed}
           >
             {opt}
           </button>

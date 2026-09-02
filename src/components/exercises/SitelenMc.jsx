@@ -3,20 +3,19 @@ import { makeT } from '../../data/i18n.js'
 
 // Ejercicio MC con glifo sitelen pona como prompt.
 // ex: { glyph: 'jan', options: [text...], answer: text }
-export default function SitelenMc({ ex, lang = 'es', onResult }) {
+// Selección diferida: ver MultipleChoice.jsx. Evalúa el botón COMPROBAR del pie.
+export default function SitelenMc({ ex, lang = 'es', onSelect, revealed }) {
   const t = makeT(lang)
   const [picked, setPicked] = useState(null)
-  const [locked, setLocked] = useState(false)
 
   const handlePick = (opt) => {
-    if (locked) return
+    if (revealed) return
     setPicked(opt)
-    setLocked(true)
-    onResult(opt === ex.answer, { correctAnswer: ex.answer })
+    onSelect({ isCorrect: opt === ex.answer, correctAnswer: ex.answer })
   }
 
   const status = (opt) => {
-    if (!locked) return ''
+    if (!revealed) return opt === picked ? 'picked' : ''
     if (opt === ex.answer) return 'right'
     if (opt === picked) return 'wrong'
     return 'dim'
@@ -32,7 +31,7 @@ export default function SitelenMc({ ex, lang = 'es', onResult }) {
             key={opt}
             className={`option ${status(opt)}`}
             onClick={() => handlePick(opt)}
-            disabled={locked}
+            disabled={revealed}
           >
             {opt}
           </button>

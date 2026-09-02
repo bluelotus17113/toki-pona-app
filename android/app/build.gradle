@@ -15,8 +15,14 @@ android {
         applicationId "com.tokipona.app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        // versionCode: entero que Android usa para decidir si un APK es una
+        // actualización. DEBE subir en cada build que se distribuya — Play Store
+        // rechaza subir dos veces el mismo, y al hacer sideload el instalador ve
+        // "misma versión ya instalada". Se quedó en 1 desde mayo de 2026.
+        // versionName es solo la etiqueta que ve el usuario (ojo: Settings.jsx
+        // la tiene aparte en APP_VERSION, hay que moverlas juntas).
+        versionCode 2
+        versionName "1.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.

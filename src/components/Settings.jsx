@@ -16,7 +16,8 @@ import { resetOnboarding } from './Onboarding.jsx'
 // Pantalla de configuración centralizada.
 // Toggles: sonido · tema · idioma · notif on/off · hora notif · acciones (reset).
 
-const APP_VERSION = '1.0'
+// Espejo de versionName en android/app/build.gradle — mover las dos juntas.
+const APP_VERSION = '1.1'
 
 export default function Settings({ progress, lang, setLang, theme, onSetTheme, onExit }) {
   const t = makeT(lang)
