@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import { LESSONS, SECTIONS } from '../data/lessons.js'
 import { VOCAB } from '../data/vocabulary.js'
 import { makeT } from '../data/i18n.js'
-import { getMasteryDistribution } from '../hooks/useSrs.js'
+import { getMasteryDistribution } from '../hooks/useSrs'
 
 // Dashboard de progreso: stats + gráfico de XP de los últimos 30 días + % por sección.
 // Lee todo de progress.state (dailyXp, streak, xp, completed) — no hace cálculos pesados.

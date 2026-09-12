@@ -5,7 +5,7 @@ import { Filesystem, Directory } from '@capacitor/filesystem'
 import { VOCAB } from '../data/vocabulary.js'
 import { makeT } from '../data/i18n.js'
 import { playClick } from '../hooks/useSound.js'
-import { computeReading } from '../utils/sitelenLayout.js'
+import { computeReading } from '../utils/sitelenLayout'
 import { unlock } from '../hooks/useAchievements.js'
 import { LIENZO_TEMPLATES, instantiateTemplate } from '../data/lienzoTemplates.js'
 

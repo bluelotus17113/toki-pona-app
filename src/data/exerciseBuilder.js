@@ -1,6 +1,6 @@
 import { LESSONS } from './lessons.js'
 import { VOCAB, WORDS } from './vocabulary.js'
-import { priorityScore } from '../hooks/useSrs.js'
+import { priorityScore } from '../hooks/useSrs'
 
 export function shuffle(arr) {
   const a = [...arr]

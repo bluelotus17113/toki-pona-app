@@ -3,7 +3,7 @@ import { buildPracticeExercises, practiceExerciseCount } from '../data/exerciseB
 import { makeT } from '../data/i18n.js'
 import { primeAudio } from '../hooks/useSpeech.js'
 import { playSuccess, playError, playLessonComplete } from '../hooks/useSound.js'
-import { recordAnswer, recordAnswers } from '../hooks/useSrs.js'
+import { recordAnswer, recordAnswers } from '../hooks/useSrs'
 import MultipleChoice from './exercises/MultipleChoice.jsx'
 import Matching from './exercises/Matching.jsx'
 import SentenceBuilder from './exercises/SentenceBuilder.jsx'
